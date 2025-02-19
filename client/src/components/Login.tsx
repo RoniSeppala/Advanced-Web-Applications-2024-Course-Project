@@ -1,46 +1,57 @@
 import React from "react"
 import {Box, Button, TextField} from "@mui/material"
 
-const loginUser = async (email: string, password:string) => {
-    console.log(email, password)  //TODO: delete
-    try {
-        const response = await fetch("/api/users/login", {
-            method: "POST",
-            headers: {
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify({
-                email: email, 
-                password: password
-            })
-        })
 
-        if (response.status === 400) {
-            const data = await response.json()
-            console.log(data.errors)
-            throw new Error("invalid input")
-        }
-
-        if (!response.ok) {
-            console.error("Error logging in")
-            throw new Error("Error logging in")
-        }
-
-        const data = await response.json()
-        console.log(data)
-
-    } catch (error) {
-        if (error instanceof Error) {
-            console.log("Error when loging in," + error.message)
-        }
-    }
-
-}
 
 const Login:React.FC = () => {
     const [email, setEmail] = React.useState<string>("")
     const [password, setPassword] = React.useState<string>("")
-    
+    const [errors, setErrors] = React.useState<string[]>([])
+
+    const loginUser = async (email: string, password:string) => {
+        console.log(email, password)  //TODO: delete
+        try {
+            const response = await fetch("/api/users/login", {
+                method: "POST",
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({
+                    email: email, 
+                    password: password
+                })
+            })
+
+            if (response.status === 400) {
+                const data = await response.json()
+                const errorList = data.errors
+                let errorsTemp: string[] = []
+
+                errorList.forEach((element: { msg: string }) => {
+                    errorsTemp.push(element.msg)
+                });
+
+                setErrors(errorsTemp)
+                console.log(errors)
+
+                throw new Error("invalid input")
+            }
+
+            if (!response.ok) {
+                console.error("Error logging in")
+                throw new Error("Error logging in")
+            }
+
+            const data = await response.json()
+            console.log(data)
+
+        } catch (error) {
+            if (error instanceof Error) {
+                console.log("Error when loging in," + error.message)
+            }
+        }
+
+    }
 
     return (
         <>
@@ -75,6 +86,9 @@ const Login:React.FC = () => {
                     type="password"
                     sx = {{marginBottom: "10px"}}
                     onChange={(e) => setPassword(e.target.value)} />
+                {errors.map((error, index) => (
+                    <p key={index} style={{color: "red", fontWeight: "bold"}}>{error}</p>
+                ))}
                 <Button
                     variant="contained"
                     id="submit"
