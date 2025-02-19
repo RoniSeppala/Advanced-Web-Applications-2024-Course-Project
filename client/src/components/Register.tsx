@@ -3,6 +3,44 @@ import {Box, Button, Checkbox, FormControlLabel, TextField} from "@mui/material"
 
 const registerUser = async (email: string, password:string, repeatPassword:string, isAdmin: boolean) => {
     console.log(email, password, repeatPassword, isAdmin)
+
+    if (password !== repeatPassword) {
+        console.error("Passwords do not match") //TODO: add user visible error message
+        return
+    }
+
+    try {
+        const response = await fetch("/api/users/register", {
+            method: "POST",
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
+                email: email, 
+                password: password,
+                isAdmin: isAdmin
+            })
+        })
+
+        if (response.status === 400) {
+            const data = await response.json()
+            console.log(data.errors)
+            throw new Error("invalid input")
+        }
+
+        if (!response.ok) {
+            console.error("Error registering")
+            throw new Error("Error registering")
+        }
+
+        const data = await response.json()
+        console.log(data)
+        
+    } catch (error) {
+        if (error instanceof Error) {
+            console.log("Error when registering" + error.message)
+        }
+    }
 }
 
 const Login:React.FC = () => {

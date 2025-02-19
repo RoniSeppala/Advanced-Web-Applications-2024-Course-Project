@@ -3,7 +3,38 @@ import {Box, Button, TextField} from "@mui/material"
 
 const loginUser = async (email: string, password:string) => {
     console.log(email, password)  //TODO: delete
-    
+    try {
+        const response = await fetch("/api/users/login", {
+            method: "POST",
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
+                email: email, 
+                password: password
+            })
+        })
+
+        if (response.status === 400) {
+            const data = await response.json()
+            console.log(data.errors)
+            throw new Error("invalid input")
+        }
+
+        if (!response.ok) {
+            console.error("Error logging in")
+            throw new Error("Error logging in")
+        }
+
+        const data = await response.json()
+        console.log(data)
+
+    } catch (error) {
+        if (error instanceof Error) {
+            console.log("Error when loging in," + error.message)
+        }
+    }
+
 }
 
 const Login:React.FC = () => {
