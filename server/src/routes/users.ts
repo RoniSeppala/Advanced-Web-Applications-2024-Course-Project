@@ -62,7 +62,7 @@ router.post("/login", loginValidation, async (req: Request, res: Response) => {
             return
         }
 
-        if (!bcrypt.compareSync(req.body.password, user.password)) {
+        if (!bcrypt.compareSync(req.body.password, user.password as string)) {
             res.status(401).json({errors: [{msg: "Login failed"}]});
             return
         }

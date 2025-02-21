@@ -8,56 +8,40 @@ const Login:React.FC = () => {
     const [password, setPassword] = React.useState<string>("")
     const [errors, setErrors] = React.useState<string[]>([])
 
-    const loginUser = async (email: string, password:string) => {
+    const loginUser = async () => {
         setErrors([])
+        
+
         try {
             const response = await fetch("/api/users/login", {
                 method: "POST",
                 headers: {
                     'Content-Type': 'application/json'
                 },
+                credentials: "include",
                 body: JSON.stringify({
                     email: email,
                     password: password
                 })
-            })
-            const data = await response.json()
+            });
 
-            if (data.errors && (response.status === 400 || response.status === 404 || response.status === 401)) { //show errors to client if errors on login
-                const errorList = data.errors
-                let errorsTemp: string[] = []
-
-                errorList.forEach((element: { msg: string }) => {
-                    errorsTemp.push(element.msg)
-                });
-
-                setErrors(errorsTemp)
-                console.log(errors)
-
-                throw new Error("invalid input")
-            }
-
-            if (!response.ok) { //handle errro if unknown error
+            if (!response.ok) {
                 console.error("Error logging in")
                 throw new Error("Error logging in")
             }
 
-            if (data.token) {
-                localStorage.setItem("token", data.token)
-                window.location.href = "/"
-            } else {
-                setErrors(["Error logging in"])
-                console.error("Error logging in")
-                throw new Error("Error logging in")
-            }
+            window.location.href = "/"
 
 
         } catch (error) {
             if (error instanceof Error) {
-                console.log("Error when loging in," + error.message)
+            console.log("Error when sending book to ", error.message)
             }
         }
+    }
 
+    const handleOauthLogin = (provider: string) => {
+        window.location.href = `/api//auth/${provider}`
     }
 
     return (
@@ -66,7 +50,7 @@ const Login:React.FC = () => {
             component="form"
             onSubmit={(e) => {
                 e.preventDefault()
-                loginUser(email, password)
+                loginUser()
             }}
             sx={{
                 display: "flex",
@@ -104,9 +88,31 @@ const Login:React.FC = () => {
                     variant="contained"
                     type="submit"
                     id="submit"
-                    onClick={() => loginUser(email, password)}>
+                    onClick={(e) => {e.preventDefault(); loginUser()}}>
                         Login
                 </Button>
+                <Button
+                    variant="contained"
+                    id="googleLogin"
+                    sx={{marginTop: "10px", backgroundColor: "#AA0000"}}
+                    onClick={(e) => {e.preventDefault(); handleOauthLogin("google")}}>
+                        Google Login
+                </Button>
+                <Button
+                    variant="contained"
+                    id="facebookLogin"
+                    sx={{marginTop: "10px", backgroundColor: "darkblue"}}
+                    onClick={(e) => {e.preventDefault(); handleOauthLogin("facebook")}}>
+                        Facebook Login
+                </Button>
+                <Button
+                    variant="contained"
+                    id="twitterLogin"
+                    sx={{marginTop: "10px", backgroundColor: "black"}}
+                    onClick={(e) => {e.preventDefault(); handleOauthLogin("twitter")}}>
+                        Twitter Login
+                </Button>
+                
             </Box>
         </>
     )

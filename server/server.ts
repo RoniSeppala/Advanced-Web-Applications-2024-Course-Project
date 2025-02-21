@@ -4,6 +4,10 @@ import morgan from 'morgan';
 import mongoose, {Connection} from 'mongoose';
 import users from "./src/routes/users";
 import cors, {CorsOptions} from 'cors';
+import session from 'express-session';
+import passport from 'passport';
+import "./src/configs/passportConfig";
+import auth from "./src/routes/auth";
 
 
 dotenv.config();
@@ -20,7 +24,20 @@ db.on("error", console.error.bind(console, "MongoDB connection error:"));
 
 app.use(morgan('dev'));
 app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
 app.use("/api/users", users);
+
+app.use(session({
+    secret: process.env.SESSION_SECRET as string || "secret-string",
+    resave: false,
+    saveUninitialized: false
+}));
+
+app.use(passport.initialize());
+app.use(passport.session());
+
+app.use("/api/auth", auth);
+
 
 if (process.env.NODE_ENV === 'development') {
     const corsOptions: CorsOptions = {
