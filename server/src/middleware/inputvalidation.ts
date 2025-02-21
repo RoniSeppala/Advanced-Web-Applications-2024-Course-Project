@@ -10,6 +10,7 @@ export const registerValidation = [
                     .matches(/[!@#$%^&*(),.?":{}|<>]/).withMessage('Password must contain at least one special character')
                     .trim()
                     .escape(),
+    body("displayName").isString().withMessage("displayName must be a string").trim().escape(),
     body("isAdmin").isBoolean().withMessage("isAdmin must be a boolean").escape()
 ]
 

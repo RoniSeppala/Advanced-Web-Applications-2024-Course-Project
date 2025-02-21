@@ -1,5 +1,6 @@
 import React from "react"
 import {Box, Button, Checkbox, FormControlLabel, TextField} from "@mui/material"
+import OauthButtons from "./OauthButtons"
 
 
 const Login:React.FC = () => {
@@ -16,6 +17,7 @@ const Login:React.FC = () => {
 
         if (password !== repeatPassword) {
             console.error("Passwords do not match") 
+            setErrors(["Passwords do not match"])
             return
         }
 
@@ -67,6 +69,10 @@ const Login:React.FC = () => {
         <>
         <Box
             component="form"
+            onSubmit={(e) => {
+                e.preventDefault()
+                registerUser()
+            }}
             sx={{
                 display: "flex",
                 flexDirection: "column",
@@ -129,9 +135,10 @@ const Login:React.FC = () => {
                 <Button
                     variant="contained"
                     id="submit"
-                    onClick={() => registerUser()}>
-                        Regiser
+                    type="submit">
+                        Register
                 </Button>
+                <OauthButtons />
             </Box>
         </>
     )

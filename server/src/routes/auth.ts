@@ -2,13 +2,24 @@ import {Router, Request, Response} from 'express';
 import passport from 'passport';
 import { User, IUser } from '../models/User';
 import bcrypt from 'bcrypt';
+import { registerValidation, loginValidation } from '../middleware/inputvalidation';
+import { Result, ValidationError, validationResult } from 'express-validator';
 
 const router: Router = Router();
 
-router.post("/local", passport.authenticate('local', {
-    successRedirect: '/',
-    failureRedirect: '/login',
-}))
+router.post("/local", loginValidation, (req: Request, res: Response) => {
+    const errors: Result<ValidationError> = validationResult(req);
+
+    if (!errors.isEmpty()) { //return info to client if there were input errors
+        console.log(errors.array());
+        res.status(400).json({errors: errors.array()});
+        return
+    }
+
+    passport.authenticate('local', {
+        successRedirect: '/',
+        failureRedirect: '/login',
+})})
 
 router.get("/google", passport.authenticate('google', {scope: ['profile', 'email']}));
 
@@ -28,8 +39,14 @@ router.get("/logout", (req: Request, res: Response) => {
     });
 })
 
-router.post("/register", async (req: Request, res: Response) => {
+router.post("/register", registerValidation, async (req: Request, res: Response) => {
 
+    const errors: Result<ValidationError> = validationResult(req);
+
+    if (!errors.isEmpty()) { //return info to client if there were input errors
+        res.status(400).json({errors: errors.array()});
+        return
+    }
 
     try {
         const existingUser = await User.findOne({email: req.body.email});
@@ -60,6 +77,14 @@ router.post("/register", async (req: Request, res: Response) => {
         console.error('Error in registration,', error)
         res.status(500).json({error: 'Internal server error'})
         return
+    }
+})
+
+router.get("/current_user", (req: Request, res: Response) => {
+    if (req.isAuthenticated()) {
+        res.json({ user: req.user });
+    } else {
+        res.json({ user: null });
     }
 })
 

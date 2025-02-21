@@ -1,5 +1,6 @@
 import React from "react"
 import {Box, Button, TextField} from "@mui/material"
+import OauthButtons from "./OauthButtons"
 
 
 
@@ -13,7 +14,7 @@ const Login:React.FC = () => {
         
 
         try {
-            const response = await fetch("/api/users/login", {
+            const response = await fetch("/api/auth/local", {
                 method: "POST",
                 headers: {
                     'Content-Type': 'application/json'
@@ -24,6 +25,22 @@ const Login:React.FC = () => {
                     password: password
                 })
             });
+
+            const data = await response.json()
+
+            if (data.errors && (response.status === 400 || response.status === 404 || response.status === 401)) { //show errors to client if errors on login
+                const errorList = data.errors
+                let errorsTemp: string[] = []
+
+                errorList.forEach((element: { msg: string }) => {
+                    errorsTemp.push(element.msg)
+                });
+
+                setErrors(errorsTemp)
+                console.log(errors)
+
+                throw new Error("invalid input")
+            }
 
             if (!response.ok) {
                 console.error("Error logging in")
@@ -40,9 +57,6 @@ const Login:React.FC = () => {
         }
     }
 
-    const handleOauthLogin = (provider: string) => {
-        window.location.href = `/api//auth/${provider}`
-    }
 
     return (
         <>
@@ -87,26 +101,10 @@ const Login:React.FC = () => {
                 <Button
                     variant="contained"
                     type="submit"
-                    id="submit"
-                    onClick={(e) => {e.preventDefault(); loginUser()}}>
+                    id="submit">
                         Login
                 </Button>
-                <Button
-                    variant="contained"
-                    id="googleLogin"
-                    sx={{marginTop: "10px", backgroundColor: "#AA0000"}}
-                    onClick={(e) => {e.preventDefault(); handleOauthLogin("google")}}>
-                        Google Login
-                </Button>
-
-                <Button
-                    variant="contained"
-                    id="twitterLogin"
-                    sx={{marginTop: "10px", backgroundColor: "black"}}
-                    onClick={(e) => {e.preventDefault(); handleOauthLogin("twitter")}}>
-                        Twitter Login
-                </Button>
-                
+                <OauthButtons />
             </Box>
         </>
     )

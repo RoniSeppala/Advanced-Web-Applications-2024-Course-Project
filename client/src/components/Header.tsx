@@ -14,10 +14,17 @@ const Header:React.FC = () => {
     }
 
     useEffect(() => {
-        const token = localStorage.getItem("token")
-        if (token) {
-            setIsAuthenticated(true)
-        }
+        fetch("/api/auth/current_user", {
+            credentials: "include"
+        })
+        .then(response => response.json())
+        .then(data => {
+            if (data.user) {
+                setIsAuthenticated(true)
+            } else {
+                setIsAuthenticated(false)
+            }
+        })
     }, [])
 
     const drawerContent = (
