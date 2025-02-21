@@ -11,10 +11,10 @@ const Login:React.FC = () => {
 
     const registerUser = async (email: string, password:string, repeatPassword:string, isAdmin: boolean) => {
         console.log(email, password, repeatPassword, isAdmin)
+        setErrors([])
 
         if (password !== repeatPassword) {
-            console.error("Passwords do not match") //TODO: add user visible error message
-            setErrors(["Passwords do not match"])
+            console.error("Passwords do not match") 
             return
         }
 
@@ -31,7 +31,7 @@ const Login:React.FC = () => {
                 })
             })
 
-            if (response.status === 400) {
+            if (response.status === 400) { //server responds with status 400 if there is an input error, this function displays errors to user
                 const data = await response.json()
                 const errorList = data.errors
                 let errorsTemp: string[] = []
@@ -46,7 +46,7 @@ const Login:React.FC = () => {
                 throw new Error("invalid input")
             }
 
-            if (!response.ok) {
+            if (!response.ok) { //ir status is not 400 but there still was an error, this exits the function
                 console.error("Error registering")
                 throw new Error("Error registering")
             }

@@ -1,4 +1,4 @@
-import React from "react"
+import React, { useEffect } from "react"
 import {AppBar, Toolbar, Typography, List, ListItemButton, useMediaQuery, Button, IconButton, SwipeableDrawer} from "@mui/material"
 import MenuIcon from "@mui/icons-material/Menu"
 
@@ -7,23 +7,30 @@ import MenuIcon from "@mui/icons-material/Menu"
 const Header:React.FC = () => {
     const isMobile = useMediaQuery('(max-width:600px)')
     const [drawerOpen, setDrawerOpen] = React.useState<boolean>(false)
-    console.log(isMobile)
+    const [isAuthenticated, setIsAuthenticated] = React.useState<boolean>(false)
 
     const toggleDrawer = () => {
         setDrawerOpen(!drawerOpen)
     }
 
+    useEffect(() => {
+        const token = localStorage.getItem("token")
+        if (token) {
+            setIsAuthenticated(true)
+        }
+    }, [])
+
     const drawerContent = (
         <List>
           <ListItemButton onClick={() => window.location.href = '/'}>Home</ListItemButton>
-          <ListItemButton onClick={() => window.location.href = '/Login'}>Login</ListItemButton>
-          <ListItemButton onClick={() => window.location.href = '/Register'}>Register</ListItemButton>
+          {!isAuthenticated && (<ListItemButton onClick={() => window.location.href = '/Login'}>Login</ListItemButton>)} {/*conditional rendering for login and register in mobile view */}
+          {!isAuthenticated && (<ListItemButton onClick={() => window.location.href = '/Register'}>Register</ListItemButton>)}
         </List>
       );
 
     return (
         <>
-        <AppBar position="static" 
+        <AppBar position="static"
         sx={{left:0,
             boxSizing: "border-box",
             maxHeight: "64px",
@@ -40,17 +47,17 @@ const Header:React.FC = () => {
                 {!isMobile && (
                     <>
                         <Button color="inherit" onClick={() => window.location.href = '/'}>Home</Button>
-                        <Button color="inherit" onClick={() => window.location.href = '/Login'}>Login</Button>
-                        <Button color="inherit" onClick={() => window.location.href = '/Register'}>Register</Button>
+                        {!isAuthenticated && (<Button color="inherit" onClick={() => window.location.href = '/Login'}>Login</Button>)} {/*conditional rendering for login and register in desktop view*/}
+                        {!isAuthenticated && (<Button color="inherit" onClick={() => window.location.href = '/Register'}>Register</Button>)}
                     </>
                 )}
             </Toolbar>
         </AppBar>
-        <SwipeableDrawer 
-            open={drawerOpen} 
-            onClose={toggleDrawer} 
+        <SwipeableDrawer
+            open={drawerOpen}
+            onClose={toggleDrawer}
             onOpen={toggleDrawer}
-            anchor="left" 
+            anchor="left"
             PaperProps={{
             style: {
             minWidth: 250, // Set the minimum width for the Drawer

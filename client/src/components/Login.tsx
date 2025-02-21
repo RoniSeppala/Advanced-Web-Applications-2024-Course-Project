@@ -9,7 +9,7 @@ const Login:React.FC = () => {
     const [errors, setErrors] = React.useState<string[]>([])
 
     const loginUser = async (email: string, password:string) => {
-        console.log(email, password)  //TODO: delete
+        setErrors([])
         try {
             const response = await fetch("/api/users/login", {
                 method: "POST",
@@ -17,13 +17,13 @@ const Login:React.FC = () => {
                     'Content-Type': 'application/json'
                 },
                 body: JSON.stringify({
-                    email: email, 
+                    email: email,
                     password: password
                 })
             })
+            const data = await response.json()
 
-            if (response.status === 400) {
-                const data = await response.json()
+            if (data.errors && (response.status === 400 || response.status === 404 || response.status === 401)) { //show errors to client if errors on login
                 const errorList = data.errors
                 let errorsTemp: string[] = []
 
@@ -37,13 +37,20 @@ const Login:React.FC = () => {
                 throw new Error("invalid input")
             }
 
-            if (!response.ok) {
+            if (!response.ok) { //handle errro if unknown error
                 console.error("Error logging in")
                 throw new Error("Error logging in")
             }
 
-            const data = await response.json()
-            console.log(data)
+            if (data.token) {
+                localStorage.setItem("token", data.token)
+                window.location.href = "/"
+            } else {
+                setErrors(["Error logging in"])
+                console.error("Error logging in")
+                throw new Error("Error logging in")
+            }
+
 
         } catch (error) {
             if (error instanceof Error) {
@@ -57,6 +64,10 @@ const Login:React.FC = () => {
         <>
         <Box
             component="form"
+            onSubmit={(e) => {
+                e.preventDefault()
+                loginUser(email, password)
+            }}
             sx={{
                 display: "flex",
                 flexDirection: "column",
@@ -91,6 +102,7 @@ const Login:React.FC = () => {
                 ))}
                 <Button
                     variant="contained"
+                    type="submit"
                     id="submit"
                     onClick={() => loginUser(email, password)}>
                         Login
