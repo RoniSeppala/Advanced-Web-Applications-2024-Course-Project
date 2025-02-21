@@ -3,7 +3,6 @@ import {AppBar, Toolbar, Typography, List, ListItemButton, useMediaQuery, Button
 import MenuIcon from "@mui/icons-material/Menu"
 
 
-
 const Header:React.FC = () => {
     const isMobile = useMediaQuery('(max-width:600px)')
     const [drawerOpen, setDrawerOpen] = React.useState<boolean>(false)
@@ -26,6 +25,18 @@ const Header:React.FC = () => {
             }
         })
     }, [])
+
+    const logout = async() => {
+        await fetch("/api/auth/logout", {
+            method: "GET",
+            credentials: "include"
+        })
+        .then(response => {
+            if (response.ok) {
+                window.location.href = "/"
+            }
+        })
+      }
 
     const drawerContent = (
         <List>
@@ -53,8 +64,9 @@ const Header:React.FC = () => {
                 </Typography>
                 {!isMobile && (
                     <>
+                        {isAuthenticated && (<Button color="inherit" onClick={logout}>Logout</Button>)} {/*conditional rendering for login and register in desktop view*/}
                         <Button color="inherit" onClick={() => window.location.href = '/'}>Home</Button>
-                        {!isAuthenticated && (<Button color="inherit" onClick={() => window.location.href = '/Login'}>Login</Button>)} {/*conditional rendering for login and register in desktop view*/}
+                        {!isAuthenticated && (<Button color="inherit" onClick={() => window.location.href = '/Login'}>Login</Button>)} 
                         {!isAuthenticated && (<Button color="inherit" onClick={() => window.location.href = '/Register'}>Register</Button>)}
                     </>
                 )}

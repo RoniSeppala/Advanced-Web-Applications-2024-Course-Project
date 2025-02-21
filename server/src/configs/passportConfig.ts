@@ -38,7 +38,7 @@ passport.use(new LocalStrategy({usernameField: 'email'}, async (email, password,
 passport.use(new GoogleStrategy({
     clientID: process.env.GOOGLE_CLIENT_ID as string,
     clientSecret: process.env.GOOGLE_CLIENT_SECRET as string,
-    callbackURL: "/auth/google/callback"
+    callbackURL: "http://localhost:1234/api/auth/google/callback"
 }, async (accessToken, refreshToken, profile, done) => {
     try {
         let user: IUser | null = await User.findOne({googleId: profile.id});
@@ -48,6 +48,7 @@ passport.use(new GoogleStrategy({
                 googleId: profile.id,
                 displayName: profile.displayName
             });
+            await user.save();
         }
         return done(null, user);
     } catch (error: any) {
@@ -59,7 +60,7 @@ passport.use(new GoogleStrategy({
 passport.use(new TwitterStrategy({
     consumerKey: process.env.TWITTER_CONSUMER_KEY as string,
     consumerSecret: process.env.TWITTER_CONSUMER_SECRET as string,
-    callbackURL: "/auth/twitter/callback"
+    callbackURL: "http://localhost:1234/api/auth/twitter/callback"
 }, async (token, tokenSecret, profile, done) => {
     try {
         let user: IUser | null = await User.findOne({twitterId: profile.id});
@@ -68,6 +69,7 @@ passport.use(new TwitterStrategy({
                 displayName: profile.username,
                 twitterId: profile.id
             });
+            await user.save();
         }
         return done(null, user);
     } catch (error: any) {

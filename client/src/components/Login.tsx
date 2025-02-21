@@ -14,6 +14,7 @@ const Login:React.FC = () => {
         
 
         try {
+            console.log("Logging in")
             const response = await fetch("/api/auth/local", {
                 method: "POST",
                 headers: {
@@ -104,7 +105,7 @@ const Login:React.FC = () => {
                     id="submit">
                         Login
                 </Button>
-                <OauthButtons />
+                <OauthButtons page="Login"/>
             </Box>
         </>
     )

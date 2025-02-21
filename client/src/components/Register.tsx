@@ -138,7 +138,7 @@ const Login:React.FC = () => {
                     type="submit">
                         Register
                 </Button>
-                <OauthButtons />
+                <OauthButtons page="Register"/>
             </Box>
         </>
     )

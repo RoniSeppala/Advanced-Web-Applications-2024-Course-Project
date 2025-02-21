@@ -23,11 +23,13 @@ db.on("error", console.error.bind(console, "MongoDB connection error:"));
 app.use(morgan('dev'));
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
+app.set('trust proxy', true)
 
 app.use(session({
     secret: process.env.SESSION_SECRET as string || "secret-string",
     resave: false,
-    saveUninitialized: false
+    saveUninitialized: false,
+    cookie: { secure: false }
 }));
 
 app.use(passport.initialize());

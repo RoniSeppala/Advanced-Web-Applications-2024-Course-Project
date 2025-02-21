@@ -1,4 +1,4 @@
-import {Router, Request, Response} from 'express';
+import {Router, Request, Response, NextFunction} from 'express';
 import passport from 'passport';
 import { User, IUser } from '../models/User';
 import bcrypt from 'bcrypt';
@@ -7,7 +7,7 @@ import { Result, ValidationError, validationResult } from 'express-validator';
 
 const router: Router = Router();
 
-router.post("/local", loginValidation, (req: Request, res: Response) => {
+router.post("/local", loginValidation, (req: Request, res: Response, next: NextFunction) => {
     const errors: Result<ValidationError> = validationResult(req);
 
     if (!errors.isEmpty()) { //return info to client if there were input errors
@@ -16,21 +16,32 @@ router.post("/local", loginValidation, (req: Request, res: Response) => {
         return
     }
 
-    passport.authenticate('local', {
-        successRedirect: '/',
-        failureRedirect: '/login',
-})})
+    passport.authenticate('local', (err: Error, user: IUser, info: any) => {
+        if (err) {
+            return next(err);
+        }
+        if (!user) {
+            return res.status(401).json({ errors: [{ msg: 'Invalid credentials' }] });
+        }
+        req.logIn(user, (err) => {
+            if (err) {
+                return next(err);
+            }
+            return res.status(200).json({ user });
+        });
+    })(req, res, next);
+});
 
 router.get("/google", passport.authenticate('google', {scope: ['profile', 'email']}));
 
-router.get("/google/callback", passport.authenticate('google', { failureRedirect: '/login' }), (req: Request, res: Response) => {
-    res.redirect('/');
+router.get("/google/callback", passport.authenticate('google', { failureRedirect: 'http://localhost:3000/login' }), (req: Request, res: Response) => {
+    res.redirect('http://localhost:3000');
 })
 
 router.get("/twitter", passport.authenticate('twitter'));
 
 router.get("/twitter/callback", passport.authenticate('twitter', { failureRedirect: '/login' }), (req: Request, res: Response) => {
-    res.redirect('/');
+    res.redirect('http://localhost:3000');
 })
 
 router.get("/logout", (req: Request, res: Response) => {
@@ -82,9 +93,9 @@ router.post("/register", registerValidation, async (req: Request, res: Response)
 
 router.get("/current_user", (req: Request, res: Response) => {
     if (req.isAuthenticated()) {
-        res.json({ user: req.user });
+        res.status(200).json({ user: req.user });
     } else {
-        res.json({ user: null });
+        res.status(401).json({ user: null });
     }
 })
 
