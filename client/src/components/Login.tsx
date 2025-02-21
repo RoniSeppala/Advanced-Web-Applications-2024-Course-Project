@@ -35,7 +35,7 @@ const Login:React.FC = () => {
 
         } catch (error) {
             if (error instanceof Error) {
-            console.log("Error when sending book to ", error.message)
+            console.log("Error when logging in ", error.message)
             }
         }
     }
@@ -98,13 +98,7 @@ const Login:React.FC = () => {
                     onClick={(e) => {e.preventDefault(); handleOauthLogin("google")}}>
                         Google Login
                 </Button>
-                <Button
-                    variant="contained"
-                    id="facebookLogin"
-                    sx={{marginTop: "10px", backgroundColor: "darkblue"}}
-                    onClick={(e) => {e.preventDefault(); handleOauthLogin("facebook")}}>
-                        Facebook Login
-                </Button>
+
                 <Button
                     variant="contained"
                     id="twitterLogin"

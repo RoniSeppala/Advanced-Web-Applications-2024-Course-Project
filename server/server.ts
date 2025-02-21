@@ -6,11 +6,10 @@ import users from "./src/routes/users";
 import cors, {CorsOptions} from 'cors';
 import session from 'express-session';
 import passport from 'passport';
+dotenv.config();
 import "./src/configs/passportConfig";
 import auth from "./src/routes/auth";
 
-
-dotenv.config();
 
 const app: Express = express();
 const port: number = parseInt(process.env.PORT as string) || 1234;

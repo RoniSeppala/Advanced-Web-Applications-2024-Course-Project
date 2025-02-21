@@ -8,8 +8,9 @@ const Login:React.FC = () => {
     const [repeatPassword, setRepeatPassword] = React.useState<string>("")
     const [isAdmin, setIsAdmin] = React.useState<boolean>(false)
     const [errors, setErrors] = React.useState<string[]>([])
+    const [displayName, setDisplayName] = React.useState<string>("")
 
-    const registerUser = async (email: string, password:string, repeatPassword:string, isAdmin: boolean) => {
+    const registerUser = async () => {
         console.log(email, password, repeatPassword, isAdmin)
         setErrors([])
 
@@ -19,7 +20,7 @@ const Login:React.FC = () => {
         }
 
         try {
-            const response = await fetch("/api/users/register", {
+            const response = await fetch("/api/auth/register", {
                 method: "POST",
                 headers: {
                     'Content-Type': 'application/json'
@@ -27,12 +28,13 @@ const Login:React.FC = () => {
                 body: JSON.stringify({
                     email: email, 
                     password: password,
-                    isAdmin: isAdmin
+                    isAdmin: isAdmin,
+                    displayName: displayName
                 })
             })
+            const data = await response.json()
 
             if (response.status === 400) { //server responds with status 400 if there is an input error, this function displays errors to user
-                const data = await response.json()
                 const errorList = data.errors
                 let errorsTemp: string[] = []
 
@@ -51,7 +53,7 @@ const Login:React.FC = () => {
                 throw new Error("Error registering")
             }
 
-            const data = await response.json()
+            window.location.href = "/login"
             console.log(data)
 
         } catch (error) {
@@ -88,6 +90,13 @@ const Login:React.FC = () => {
                     onChange={(e) => setEmail(e.target.value)} />
                 <TextField
                     required
+                    id="displayName"
+                    label="Name"
+                    defaultValue=""
+                    sx = {{marginBottom: "10px"}}
+                    onChange={(e) => setDisplayName(e.target.value)} />
+                <TextField
+                    required
                     id="password"
                     label="Password"
                     defaultValue=""
@@ -120,7 +129,7 @@ const Login:React.FC = () => {
                 <Button
                     variant="contained"
                     id="submit"
-                    onClick={() => registerUser(email, password, repeatPassword, isAdmin)}>
+                    onClick={() => registerUser()}>
                         Regiser
                 </Button>
             </Box>
