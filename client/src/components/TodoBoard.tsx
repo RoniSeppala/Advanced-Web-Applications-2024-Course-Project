@@ -4,6 +4,7 @@ import { Box, Button } from "@mui/material";
 import BoardTitle from "./BoardTitle";
 import { DndContext, DragOverlay, PointerSensor, rectIntersection, useSensor, useSensors } from "@dnd-kit/core";
 import { arrayMove, rectSortingStrategy, SortableContext } from "@dnd-kit/sortable";
+import { CompareSharp } from "@mui/icons-material";
 
 interface TodoBoardProps {
     todoBoardData: {
@@ -70,6 +71,7 @@ const TodoBoard:React.FC<TodoBoardProps> = ({
     const [categories, setCategories] = React.useState<Category[]>(todoBoardDataState.categories)
     const [activeItem, setActiveItem] = React.useState<{ id?: string, content?: string, color?: string, type: string } | null>(null)
     const [boardTodoCounter, setBoardTodoCounter] = React.useState<number>(0)
+    const [boardCategoryCounter, setBoardCategoryCounter] = React.useState<number>(0)
 
     //count initial todos
     React.useEffect(() => {
@@ -79,10 +81,19 @@ const TodoBoard:React.FC<TodoBoardProps> = ({
         }
     }, [])
 
+    //count initial categories
+    React.useEffect(() => {
+        const count = categories.length
+        if (count > boardCategoryCounter) {
+            setBoardCategoryCounter(count + 1)
+        }
+    }, [])
+
     const addCategory = () => {
+        setBoardCategoryCounter(boardCategoryCounter + 1)
         console.log("Add category clicked")
         const newCategory: Category = {
-            id: `category-${categories.length}`,
+            id: `category-${boardCategoryCounter}`,
             title: "New Category",
             color: "#D3D3D3",
             todos: []
