@@ -97,8 +97,6 @@ const TodoBoard:React.FC<TodoBoardProps> = ({
         const { type, categoryId } = active.data.current;
         const activeItemCategory = categories.find((category) => category.id === categoryId);
         if (!activeItemCategory) return;
-        console.log(type)
-        console.log("stuff")
 
         if (type === "todo") {
             const item = activeItemCategory.todos.find((todo) => todo.id === active.id);
