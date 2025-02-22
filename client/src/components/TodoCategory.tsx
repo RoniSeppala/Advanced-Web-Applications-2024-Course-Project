@@ -19,14 +19,14 @@ interface TodoCategoryProps {
 const TodoCategory:React.FC<TodoCategoryProps> = ({ category }) => {
     const bgColor = category.color || "#D3D3D3"
 
-    const { attributes, listeners, setNodeRef, transform, transition, isDragging } = useSortable({
+    const { attributes, listeners, setNodeRef, transform, isDragging } = useSortable({
         id: category.id,
         data: { type: 'category' }
     });
 
     const style = {
         transform: transform ? `translate3d(${transform.x}px, ${transform.y}px, 0)` : undefined,
-        transition,
+        transition: "transform 0.4s ease",
         padding: '8px',
         minWidth: '300px',
         opacity: isDragging ? 0.5 : 1,

@@ -12,14 +12,14 @@ interface TodoItemProps {
 }
 
 const TodoItem:React.FC<TodoItemProps> = ({todo, color, categoryId}) => {
-    const { attributes, listeners, setNodeRef, transform, transition, isDragging } = useSortable({
+    const { attributes, listeners, setNodeRef, transform, isDragging } = useSortable({
         id: todo.id,
         data: { type: 'todo', categoryId }
     });
 
     const style = {
         transform: transform ? `translate3d(${transform.x}px, ${transform.y}px, 0)` : undefined,
-        transition,
+        transition: "transform 0.4s ease",
         padding: '8px',
         minWidth: '200px',
         backgroundColor: isDragging ? darken(color, 0.2) : color,
