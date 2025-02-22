@@ -31,7 +31,6 @@ const TodoCategory:React.FC<TodoCategoryProps> = ({ category }) => {
         minWidth: '300px',
         opacity: isDragging ? 0.5 : 1,
         flexGrow: 1,
-        flexBasis: "calc(33.33% - 10px)"
     };
 
     const addTodo = () => {
@@ -44,7 +43,6 @@ const TodoCategory:React.FC<TodoCategoryProps> = ({ category }) => {
                 backgroundColor: bgColor,
                 width: "100%",
                 minWidth: "300px",
-                flex: "1 1 calc(33.33% - 10px)", // Ensure the category takes up a third of the available space
                 borderRadius: "13px",
                 border: "1px solid black",
                 boxSizing: "border-box" // Ensure padding and border are included in the element's total width and height

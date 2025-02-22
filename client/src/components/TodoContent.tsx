@@ -16,15 +16,22 @@ interface TodoContentProps {
 }
 
 const TodoContent:React.FC<TodoContentProps> = ({category}) => {
+    console.log(category.todos.length)
     return (
         <Box sx={{
             backgroundColor: category.color,
             margin: "10px"}}>
             <List>
-                <SortableContext items={category.todos.map((todo) => todo.id)} strategy={verticalListSortingStrategy}>
-                    {category.todos.map((todo) => (
-                        <TodoItem key={todo.id} todo={todo} color={category.color} categoryId={category.id}/>
-                    ))}
+                <SortableContext items={(category.todos).map((todo) => todo.id)} strategy={verticalListSortingStrategy}>
+                    {category.todos.length > 0 ? (
+                        category.todos.map((todo) => (
+                            <TodoItem key={todo.id} todo={todo} color={category.color} categoryId={category.id}/>
+                        ))
+                    ) : (
+                        <div style={{ minHeight: "50px" }}>
+                            No todos available
+                        </div>
+                    )}
                 </SortableContext>
             </List>
         </Box>
