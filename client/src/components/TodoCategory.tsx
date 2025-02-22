@@ -13,10 +13,11 @@ interface TodoCategoryProps {
             id: string,
             todo: string
         }[]
-    }
+    },
+    categoryAmmount: number
 }
 
-const TodoCategory:React.FC<TodoCategoryProps> = ({ category }) => {
+const TodoCategory:React.FC<TodoCategoryProps> = ({ category , categoryAmmount}) => {
     const bgColor = category.color || "#D3D3D3"
 
     const { attributes, listeners, setNodeRef, transform, isDragging } = useSortable({
@@ -64,7 +65,7 @@ const TodoCategory:React.FC<TodoCategoryProps> = ({ category }) => {
                         border: "1px solid black",
                         }} onClick={addTodo}>Add Todo</Button>
                 </Box>
-                <TodoContent category={category}/>
+                <TodoContent category={category} categoryAmmount={categoryAmmount}/>
             </Box>
         </div>
     )

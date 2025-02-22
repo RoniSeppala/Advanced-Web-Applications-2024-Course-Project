@@ -222,7 +222,7 @@ const TodoBoard:React.FC<TodoBoardProps> = ({
                         }}>
                         {categoryOrder.map((categoryId: string) => {
                             const category = categories.find(cat => cat.id === categoryId);
-                            return category ? <TodoCategory key={categoryId} category={category} /> : null;
+                            return category ? <TodoCategory key={categoryId} category={category} categoryAmmount={categoryOrder.length}/> : null;
                         })}
                     </Box>
                 </SortableContext>
