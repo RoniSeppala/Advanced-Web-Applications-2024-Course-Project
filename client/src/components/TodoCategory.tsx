@@ -4,7 +4,7 @@ import TodoContent from "./TodoContent";
 import BoardTitle from "./BoardTitle";
 import { useSortable } from "@dnd-kit/sortable";
 
-interface TodoBoardProps {
+interface TodoCategoryProps {
     category: {
         id: string,
         title: string,
@@ -16,7 +16,7 @@ interface TodoBoardProps {
     }
 }
 
-const TodoCategory:React.FC<TodoBoardProps> = ({ category }) => {
+const TodoCategory:React.FC<TodoCategoryProps> = ({ category }) => {
     const bgColor = category.color || "#D3D3D3"
 
     const { attributes, listeners, setNodeRef, transform, transition, isDragging } = useSortable({
@@ -27,7 +27,6 @@ const TodoCategory:React.FC<TodoBoardProps> = ({ category }) => {
     const style = {
         transform: transform ? `translate3d(${transform.x}px, ${transform.y}px, 0)` : undefined,
         transition,
-        border: '1px solid #ccc',
         padding: '8px',
         minWidth: '300px',
         opacity: isDragging ? 0.5 : 1,

@@ -35,6 +35,7 @@ const TodoItem:React.FC<TodoItemProps> = ({todo, color, categoryId}) => {
                 paddingLeft: "10px",
                 paddingRight: "10px",
                 color: "black",
+                border: "1px solid black",
                 backgroundColor: darken(color, 0.05),
             }}>
                 <ListItemText primary={todo.todo}/>
