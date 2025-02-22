@@ -12,10 +12,11 @@ interface TodoContentProps {
             id: string,
             todo: string
         }[]
-    }
+    },
+    handleTodoDelete: (categoryId: string, todoId: string) => void
 }
 
-const TodoContent: React.FC<TodoContentProps> = ({ category }) => {
+const TodoContent: React.FC<TodoContentProps> = ({ category, handleTodoDelete }) => {
     const isEmpty = category.todos.length === 0;
 
     // Ensure todos is an array with valid items only.
@@ -60,7 +61,7 @@ const TodoContent: React.FC<TodoContentProps> = ({ category }) => {
                         placeholderElement
                     ) : (
                         validTodos.map((todo) => (
-                            <TodoItem key={todo.id} todo={todo} color={category.color} categoryId={category.id} category={category}/>
+                            <TodoItem key={todo.id} todo={todo} color={category.color} categoryId={category.id} handleTodoDelete={handleTodoDelete}/>
                         ))
                     )}
                 </SortableContext>

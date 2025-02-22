@@ -1,8 +1,9 @@
-import { Box, Button } from "@mui/material";
+import { Box, Button, IconButton } from "@mui/material";
 import React from "react";
 import TodoContent from "./TodoContent";
 import BoardTitle from "./BoardTitle";
 import { useSortable } from "@dnd-kit/sortable";
+import DeleteIcon from '@mui/icons-material/Delete';
 
 interface TodoCategoryProps {
     category: {
@@ -15,7 +16,9 @@ interface TodoCategoryProps {
         }[]
     },
     boardTodoCounter: number,
-    setBoardTodoCounter: React.Dispatch<React.SetStateAction<number>>
+    setBoardTodoCounter: React.Dispatch<React.SetStateAction<number>>,
+    handleTodoDelete: (categoryId: string, todoId: string) => void,
+    handleCategoryDelete: (categoryId: string) => void
 }
 
 interface Todo {
@@ -23,7 +26,7 @@ interface Todo {
     todo: string
 }
 
-const TodoCategory:React.FC<TodoCategoryProps> = ({ category, boardTodoCounter , setBoardTodoCounter}) => {
+const TodoCategory:React.FC<TodoCategoryProps> = ({ category, boardTodoCounter , setBoardTodoCounter, handleTodoDelete, handleCategoryDelete}) => {
     const bgColor = category.color || "#D3D3D3"
 
     const { attributes, listeners, setNodeRef, transform, isDragging } = useSortable({
@@ -79,8 +82,19 @@ const TodoCategory:React.FC<TodoCategoryProps> = ({ category, boardTodoCounter ,
                         color: "black",
                         border: "1px solid black",
                         }} onClick={addTodo}>Add Todo</Button>
+                    <IconButton aria-label="delete" size="small" onClick={() => {handleCategoryDelete(category.id)}} sx={{
+                        marginTop: "10px",
+                        marginBottom: "10px",
+                        padding: "20px",
+                        background: "lightblue",
+                        borderRadius: "10px",
+                        color: "black",
+                        border: "1px solid black",
+                        }}>
+                    <DeleteIcon />
+                    </IconButton>
                 </Box>
-                <TodoContent category={category}/>
+                <TodoContent category={category} handleTodoDelete={handleTodoDelete}/>
             </Box>
         </div>
     )

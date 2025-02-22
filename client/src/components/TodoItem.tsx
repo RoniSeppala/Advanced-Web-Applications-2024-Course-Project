@@ -10,18 +10,10 @@ interface TodoItemProps {
         id: string,
         todo: string
     },
-    category: {
-        id: string,
-        title: string,
-        color: string,
-        todos: {
-            id: string,
-            todo: string
-        }[]
-    }
+    handleTodoDelete: (categoryId: string, todoId: string) => void
 }
 
-const TodoItem:React.FC<TodoItemProps> = ({todo, color, categoryId, category}) => {
+const TodoItem:React.FC<TodoItemProps> = ({todo, color, categoryId, handleTodoDelete}) => {
     const { attributes, listeners, setNodeRef, transform, isDragging } = useSortable({
         id: todo.id,
         data: { type: 'todo', categoryId }
@@ -36,14 +28,6 @@ const TodoItem:React.FC<TodoItemProps> = ({todo, color, categoryId, category}) =
         opacity: isDragging ? 0.5 : 1,
     };
 
-    const deleteTodo = () => {
-        console.log("Delete todo clicked")
-        console.log("Todo id: ", todo.id)
-        console.log(category)
-        category.todos = category.todos.filter((item) => item.id !== todo.id)
-        console.log(category)
-    }
-
     return (
         <div ref={setNodeRef} style={style} {...attributes} {...listeners}>
             <ListItem key={todo.id} sx={{
@@ -57,7 +41,7 @@ const TodoItem:React.FC<TodoItemProps> = ({todo, color, categoryId, category}) =
                 backgroundColor: darken(color, 0.05),
             }}>
                 <ListItemText primary={todo.todo}/>
-                <IconButton aria-label="delete" size="small" onClick={deleteTodo}>
+                <IconButton aria-label="delete" size="small" onClick={() => handleTodoDelete(categoryId, todo.id)}>
                     <DeleteIcon />
                 </IconButton>
             </ListItem>

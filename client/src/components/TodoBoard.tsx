@@ -188,6 +188,18 @@ const TodoBoard:React.FC<TodoBoardProps> = ({
         setActiveItem(null);
     }
 
+    const handleTodoDelete = (categoryId: string, todoId: string) => {
+        setCategories((prevCategories) =>
+            prevCategories.map((cat) =>
+                cat.id === categoryId ? { ...cat, todos: cat.todos.filter((item) => item.id !== todoId) } : cat
+            )
+        );
+    }
+
+    const handleCategoryDelete = (categoryId: string) => {
+        setCategories((prevCategories) => prevCategories.filter((cat) => cat.id !== categoryId));
+    }
+
     return (
         <Box sx={{
             paddingTop: "10px",
@@ -230,7 +242,7 @@ const TodoBoard:React.FC<TodoBoardProps> = ({
                         }}>
                         {categoryOrder.map((categoryId: string) => {
                             const category = categories.find(cat => cat.id === categoryId);
-                            return category ? <TodoCategory key={categoryId} category={category} boardTodoCounter={boardTodoCounter} setBoardTodoCounter={setBoardTodoCounter}/> : null;
+                            return category ? <TodoCategory key={categoryId} category={category} boardTodoCounter={boardTodoCounter} setBoardTodoCounter={setBoardTodoCounter} handleTodoDelete={handleTodoDelete} handleCategoryDelete={handleCategoryDelete}/> : null;
                         })}
                     </Box>
                 </SortableContext>
