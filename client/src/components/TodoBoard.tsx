@@ -4,7 +4,6 @@ import { Box, Button } from "@mui/material";
 import BoardTitle from "./BoardTitle";
 import { DndContext, DragOverlay, PointerSensor, rectIntersection, useSensor, useSensors } from "@dnd-kit/core";
 import { arrayMove, rectSortingStrategy, SortableContext } from "@dnd-kit/sortable";
-import { CompareSharp } from "@mui/icons-material";
 
 interface TodoBoardProps {
     todoBoardData: {
@@ -94,7 +93,7 @@ const TodoBoard:React.FC<TodoBoardProps> = ({
         console.log("Add category clicked")
         const newCategory: Category = {
             id: `category-${boardCategoryCounter}`,
-            title: "New Category",
+            title: "New Category " + boardCategoryCounter,
             color: "#D3D3D3",
             todos: []
         }
@@ -208,7 +207,8 @@ const TodoBoard:React.FC<TodoBoardProps> = ({
     }
 
     const handleCategoryDelete = (categoryId: string) => {
-        setCategories((prevCategories) => prevCategories.filter((cat) => cat.id !== categoryId));
+        setCategories(prev => prev.filter(cat => cat.id !== categoryId));
+        setCategoryOrder(prev => prev.filter(id => id !== categoryId));
     }
 
     return (
@@ -253,7 +253,12 @@ const TodoBoard:React.FC<TodoBoardProps> = ({
                         }}>
                         {categoryOrder.map((categoryId: string) => {
                             const category = categories.find(cat => cat.id === categoryId);
-                            return category ? <TodoCategory key={categoryId} category={category} boardTodoCounter={boardTodoCounter} setBoardTodoCounter={setBoardTodoCounter} handleTodoDelete={handleTodoDelete} handleCategoryDelete={handleCategoryDelete}/> : null;
+                            if (!category) {
+                                // Optionally log a warning and skip rendering for this id
+                                console.warn("Category not found for id:", categoryId);
+                                return null;
+                            }
+                            return <TodoCategory key={categoryId} category={category} boardTodoCounter={boardTodoCounter} setBoardTodoCounter={setBoardTodoCounter} handleTodoDelete={handleTodoDelete} handleCategoryDelete={handleCategoryDelete}/>;
                         })}
                     </Box>
                 </SortableContext>
