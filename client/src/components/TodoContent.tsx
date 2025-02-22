@@ -22,7 +22,6 @@ const TodoContent: React.FC<TodoContentProps> = ({ category }) => {
     const validTodos = Array.isArray(category.todos)
         ? category.todos.filter(todo => todo && todo.id)
         : [];
-        
     const placeholderId = `placeholder-${category.id}`;
 
     let placeholderElement = null;

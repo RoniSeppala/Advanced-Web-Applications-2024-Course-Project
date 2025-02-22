@@ -16,7 +16,7 @@ interface TodoCategoryProps {
     }
 }
 
-const TodoCategory:React.FC<TodoCategoryProps> = ({ category}) => {
+const TodoCategory:React.FC<TodoCategoryProps> = ({ category }) => {
     const bgColor = category.color || "#D3D3D3"
 
     const { attributes, listeners, setNodeRef, transform, isDragging } = useSortable({
@@ -35,6 +35,7 @@ const TodoCategory:React.FC<TodoCategoryProps> = ({ category}) => {
 
     const addTodo = () => {
         console.log("Add todo clicked")
+        console.log(category)
     }
 
     return (
