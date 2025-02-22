@@ -1,4 +1,4 @@
-import { Box } from "@mui/material";
+import { Box, Button } from "@mui/material";
 import React from "react";
 import TodoContent from "./TodoContent";
 import BoardTitle from "./BoardTitle";
@@ -34,6 +34,10 @@ const TodoCategory:React.FC<TodoCategoryProps> = ({ category }) => {
         flexBasis: "calc(33.33% - 10px)"
     };
 
+    const addTodo = () => {
+        console.log("Add todo clicked")
+    }
+
     return (
         <div ref={setNodeRef} style={style} {...attributes} {...listeners}>
             <Box sx={{
@@ -45,7 +49,23 @@ const TodoCategory:React.FC<TodoCategoryProps> = ({ category }) => {
                 border: "1px solid black",
                 boxSizing: "border-box" // Ensure padding and border are included in the element's total width and height
                 }}>
-                <BoardTitle title={category.title} color={bgColor}/>
+                <Box sx={{
+                    display: "flex",
+                    flexDirection: "row",
+                    marginTop: "10px",
+                    marginLeft: "20px",
+                    marginRight: "20px",
+                    gap: "10px",
+                    }}>
+                    <BoardTitle title={category.title} color={bgColor}/>
+                    <Button sx={{
+                        margin: "10px",
+                        background: "lightblue",
+                        borderRadius: "10px",
+                        color: "black",
+                        border: "1px solid black",
+                        }} onClick={addTodo}>Add Todo</Button>
+                </Box>
                 <TodoContent category={category}/>
             </Box>
         </div>

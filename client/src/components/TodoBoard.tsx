@@ -1,6 +1,6 @@
 import React from "react";
 import TodoCategory from "./TodoCategory";
-import { Box } from "@mui/material";
+import { Box, Button } from "@mui/material";
 import BoardTitle from "./BoardTitle";
 import { DndContext, DragOverlay, PointerSensor, rectIntersection, useSensor, useSensors } from "@dnd-kit/core";
 import { arrayMove, rectSortingStrategy, SortableContext } from "@dnd-kit/sortable";
@@ -8,8 +8,8 @@ import { arrayMove, rectSortingStrategy, SortableContext } from "@dnd-kit/sortab
 interface TodoBoardProps {
     todoBoardData: {
         title: string,
-        titleBgColor?: string,
-        boardBgColor?: string,
+        titleBgColor: string,
+        boardBgColor: string,
         categories: {
             id: string,
             title: string,
@@ -21,6 +21,21 @@ interface TodoBoardProps {
         }[]
     }
 
+}
+
+interface TodoBoardDataInterface {
+    title: string,
+        titleBgColor: string,
+        boardBgColor: string,
+        categories: {
+            id: string,
+            title: string,
+            color: string,
+            todos: {
+                id: string,
+                todo: string
+            }[]
+        }[]
 }
 
 interface Category {
@@ -50,9 +65,28 @@ const TodoBoard:React.FC<TodoBoardProps> = ({
     }
 }) => {
     const initialCategoryOrder = todoBoardData.categories.map((category) => category.id)
+    const [todoBoardDataState, setTodoBoardDataState] = React.useState<TodoBoardDataInterface>(todoBoardData)
     const [categoryOrder, setCategoryOrder] = React.useState<string[]>(initialCategoryOrder)
-    const [categories, setCategories] = React.useState<Category[]>(todoBoardData.categories)
+    const [categories, setCategories] = React.useState<Category[]>(todoBoardDataState.categories)
     const [activeItem, setActiveItem] = React.useState<{ id?: string, content?: string, color?: string, type: string } | null>(null)
+
+    const addCategory = () => {
+        console.log("Add category clicked")
+        console.log(todoBoardDataState)
+        const newCategory: Category = {
+            id: `category-${categories.length}`,
+            title: "New Category",
+            color: "#D3D3D3",
+            todos: []
+        }
+        console.log(newCategory)
+        setTodoBoardDataState((prevData) => {
+            const newCategories = [...prevData.categories, newCategory]
+            return { ...prevData, categories: newCategories }
+        })
+        setCategories((prevCategories) => [...prevCategories, newCategory])
+        setCategoryOrder((prevOrder) => [...prevOrder, newCategory.id])
+    }
 
     const sensors = useSensors(
         useSensor(PointerSensor,{ activationConstraint: { distance: 8} })
@@ -151,7 +185,7 @@ const TodoBoard:React.FC<TodoBoardProps> = ({
     return (
         <Box sx={{
             paddingTop: "10px",
-            backgroundColor: todoBoardData.boardBgColor || "#FFDAC1",
+            backgroundColor: todoBoardDataState.boardBgColor || "#FFDAC1",
             maxWidth: "90vw",
             margin: "auto",
             marginBottom: "30px",
@@ -159,7 +193,25 @@ const TodoBoard:React.FC<TodoBoardProps> = ({
             borderRadius: "25px",
             border: "1px solid black",
             boxShadow: "5px 5px 5px 5px rgba(0, 0, 0, 0.1)"}}>
-        <BoardTitle title={todoBoardData.title} color={todoBoardData.titleBgColor || "#C9C9FF"} bigTitle={true}/>
+            <Box sx={{
+                    display: "flex",
+                    flexDirection: "row",
+                    marginTop: "10px",
+                    marginLeft: "20px",
+                    marginRight: "20px",
+                    marginBottom: "10px",
+                    gap: "10px",
+                    }}>
+                <BoardTitle title={todoBoardDataState.title} color={todoBoardDataState.titleBgColor || "#C9C9FF"} bigTitle={true}/>
+                <Button sx={{
+                    margin: "10px",
+                    background: "lightblue",
+                    borderRadius: "10px",
+                    color: "black",
+                    border: "1px solid black",
+                    }} onClick={addCategory}>Add Category</Button>
+            </Box>
+
             <DndContext sensors={sensors} collisionDetection={rectIntersection} onDragStart={handleDragStart} onDragEnd={handleDragEnd} onDragCancel={() => setActiveItem(null)}>
                 <SortableContext items={categoryOrder} strategy={rectSortingStrategy}>
                     <Box sx={{
