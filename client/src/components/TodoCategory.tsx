@@ -5,11 +5,12 @@ import BoardTitle from "./boardTitle";
 
 
 interface TodoBoardProps {
-    boardName?: string,
+    boardCategoryName?: string,
     color?: string,
+    todoList?: string[]
 }
 
-const TodoBoard:React.FC<TodoBoardProps> = ({boardName: boardName, color}) => {
+const TodoBoard:React.FC<TodoBoardProps> = ({boardCategoryName, color, todoList}) => {
     const bgColor = color || "#D3D3D3"
 
     return (
@@ -20,8 +21,8 @@ const TodoBoard:React.FC<TodoBoardProps> = ({boardName: boardName, color}) => {
             margin: "10px",
             borderRadius: "13px",
             border: "1px solid black",}}>
-            <BoardTitle title={boardName} color={bgColor}/>
-            <TodoContent/>
+            <BoardTitle title={boardCategoryName} color={bgColor}/>
+            <TodoContent color={bgColor} todoList={todoList}/>
         </Box>
         </>
     )

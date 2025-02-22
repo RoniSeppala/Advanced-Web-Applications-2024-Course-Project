@@ -1,18 +1,34 @@
-import { Box } from "@mui/material";
+import { Box, List, ListItem, ListItemText } from "@mui/material";
+import { darken } from "@mui/material/styles";
 import React from "react";
 
+interface TodoContentProps {
+    color?: string
+    todoList?: string[]
+}
 
+const TodoContent:React.FC<TodoContentProps> = ({color = "#D3D3D3", todoList = ["got no valid input"]}) => {
 
-const TodoContent:React.FC = () => {
     return (
         <Box sx={{
-            backgroundColor: "lightgray",
+            backgroundColor: {color},
             margin: "10px"}}>
-            <ul>
-                <li>Todo 1</li>
-                <li>Todo 2</li>
-                <li>Todo 3</li>
-            </ul>
+            <List>
+                {todoList.map((todo, index) => (
+                    <ListItem key={index} sx={{
+                        border: "1px solid black",
+                        borderRadius: "5px",
+                        margin: "10px auto",
+                        padding: "5px",
+                        paddingLeft: "10px",
+                        paddingRight: "10px",
+                        color: "black",
+                        backgroundColor: darken(color, 0.05),
+                    }}>
+                        <ListItemText primary={todo}/>
+                    </ListItem>
+                ))}
+            </List>
         </Box>
     )
 }
