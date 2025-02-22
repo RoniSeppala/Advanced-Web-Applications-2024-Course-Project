@@ -60,7 +60,7 @@ const TodoContent: React.FC<TodoContentProps> = ({ category }) => {
                         placeholderElement
                     ) : (
                         validTodos.map((todo) => (
-                            <TodoItem key={todo.id} todo={todo} color={category.color} categoryId={category.id} />
+                            <TodoItem key={todo.id} todo={todo} color={category.color} categoryId={category.id} category={category}/>
                         ))
                     )}
                 </SortableContext>

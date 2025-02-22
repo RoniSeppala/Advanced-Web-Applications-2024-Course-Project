@@ -13,10 +13,17 @@ interface TodoCategoryProps {
             id: string,
             todo: string
         }[]
-    }
+    },
+    boardTodoCounter: number,
+    setBoardTodoCounter: React.Dispatch<React.SetStateAction<number>>
 }
 
-const TodoCategory:React.FC<TodoCategoryProps> = ({ category }) => {
+interface Todo {
+    id: string,
+    todo: string
+}
+
+const TodoCategory:React.FC<TodoCategoryProps> = ({ category, boardTodoCounter , setBoardTodoCounter}) => {
     const bgColor = category.color || "#D3D3D3"
 
     const { attributes, listeners, setNodeRef, transform, isDragging } = useSortable({
@@ -35,7 +42,15 @@ const TodoCategory:React.FC<TodoCategoryProps> = ({ category }) => {
 
     const addTodo = () => {
         console.log("Add todo clicked")
-        console.log(category)
+        setBoardTodoCounter(boardTodoCounter + 1) //increment the counter to get a new todo id
+
+        const newTodo: Todo = {
+            id: `item-${boardTodoCounter}`,
+            todo: 'new Todo text ' + boardTodoCounter
+        }
+
+        category.todos.push(newTodo)
+
     }
 
     return (

@@ -21,7 +21,8 @@ const testdata1 = {
             id: "category-1",
             todos: [
                 { id: "item-2", todo: "Schedule meeting" },
-                { id: "item-3", todo: "Review code" }
+                { id: "item-3", todo: "Review code" },
+                { id: "item-4", todo: "Review code" }
             ]
         }
     ]

@@ -69,10 +69,18 @@ const TodoBoard:React.FC<TodoBoardProps> = ({
     const [categoryOrder, setCategoryOrder] = React.useState<string[]>(initialCategoryOrder)
     const [categories, setCategories] = React.useState<Category[]>(todoBoardDataState.categories)
     const [activeItem, setActiveItem] = React.useState<{ id?: string, content?: string, color?: string, type: string } | null>(null)
+    const [boardTodoCounter, setBoardTodoCounter] = React.useState<number>(0)
+
+    //count initial todos
+    React.useEffect(() => {
+        const count = categories.reduce((acc, category) => acc + category.todos.length, 0)
+        if (count > boardTodoCounter) {
+            setBoardTodoCounter(count + 1)
+        }
+    }, [])
 
     const addCategory = () => {
         console.log("Add category clicked")
-        console.log(todoBoardDataState)
         const newCategory: Category = {
             id: `category-${categories.length}`,
             title: "New Category",
@@ -222,7 +230,7 @@ const TodoBoard:React.FC<TodoBoardProps> = ({
                         }}>
                         {categoryOrder.map((categoryId: string) => {
                             const category = categories.find(cat => cat.id === categoryId);
-                            return category ? <TodoCategory key={categoryId} category={category}/> : null;
+                            return category ? <TodoCategory key={categoryId} category={category} boardTodoCounter={boardTodoCounter} setBoardTodoCounter={setBoardTodoCounter}/> : null;
                         })}
                     </Box>
                 </SortableContext>
