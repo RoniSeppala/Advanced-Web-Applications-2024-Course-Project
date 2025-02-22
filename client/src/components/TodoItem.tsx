@@ -20,7 +20,6 @@ const TodoItem:React.FC<TodoItemProps> = ({todo, color, categoryId}) => {
     const style = {
         transform: transform ? `translate3d(${transform.x}px, ${transform.y}px, 0)` : undefined,
         transition,
-        border: '1px solid #ccc',
         padding: '8px',
         minWidth: '200px',
         backgroundColor: isDragging ? darken(color, 0.2) : color,
@@ -30,7 +29,6 @@ const TodoItem:React.FC<TodoItemProps> = ({todo, color, categoryId}) => {
     return (
         <div ref={setNodeRef} style={style} {...attributes} {...listeners}>
             <ListItem key={todo.id} sx={{
-                border: "1px solid black",
                 borderRadius: "5px",
                 margin: "10px auto",
                 padding: "5px",

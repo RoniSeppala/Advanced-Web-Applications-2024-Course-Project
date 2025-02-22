@@ -2,8 +2,7 @@ import React from "react"
 import {Box, Button, Checkbox, FormControlLabel, TextField} from "@mui/material"
 import OauthButtons from "./OauthButtons"
 
-
-const Login:React.FC = () => {
+const Register:React.FC = () => {
     const [email, setEmail] = React.useState<string>("")
     const [password, setPassword] = React.useState<string>("")
     const [repeatPassword, setRepeatPassword] = React.useState<string>("")
@@ -144,4 +143,4 @@ const Login:React.FC = () => {
     )
 }
 
-export default Login
+export default Register
