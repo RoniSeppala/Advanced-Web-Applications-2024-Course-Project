@@ -1,5 +1,5 @@
 import { SortableContext, verticalListSortingStrategy } from "@dnd-kit/sortable";
-import { Box, List} from "@mui/material";
+import { Box, List } from "@mui/material";
 import React from "react";
 import TodoItem from "./TodoItem";
 
@@ -16,7 +16,6 @@ interface TodoContentProps {
 }
 
 const TodoContent:React.FC<TodoContentProps> = ({category}) => {
-
     return (
         <Box sx={{
             backgroundColor: category.color,
@@ -32,4 +31,4 @@ const TodoContent:React.FC<TodoContentProps> = ({category}) => {
     )
 }
 
-export default TodoContent
+export default TodoContent;

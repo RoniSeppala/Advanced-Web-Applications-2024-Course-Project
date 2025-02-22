@@ -2,7 +2,6 @@ import { Box } from "@mui/material";
 import { darken } from "@mui/material/styles";
 import React from "react";
 
-
 interface BoardTitleProps {
     title?: string,
     color: string,
@@ -10,9 +9,8 @@ interface BoardTitleProps {
 }
 
 const BoardTitle:React.FC<BoardTitleProps> = ({title, color, bigTitle = false}) => {
-    console.log("color", color)
+
     const boardBgColor = darken(color, 0.1)
-    console.log("boardBgColor", boardBgColor)
 
     return (
         <Box sx={{
