@@ -1,33 +1,32 @@
-import { Box, List, ListItem, ListItemText } from "@mui/material";
-import { darken } from "@mui/material/styles";
+import { SortableContext, verticalListSortingStrategy } from "@dnd-kit/sortable";
+import { Box, List} from "@mui/material";
 import React from "react";
+import TodoItem from "./TodoItem";
 
 interface TodoContentProps {
-    color?: string
-    todoList?: {id: number, todo: string}[]
+    category: {
+        id: string,
+        title: string,
+        color: string,
+        todos: {
+            id: string,
+            todo: string
+        }[]
+    }
 }
 
-const TodoContent:React.FC<TodoContentProps> = ({color = "#D3D3D3", todoList = [{id: 1, todo:"got no valid input"}]}) => {
+const TodoContent:React.FC<TodoContentProps> = ({category}) => {
 
     return (
         <Box sx={{
-            backgroundColor: {color},
+            backgroundColor: category.color,
             margin: "10px"}}>
             <List>
-                {todoList.map((todo) => (
-                    <ListItem key={todo.id} sx={{
-                        border: "1px solid black",
-                        borderRadius: "5px",
-                        margin: "10px auto",
-                        padding: "5px",
-                        paddingLeft: "10px",
-                        paddingRight: "10px",
-                        color: "black",
-                        backgroundColor: darken(color, 0.05),
-                    }}>
-                        <ListItemText primary={todo.todo}/>
-                    </ListItem>
-                ))}
+                <SortableContext items={category.todos.map((todo) => todo.id)} strategy={verticalListSortingStrategy}>
+                    {category.todos.map((todo) => (
+                        <TodoItem key={todo.id} todo={todo} color={category.color} categoryId={category.id}/>
+                    ))}
+                </SortableContext>
             </List>
         </Box>
     )
