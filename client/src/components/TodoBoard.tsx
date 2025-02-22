@@ -8,21 +8,29 @@ interface TodoBoardProps {
     todoBoardData?: {
         title: string,
         categories: {
+            id: number,
             title: string,
             color: string,
-            todos: string[]
+            todos: {
+                id: number,
+                todo: string
+            }[]
         }[]
     }
 
 }
 
 const TodoBoard:React.FC<TodoBoardProps> = ({
-    todoBoardData = {
+    todoBoardData = { //placeholder data if no data is passed
         title: "No title input",
         categories: [{
             title: "No category title input",
             color: "#D3D3D3",
-            todos: ["No todo input"]
+            id: 0,
+            todos: [{
+                id: 0,
+                todo: "No todo input"
+            }]
         }]
     }
 }) => {
@@ -41,8 +49,8 @@ const TodoBoard:React.FC<TodoBoardProps> = ({
                 display: "flex",
                 flexDirection: "row"
                 }}>
-                {todoBoardData.categories.map((category, index) => {
-                    return <TodoCategory key={index} boardCategoryName={category.title} color={category.color} todoList={category.todos}/>
+                {todoBoardData.categories.map((category) => {
+                    return <TodoCategory key={category.id} boardCategoryName={category.title} color={category.color} todoList={category.todos}/>
                 })}
             </Box>
         </Box>

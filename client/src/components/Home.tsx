@@ -1,46 +1,52 @@
 import React from "react"
 import TodoBoard from "./TodoBoard"
 const testdata1 = {
-    title: "Work Projects",
+    title: "Work",
     categories: [
         {
-            title: "Development",
-            color: "#FFB3BA", // pastel pink
-            todos: ["Implement authentication", "Fix login bug", "Refactor codebase"]
+            title: "Urgent",
+            color: "#FFB3BA", // pastel red
+            id: 0,
+            todos: [
+                { id: 1, todo: "Finish report" },
+                { id: 2, todo: "Email client" }
+            ]
         },
         {
-            title: "Design",
-            color: "#FFDFBA", // pastel orange
-            todos: ["Create wireframes", "Update UI components", "Review design mockups"]
+            title: "Later",
+            color: "#B3CDE0", // pastel blue 
+            id: 1,
+            todos: [
+                { id: 3, todo: "Schedule meeting" },
+                { id: 4, todo: "Review code" }
+            ]
         }
     ]
-}
+};
 
 const testdata2 = {
-    title: "Personal Tasks",
+    title: "Personal",
     categories: [
         {
-            title: "Groceries",
-            color: "#BAE1FF", // pastel blue
-            todos: ["Buy milk", "Get bread", "Purchase vegetables"]
-        },
-        {
-            title: "Fitness",
-            color: "#FFDFD3", // pastel peach
-            todos: ["Morning run", "Yoga session", "Gym workout"]
-        },
-        {
-            title: "Reading",
-            color: "#FFFFBA", // pastel yellow
-            todos: ["Read 'Atomic Habits'", "Finish 'Clean Code'", "Start 'The Pragmatic Programmer'"]
+            title: "Shopping",
+            color: "#B2E2B2", // pastel green
+            id: 0,
+            todos: [
+                { id: 5, todo: "Buy groceries" },
+                { id: 6, todo: "Order new shoes" }
+            ]
         },
         {
             title: "Chores",
-            color: "#BAFFC9", // pastel green
-            todos: ["Clean the kitchen", "Do the laundry", "Organize the garage"]
+            color: "#FFFFBA", // pastel yellow
+            id: 1,
+            todos: [
+                { id: 7, todo: "Clean kitchen" },
+                { id: 8, todo: "Mow lawn" }
+            ]
         }
     ]
-}
+};
 
 
 const Home:React.FC = () => {

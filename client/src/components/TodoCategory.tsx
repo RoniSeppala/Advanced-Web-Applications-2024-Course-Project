@@ -7,7 +7,7 @@ import BoardTitle from "./boardTitle";
 interface TodoBoardProps {
     boardCategoryName?: string,
     color?: string,
-    todoList?: string[]
+    todoList?: {id: number, todo: string}[]
 }
 
 const TodoBoard:React.FC<TodoBoardProps> = ({boardCategoryName, color, todoList}) => {
