@@ -13,6 +13,8 @@ const Home:React.FC = () => {
                     backgroundColor: "#f0f0f0",
                     maxWidth: "90vw",
                     margin: "auto",
+                    borderRadius: "25px",
+                    border: "1px solid black",
                 }}>
                 <TodoBoard/>
             </Box>
