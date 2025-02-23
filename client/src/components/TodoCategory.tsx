@@ -19,7 +19,8 @@ interface TodoCategoryProps {
     setBoardTodoCounter: React.Dispatch<React.SetStateAction<number>>,
     handleTodoDelete: (categoryId: string, todoId: string) => void,
     handleCategoryDelete: (categoryId: string) => void,
-    onTodoSave: (content: string, id: string) => void
+    onTodoSave: (content: string, id: string) => void,
+    onCategoryTitleSave: (content: string, id: string) => void
 }
 
 interface Todo {
@@ -27,7 +28,7 @@ interface Todo {
     todo: string
 }
 
-const TodoCategory:React.FC<TodoCategoryProps> = ({ category, boardTodoCounter , setBoardTodoCounter, handleTodoDelete, handleCategoryDelete, onTodoSave}) => {
+const TodoCategory:React.FC<TodoCategoryProps> = ({ category, boardTodoCounter , setBoardTodoCounter, handleTodoDelete, handleCategoryDelete, onTodoSave, onCategoryTitleSave}) => {
     const bgColor = category.color || "#D3D3D3"
 
     const { attributes, listeners, setNodeRef, transform, isDragging } = useSortable({
@@ -75,7 +76,7 @@ const TodoCategory:React.FC<TodoCategoryProps> = ({ category, boardTodoCounter ,
                     marginRight: "20px",
                     gap: "10px",
                     }}>
-                    <BoardTitle title={category.title} color={bgColor}/>
+                    <BoardTitle title={category.title} color={bgColor} onCategoryTitleSave={onCategoryTitleSave} onBoardTitleSave={() => {console.log("This is category title, and board title should not be editable here")}}/>
                     <Button sx={{
                         margin: "10px",
                         background: "lightblue",

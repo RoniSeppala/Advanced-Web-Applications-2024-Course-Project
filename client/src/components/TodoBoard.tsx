@@ -64,8 +64,8 @@ const TodoBoard:React.FC<TodoBoardProps> = ({
         }]
     }
 }) => {
-    const initialCategoryOrder = todoBoardData.categories.map((category) => category.id)
     const [todoBoardDataState, setTodoBoardDataState] = React.useState<TodoBoardDataInterface>(todoBoardData)
+    const initialCategoryOrder = todoBoardDataState.categories.map((category) => category.id)
     const [categoryOrder, setCategoryOrder] = React.useState<string[]>(initialCategoryOrder)
     const [categories, setCategories] = React.useState<Category[]>(todoBoardDataState.categories)
     const [activeItem, setActiveItem] = React.useState<{ id?: string, content?: string, color?: string, type: string } | null>(null)
@@ -221,12 +221,22 @@ const TodoBoard:React.FC<TodoBoardProps> = ({
 
     }
 
+    const onCategoryTitleSave = (newContent: string, id: string) => {
+        setCategories((prevCategories) =>
+            prevCategories.map((cat) => (cat.id === id ? { ...cat, title: newContent } : cat))
+        );
+    }
+
+    const onBoardTitleSave = (newContent: string, id: string) => {
+        console.log("log redundat id: ", id)
+        setTodoBoardDataState((prevData) => ({ ...prevData, title: newContent }));
+    }
+
     const debugOnKeyPress = (e: React.KeyboardEvent) => { //TODO: remove this debug function
         console.log(e.key)
 
         if (e.key === "d") {
-            console.log("categories: ", categories)
-            console.log("categoryOrder: ", categoryOrder)
+            console.log(todoBoardDataState)
         }
     }
 
@@ -251,7 +261,7 @@ const TodoBoard:React.FC<TodoBoardProps> = ({
                     marginBottom: "10px",
                     gap: "10px",
                     }}>
-                <BoardTitle title={todoBoardDataState.title} color={todoBoardDataState.titleBgColor || "#C9C9FF"} bigTitle={true}/>
+                <BoardTitle title={todoBoardDataState.title} color={todoBoardDataState.titleBgColor || "#C9C9FF"} bigTitle={true} onBoardTitleSave={onBoardTitleSave} onCategoryTitleSave={() => {"This is borad title and category title should not be editable here"}}/>
                 <Button sx={{
                     margin: "10px",
                     background: "lightblue",
@@ -284,7 +294,8 @@ const TodoBoard:React.FC<TodoBoardProps> = ({
                                 setBoardTodoCounter={setBoardTodoCounter}
                                 handleTodoDelete={handleTodoDelete}
                                 handleCategoryDelete={handleCategoryDelete}
-                                onTodoSave={onTodoSave}/>;
+                                onTodoSave={onTodoSave}
+                                onCategoryTitleSave={onCategoryTitleSave}/>;
                         })}
                     </Box>
                 </SortableContext>
