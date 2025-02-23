@@ -7,7 +7,7 @@ interface BoardTitleProps {
     title: string,
     color: string,
     bigTitle?: boolean,
-    categoryId?: string,
+    categoryId: string,
     onBoardTitleSave: (newContent: string, id:string) => void,
     onCategoryTitleSave: (newContent: string, id:string) => void,
 }

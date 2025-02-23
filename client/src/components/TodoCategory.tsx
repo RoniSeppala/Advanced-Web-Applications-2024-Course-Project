@@ -76,7 +76,7 @@ const TodoCategory:React.FC<TodoCategoryProps> = ({ category, boardTodoCounter ,
                     marginRight: "20px",
                     gap: "10px",
                     }}>
-                    <BoardTitle title={category.title} color={bgColor} onCategoryTitleSave={onCategoryTitleSave} onBoardTitleSave={() => {console.log("This is category title, and board title should not be editable here")}}/>
+                    <BoardTitle title={category.title} categoryId={category.id} color={bgColor} onCategoryTitleSave={onCategoryTitleSave} onBoardTitleSave={() => {console.log("This is category title, and board title should not be editable here")}}/>
                     <Button sx={{
                         margin: "10px",
                         background: "lightblue",

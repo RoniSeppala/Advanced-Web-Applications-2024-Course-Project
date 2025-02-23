@@ -67,14 +67,13 @@ const TodoBoard:React.FC<TodoBoardProps> = ({
     const [todoBoardDataState, setTodoBoardDataState] = React.useState<TodoBoardDataInterface>(todoBoardData)
     const initialCategoryOrder = todoBoardDataState.categories.map((category) => category.id)
     const [categoryOrder, setCategoryOrder] = React.useState<string[]>(initialCategoryOrder)
-    const [categories, setCategories] = React.useState<Category[]>(todoBoardDataState.categories)
     const [activeItem, setActiveItem] = React.useState<{ id?: string, content?: string, color?: string, type: string } | null>(null)
     const [boardTodoCounter, setBoardTodoCounter] = React.useState<number>(0)
     const [boardCategoryCounter, setBoardCategoryCounter] = React.useState<number>(0)
 
     //count initial todos
     React.useEffect(() => {
-        const count = categories.reduce((acc, category) => acc + category.todos.length, 0)
+        const count = todoBoardDataState.categories.reduce((acc, category) => acc + category.todos.length, 0)
         if (count > boardTodoCounter) {
             setBoardTodoCounter(count + 1)
         }
@@ -82,7 +81,7 @@ const TodoBoard:React.FC<TodoBoardProps> = ({
 
     //count initial categories
     React.useEffect(() => {
-        const count = categories.length
+        const count = todoBoardDataState.categories.length
         if (count > boardCategoryCounter) {
             setBoardCategoryCounter(count + 1)
         }
@@ -102,7 +101,10 @@ const TodoBoard:React.FC<TodoBoardProps> = ({
             const newCategories = [...prevData.categories, newCategory]
             return { ...prevData, categories: newCategories }
         })
-        setCategories((prevCategories) => [...prevCategories, newCategory])
+        setTodoBoardDataState((prevData) => ({
+            ...prevData,
+            categories: [...prevData.categories, newCategory]
+        }))
         setCategoryOrder((prevOrder) => [...prevOrder, newCategory.id])
     }
 
@@ -113,7 +115,7 @@ const TodoBoard:React.FC<TodoBoardProps> = ({
     const handleDragStart = (event: any) => {
         const { active } = event;
         const { type, categoryId } = active.data.current;
-        const activeItemCategory = categories.find((category) => category.id === categoryId);
+        const activeItemCategory = todoBoardDataState.categories.find((category) => category.id === categoryId);
         if (!activeItemCategory) return;
 
         if (type === "todo") {
@@ -124,7 +126,6 @@ const TodoBoard:React.FC<TodoBoardProps> = ({
         } else {
             setActiveItem({type: type });
         }
-        
     }
 
     const handleDragEnd = (event: any) => {
@@ -140,9 +141,10 @@ const TodoBoard:React.FC<TodoBoardProps> = ({
                 const oldIndex = categoryOrder.indexOf(active.id);
                 const newIndex = categoryOrder.indexOf(over.id);
                 setCategoryOrder((prevOrder) => arrayMove(prevOrder, oldIndex, newIndex));
-                setCategories((prevCategories) => {
-                    const newCategories = arrayMove(prevCategories, oldIndex, newIndex);
-                    return newCategories;
+
+                setTodoBoardDataState((prevData) => {
+                    const newCategories = arrayMove(prevData.categories, oldIndex, newIndex);
+                    return { ...prevData, categories: newCategories };
                 });
             }
         }
@@ -153,22 +155,24 @@ const TodoBoard:React.FC<TodoBoardProps> = ({
 
             //drop within category
             if (activeCategoryId === overCategoryId) {
-                const category = categories.find((category) => category.id === activeCategoryId);
+                const category = todoBoardDataState.categories.find((category) => category.id === activeCategoryId);
                 if (!category) return;
                 const categoryItems = category.todos;
                 const oldIndex = categoryItems?.findIndex((item) => item.id === active.id);
                 const newIndex = categoryItems?.findIndex((item) => item.id === over.id);
-                setCategories((prevCategories) =>
-                    prevCategories.map((cat) =>
-                        cat.id === activeCategoryId ? { ...cat, todos: arrayMove(categoryItems, oldIndex, newIndex) } : cat
-                    )
-                );
+                
+                setTodoBoardDataState((prevData) => {
+                    const newCategories = prevData.categories.map((cat) => 
+                        cat.id === activeCategoryId ? { ...cat, todos: arrayMove(categoryItems, oldIndex, newIndex) } : cat)
+                    return { ...prevData, categories: newCategories };
+                })
+                
             } else { //drop between categories
-                const sourceCategory = categories.find((category) => category.id === activeCategoryId);
+                const sourceCategory = todoBoardDataState.categories.find((category) => category.id === activeCategoryId);
                 if (!sourceCategory) return;
                 const sourceItems = Array.from(sourceCategory.todos);
 
-                const destinationCategory = categories.find((category) => category.id === overCategoryId);
+                const destinationCategory = todoBoardDataState.categories.find((category) => category.id === overCategoryId);
                 if (!destinationCategory) return;
                 const destItems = Array.from(destinationCategory.todos);
 
@@ -182,8 +186,8 @@ const TodoBoard:React.FC<TodoBoardProps> = ({
                     destItems.splice(destIndex, 0, movedItem);
                 }
 
-                setCategories((prevCategories) =>
-                    prevCategories.map((cat) => {
+                setTodoBoardDataState((prevData) => {
+                    const newCategories = prevData.categories.map((cat) => {
                         if (cat.id === activeCategoryId) {
                             return { ...cat, todos: sourceItems };
                         }
@@ -191,40 +195,49 @@ const TodoBoard:React.FC<TodoBoardProps> = ({
                             return { ...cat, todos: destItems };
                         }
                         return cat;
-                    })
-                );
+                    });
+                    return { ...prevData, categories: newCategories };
+                })
+
             }
         }
         setActiveItem(null);
     }
 
     const handleTodoDelete = (categoryId: string, todoId: string) => {
-        setCategories((prevCategories) =>
-            prevCategories.map((cat) =>
-                cat.id === categoryId ? { ...cat, todos: cat.todos.filter((item) => item.id !== todoId) } : cat
-            )
-        );
+        setTodoBoardDataState((prevData) => {
+            const newCategories = prevData.categories.map((cat) =>
+            cat.id === categoryId ? {...cat, todos: cat.todos.filter((item) => item.id !== todoId) } : cat)
+            return { ...prevData, categories: newCategories}
+        })
     }
 
     const handleCategoryDelete = (categoryId: string) => {
-        setCategories(prev => prev.filter(cat => cat.id !== categoryId));
+        setTodoBoardDataState((prevData) => {
+            const newCategories = prevData.categories.filter((cat) => cat.id !== categoryId);
+            return { ...prevData, categories: newCategories };
+        });
         setCategoryOrder(prev => prev.filter(id => id !== categoryId));
     }
 
     const onTodoSave = (content: string, id: string) => {
-        setCategories((prevCategories) =>
-            prevCategories.map((cat) => ({
-                ...cat,
-                todos: cat.todos.map((item) => (item.id === id ? { ...item, todo: content } : item))
+        setTodoBoardDataState((prevData) => ({
+            ...prevData,
+            categories: prevData.categories.map((cat) => ({
+            ...cat,
+            todos: cat.todos.map((item) => (item.id === id ? { ...item, todo: content } : item))
             }))
-        );
+        }));
 
     }
 
     const onCategoryTitleSave = (newContent: string, id: string) => {
-        setCategories((prevCategories) =>
-            prevCategories.map((cat) => (cat.id === id ? { ...cat, title: newContent } : cat))
-        );
+        console.log("This is category title sav function new content: " + newContent)
+        console.log("this is category title save id: " + id)
+        setTodoBoardDataState((prevData) => ({
+            ...prevData,
+            categories: prevData.categories.map((cat) => (cat.id === id ? { ...cat, title: newContent } : cat))
+        }));
     }
 
     const onBoardTitleSave = (newContent: string, id: string) => {
@@ -261,7 +274,7 @@ const TodoBoard:React.FC<TodoBoardProps> = ({
                     marginBottom: "10px",
                     gap: "10px",
                     }}>
-                <BoardTitle title={todoBoardDataState.title} color={todoBoardDataState.titleBgColor || "#C9C9FF"} bigTitle={true} onBoardTitleSave={onBoardTitleSave} onCategoryTitleSave={() => {"This is borad title and category title should not be editable here"}}/>
+                <BoardTitle title={todoBoardDataState.title} color={todoBoardDataState.titleBgColor || "#C9C9FF"} bigTitle={true} onBoardTitleSave={onBoardTitleSave} onCategoryTitleSave={() => {"This is borad title and category title should not be editable here"}} categoryId="this-is-a-board-title-and-shouldnt-have-category-id"/>
                 <Button sx={{
                     margin: "10px",
                     background: "lightblue",
@@ -282,7 +295,7 @@ const TodoBoard:React.FC<TodoBoardProps> = ({
                         gap: "10px" // Add gap between categories
                         }}>
                         {categoryOrder.map((categoryId: string) => {
-                            const category = categories.find(cat => cat.id === categoryId);
+                            const category = todoBoardDataState.categories.find(cat => cat.id === categoryId);
                             if (!category) {
                                 // Optionally log a warning and skip rendering for this id
                                 console.warn("Category not found for id:", categoryId);
