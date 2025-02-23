@@ -211,6 +211,25 @@ const TodoBoard:React.FC<TodoBoardProps> = ({
         setCategoryOrder(prev => prev.filter(id => id !== categoryId));
     }
 
+    const onTodoSave = (content: string, id: string) => {
+        setCategories((prevCategories) =>
+            prevCategories.map((cat) => ({
+                ...cat,
+                todos: cat.todos.map((item) => (item.id === id ? { ...item, todo: content } : item))
+            }))
+        );
+
+    }
+
+    const debugOnKeyPress = (e: React.KeyboardEvent) => { //TODO: remove this debug function
+        console.log(e.key)
+
+        if (e.key === "d") {
+            console.log("categories: ", categories)
+            console.log("categoryOrder: ", categoryOrder)
+        }
+    }
+
     return (
         <Box sx={{
             paddingTop: "10px",
@@ -221,7 +240,8 @@ const TodoBoard:React.FC<TodoBoardProps> = ({
             padding: "10px",
             borderRadius: "25px",
             border: "1px solid black",
-            boxShadow: "5px 5px 5px 5px rgba(0, 0, 0, 0.1)"}}>
+            boxShadow: "5px 5px 5px 5px rgba(0, 0, 0, 0.1)"}}
+            onKeyDown={debugOnKeyPress}>
             <Box sx={{
                     display: "flex",
                     flexDirection: "row",
@@ -258,7 +278,13 @@ const TodoBoard:React.FC<TodoBoardProps> = ({
                                 console.warn("Category not found for id:", categoryId);
                                 return null;
                             }
-                            return <TodoCategory key={categoryId} category={category} boardTodoCounter={boardTodoCounter} setBoardTodoCounter={setBoardTodoCounter} handleTodoDelete={handleTodoDelete} handleCategoryDelete={handleCategoryDelete}/>;
+                            return <TodoCategory key={categoryId}
+                                category={category}
+                                boardTodoCounter={boardTodoCounter}
+                                setBoardTodoCounter={setBoardTodoCounter}
+                                handleTodoDelete={handleTodoDelete}
+                                handleCategoryDelete={handleCategoryDelete}
+                                onTodoSave={onTodoSave}/>;
                         })}
                     </Box>
                 </SortableContext>

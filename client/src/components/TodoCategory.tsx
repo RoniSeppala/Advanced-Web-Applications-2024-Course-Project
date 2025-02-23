@@ -18,7 +18,8 @@ interface TodoCategoryProps {
     boardTodoCounter: number,
     setBoardTodoCounter: React.Dispatch<React.SetStateAction<number>>,
     handleTodoDelete: (categoryId: string, todoId: string) => void,
-    handleCategoryDelete: (categoryId: string) => void
+    handleCategoryDelete: (categoryId: string) => void,
+    onTodoSave: (content: string, id: string) => void
 }
 
 interface Todo {
@@ -26,7 +27,7 @@ interface Todo {
     todo: string
 }
 
-const TodoCategory:React.FC<TodoCategoryProps> = ({ category, boardTodoCounter , setBoardTodoCounter, handleTodoDelete, handleCategoryDelete}) => {
+const TodoCategory:React.FC<TodoCategoryProps> = ({ category, boardTodoCounter , setBoardTodoCounter, handleTodoDelete, handleCategoryDelete, onTodoSave}) => {
     const bgColor = category.color || "#D3D3D3"
 
     const { attributes, listeners, setNodeRef, transform, isDragging } = useSortable({
@@ -94,7 +95,7 @@ const TodoCategory:React.FC<TodoCategoryProps> = ({ category, boardTodoCounter ,
                     <DeleteIcon />
                     </IconButton>
                 </Box>
-                <TodoContent category={category} handleTodoDelete={handleTodoDelete}/>
+                <TodoContent category={category} handleTodoDelete={handleTodoDelete} onTodoSave={(content:string, id:string) => {onTodoSave(content, id)}}/>
             </Box>
         </div>
     )

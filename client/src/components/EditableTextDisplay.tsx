@@ -2,8 +2,8 @@ import React from "react";
 
 interface EditableTextDisplayProps {
     initialContent: string;
-    id: number;
-    onSave: (newContent: string, id:number) => void;
+    id: string;
+    onSave: (newContent: string, id:string) => void;
 }
 
 const EdiatableTextDisplay:React.FC<EditableTextDisplayProps> = ({initialContent, id, onSave}) => {
