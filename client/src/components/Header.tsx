@@ -2,7 +2,6 @@ import React, { useEffect } from "react"
 import {AppBar, Toolbar, Typography, List, ListItemButton, useMediaQuery, Button, IconButton, SwipeableDrawer} from "@mui/material"
 import MenuIcon from "@mui/icons-material/Menu"
 
-
 const Header:React.FC = () => {
     const isMobile = useMediaQuery('(max-width:600px)')
     const [drawerOpen, setDrawerOpen] = React.useState<boolean>(false)

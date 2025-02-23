@@ -1,4 +1,4 @@
-import { Box, Button, IconButton, Popover, Typography } from "@mui/material";
+import { Box, Button, IconButton, Popover } from "@mui/material";
 import React from "react";
 import TodoContent from "./TodoContent";
 import BoardTitle from "./BoardTitle";
@@ -31,6 +31,7 @@ interface Todo {
 
 const TodoCategory:React.FC<TodoCategoryProps> = ({ category, boardTodoCounter , setBoardTodoCounter, handleTodoDelete, handleCategoryDelete, onTodoSave, onCategoryTitleSave}) => {
     const bgColor = category.color || "#D3D3D3"
+    const [chromePickerColor, setChromePickerColor] = React.useState<string>("#D3D3D3")
 
     //popover setup
     const [anchorEl, setAnchorEl] = React.useState<HTMLButtonElement | null>(null);
@@ -140,8 +141,8 @@ const TodoCategory:React.FC<TodoCategoryProps> = ({ category, boardTodoCounter ,
                                 vertical: 'top',
                                 horizontal: 'left',
                             }}>
-                            <div onMouseDown={(e) => {e.stopPropagation()}} onClick={(e) => {e.stopPropagation()}} onMouseUp={(e) => {e.stopPropagation()}}>
-                                <ChromePicker/>
+                            <div>
+                                <ChromePicker color={chromePickerColor} onChange={(newColor) => setChromePickerColor(newColor.hex)}/>
                             </div>
                         </Popover>
                     </Box>
