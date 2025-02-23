@@ -14,10 +14,11 @@ interface TodoContentProps {
         }[]
     },
     handleTodoDelete: (categoryId: string, todoId: string) => void,
-    onTodoSave: (content: string, id: string) => void
+    onTodoSave: (content: string, id: string) => void,
+    colorContainerRef: React.RefObject<HTMLDivElement | null>
 }
 
-const TodoContent: React.FC<TodoContentProps> = ({ category, handleTodoDelete, onTodoSave }) => {
+const TodoContent: React.FC<TodoContentProps> = ({ category, handleTodoDelete, onTodoSave, colorContainerRef }) => {
     const isEmpty = category.todos.length === 0;
 
     // Ensure todos is an array with valid items only.
@@ -62,7 +63,7 @@ const TodoContent: React.FC<TodoContentProps> = ({ category, handleTodoDelete, o
                         placeholderElement
                     ) : (
                         validTodos.map((todo) => (
-                            <TodoItem key={todo.id} todo={todo} color={category.color} categoryId={category.id} handleTodoDelete={handleTodoDelete} onTodoSave={(content:string, id:string) => {onTodoSave(content, id)}}/>
+                            <TodoItem key={todo.id} todo={todo} color={category.color} categoryId={category.id} handleTodoDelete={handleTodoDelete} onTodoSave={(content:string, id:string) => {onTodoSave(content, id)}} colorContainerRef={colorContainerRef}/>
                         ))
                     )}
                 </SortableContext>

@@ -21,7 +21,8 @@ interface TodoCategoryProps {
     handleTodoDelete: (categoryId: string, todoId: string) => void,
     handleCategoryDelete: (categoryId: string) => void,
     onTodoSave: (content: string, id: string) => void,
-    onCategoryTitleSave: (content: string, id: string) => void
+    onCategoryTitleSave: (content: string, id: string) => void,
+    colorContainerRef: React.RefObject<HTMLDivElement | null>
 }
 
 interface Todo {
@@ -29,7 +30,7 @@ interface Todo {
     todo: string
 }
 
-const TodoCategory:React.FC<TodoCategoryProps> = ({ category, boardTodoCounter , setBoardTodoCounter, handleTodoDelete, handleCategoryDelete, onTodoSave, onCategoryTitleSave}) => {
+const TodoCategory:React.FC<TodoCategoryProps> = ({ category, boardTodoCounter , setBoardTodoCounter, handleTodoDelete, handleCategoryDelete, onTodoSave, onCategoryTitleSave, colorContainerRef}) => {
     const bgColor = category.color || "#D3D3D3"
     const [chromePickerColor, setChromePickerColor] = React.useState<string>("#D3D3D3")
 
@@ -70,6 +71,12 @@ const TodoCategory:React.FC<TodoCategoryProps> = ({ category, boardTodoCounter ,
 
         category.todos.push(newTodo)
 
+    }
+
+    const handleColorChange = (newColor: string) => {
+        setChromePickerColor(newColor)
+        console.log("Color changed to: " + newColor)
+        category.color = newColor
     }
 
     return (
@@ -141,13 +148,20 @@ const TodoCategory:React.FC<TodoCategoryProps> = ({ category, boardTodoCounter ,
                                 vertical: 'top',
                                 horizontal: 'left',
                             }}>
-                            <div>
-                                <ChromePicker color={chromePickerColor} onChange={(newColor) => setChromePickerColor(newColor.hex)}/>
+                            <div ref={colorContainerRef}
+                                onMouseDown={(e) => e.stopPropagation()}
+                                onDrag={(e) => e.stopPropagation()}
+                                onTouchStart={(e) => e.stopPropagation()}
+                                style={{ 
+                                    pointerEvents: 'auto', 
+                                    zIndex: 1000 
+                                    }}>
+                                <ChromePicker disableAlpha color={chromePickerColor} onChange={(newColor) => {handleColorChange(newColor.hex)}}/>
                             </div>
                         </Popover>
                     </Box>
                 </Box>
-                <TodoContent category={category} handleTodoDelete={handleTodoDelete} onTodoSave={(content:string, id:string) => {onTodoSave(content, id)}}/>
+                <TodoContent category={category} handleTodoDelete={handleTodoDelete} onTodoSave={(content:string, id:string) => {onTodoSave(content, id)}} colorContainerRef={colorContainerRef}/>
             </Box>
         </div>
     )

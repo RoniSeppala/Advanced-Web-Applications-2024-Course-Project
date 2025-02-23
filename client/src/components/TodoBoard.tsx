@@ -70,6 +70,7 @@ const TodoBoard:React.FC<TodoBoardProps> = ({
     const [activeItem, setActiveItem] = React.useState<{ id?: string, content?: string, color?: string, type: string } | null>(null)
     const [boardTodoCounter, setBoardTodoCounter] = React.useState<number>(0)
     const [boardCategoryCounter, setBoardCategoryCounter] = React.useState<number>(0)
+    const colorContainerRef = React.useRef<HTMLDivElement>(null)
 
     //count initial todos
     React.useEffect(() => {
@@ -113,9 +114,20 @@ const TodoBoard:React.FC<TodoBoardProps> = ({
     )
 
     const handleDragStart = (event: any) => {
+
+        if (
+            colorContainerRef.current &&
+            event.activatorEvent.target instanceof Node &&
+            colorContainerRef.current.contains(event.activatorEvent.target)
+        ) {
+            console.log("drag originated from color container, canceling")
+            return;
+        }
+        
         const { active } = event;
         const { type, categoryId } = active.data.current;
         const activeItemCategory = todoBoardDataState.categories.find((category) => category.id === categoryId);
+
         if (!activeItemCategory) return;
 
         if (type === "todo") {
@@ -308,7 +320,8 @@ const TodoBoard:React.FC<TodoBoardProps> = ({
                                 handleTodoDelete={handleTodoDelete}
                                 handleCategoryDelete={handleCategoryDelete}
                                 onTodoSave={onTodoSave}
-                                onCategoryTitleSave={onCategoryTitleSave}/>;
+                                onCategoryTitleSave={onCategoryTitleSave}
+                                colorContainerRef={colorContainerRef}/>;
                         })}
                     </Box>
                 </SortableContext>
