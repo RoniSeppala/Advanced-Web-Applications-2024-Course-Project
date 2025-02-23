@@ -1,9 +1,10 @@
-import { Box, Button, IconButton } from "@mui/material";
+import { Box, Button, IconButton, Popover, Typography } from "@mui/material";
 import React from "react";
 import TodoContent from "./TodoContent";
 import BoardTitle from "./BoardTitle";
 import { useSortable } from "@dnd-kit/sortable";
 import DeleteIcon from '@mui/icons-material/Delete';
+import { ChromePicker } from 'react-color';
 
 interface TodoCategoryProps {
     category: {
@@ -30,6 +31,18 @@ interface Todo {
 
 const TodoCategory:React.FC<TodoCategoryProps> = ({ category, boardTodoCounter , setBoardTodoCounter, handleTodoDelete, handleCategoryDelete, onTodoSave, onCategoryTitleSave}) => {
     const bgColor = category.color || "#D3D3D3"
+
+    //popover setup
+    const [anchorEl, setAnchorEl] = React.useState<HTMLButtonElement | null>(null);
+    const handlePopoverClick = (event: React.MouseEvent<HTMLButtonElement>) => {
+        console.log("Change color clicked")
+        setAnchorEl(event.currentTarget);
+    };
+    const handlePopoverClose = () => {
+        setAnchorEl(null);
+    };
+    const open = Boolean(anchorEl);
+    const id = open ? 'simple-popover' : undefined;
 
     const { attributes, listeners, setNodeRef, transform, isDragging } = useSortable({
         id: category.id,
@@ -70,31 +83,68 @@ const TodoCategory:React.FC<TodoCategoryProps> = ({ category, boardTodoCounter ,
                 }}>
                 <Box sx={{
                     display: "flex",
-                    flexDirection: "row",
+                    flexDirection: "column",
                     marginTop: "10px",
                     marginLeft: "20px",
                     marginRight: "20px",
                     gap: "10px",
                     }}>
                     <BoardTitle title={category.title} categoryId={category.id} color={bgColor} onCategoryTitleSave={onCategoryTitleSave} onBoardTitleSave={() => {console.log("This is category title, and board title should not be editable here")}}/>
-                    <Button sx={{
-                        margin: "10px",
-                        background: "lightblue",
-                        borderRadius: "10px",
-                        color: "black",
-                        border: "1px solid black",
-                        }} onClick={addTodo}>Add Todo</Button>
-                    <IconButton aria-label="delete" size="small" onClick={() => {handleCategoryDelete(category.id)}} sx={{
-                        marginTop: "10px",
-                        marginBottom: "10px",
-                        padding: "20px",
-                        background: "lightblue",
-                        borderRadius: "10px",
-                        color: "black",
-                        border: "1px solid black",
-                        }}>
-                    <DeleteIcon />
-                    </IconButton>
+                    <Box sx={{
+                        display: "flex",
+                        flexDirection: "row",
+                        width: "100%", // Ensure the container takes the full width
+                        justifyContent: "space-between", // Distribute space between categories
+                        gap: "10px" // Add gap between categories
+                    }}>
+                        <Button sx={{
+                            margin: "10px",
+                            background: "lightblue",
+                            borderRadius: "10px",
+                            color: "black",
+                            border: "1px solid black",
+                            width: "calc(30% - 5px)"
+                            }} onClick={addTodo}>Add Todo</Button>
+                        <IconButton aria-label="delete" size="small" onClick={() => {handleCategoryDelete(category.id)}} sx={{
+                            marginTop: "10px",
+                            marginBottom: "10px",
+                            padding: "20px",
+                            background: "lightblue",
+                            borderRadius: "10px",
+                            color: "black",
+                            border: "1px solid black",
+                            width: "calc(33% - 5px)"
+                            }}>
+                        <DeleteIcon />
+                        </IconButton>
+                        <Button
+                            aria-describedby={id}
+                            sx={{
+                                margin: "10px",
+                                background: "lightblue",
+                                borderRadius: "10px",
+                                color: "black",
+                                border: "1px solid black",
+                                width: "calc(30% - 5px)"
+                            }}
+                            onClick={handlePopoverClick}
+                            >
+                            Change Color
+                        </Button>
+                        <Popover
+                            id={id}
+                            open={open}
+                            anchorEl={anchorEl}
+                            onClose={handlePopoverClose}
+                            anchorOrigin={{
+                                vertical: 'top',
+                                horizontal: 'left',
+                            }}>
+                            <div onMouseDown={(e) => {e.stopPropagation()}} onClick={(e) => {e.stopPropagation()}} onMouseUp={(e) => {e.stopPropagation()}}>
+                                <ChromePicker/>
+                            </div>
+                        </Popover>
+                    </Box>
                 </Box>
                 <TodoContent category={category} handleTodoDelete={handleTodoDelete} onTodoSave={(content:string, id:string) => {onTodoSave(content, id)}}/>
             </Box>
