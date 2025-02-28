@@ -7,24 +7,33 @@ import { Palette } from "@mui/icons-material";
 import { ChromePicker } from "react-color";
 
 interface TodoItemProps {
-    color: string,
-    categoryId: string,
+    category: {
+        id: string,
+        title: string,
+        color: string,
+        todos: {
+            id: string,
+            todo: string,
+            color?: string
+        }[]
+    },
     todo: {
         id: string,
-        todo: string
+        todo: string,
+        color?: string
     },
     handleTodoDelete: (categoryId: string, todoId: string) => void,
     onTodoSave: (content: string, id: string) => void,
     colorContainerRef: React.RefObject<HTMLDivElement | null>
 }
 
-const TodoItem:React.FC<TodoItemProps> = ({todo, color, categoryId, handleTodoDelete, onTodoSave, colorContainerRef}) => {
+const TodoItem:React.FC<TodoItemProps> = ({category, todo, handleTodoDelete, onTodoSave, colorContainerRef}) => {
     const { attributes, listeners, setNodeRef, transform, isDragging } = useSortable({
         id: todo.id,
-        data: { type: 'todo', categoryId }
+        data: { type: 'todo', categoryId: category.id }
     });
 
-    const [chromePickerColor, setChromePickerColor] = React.useState<string>(color)
+    const [chromePickerColor, setChromePickerColor] = React.useState<string>(todo.color || category.color)
 
     //popover setup
     const [anchorEl, setAnchorEl] = React.useState<HTMLButtonElement | null>(null);
@@ -48,7 +57,6 @@ const TodoItem:React.FC<TodoItemProps> = ({todo, color, categoryId, handleTodoDe
         transition: "transform 0.4s ease",
         padding: '8px',
         minWidth: '200px',
-        backgroundColor: isDragging ? darken(color, 0.2) : color,
         opacity: isDragging ? 0.5 : 1,
     };
 
@@ -62,10 +70,10 @@ const TodoItem:React.FC<TodoItemProps> = ({todo, color, categoryId, handleTodoDe
                 paddingRight: "10px",
                 color: "black",
                 border: "1px solid black",
-                backgroundColor: darken(color, 0.05),
+                backgroundColor: darken(chromePickerColor, 0.05),
             }}>
                 <ListItemText primary={<EdiatableTextDisplay initialContent={todo.todo} id={todo.id} onSave={(content:string, id:string) => {onTodoSave(content, id)}}/>}/>  {/*TODO: add proper onSave function */}
-                <IconButton aria-label="delete" size="small" onClick={() => handleTodoDelete(categoryId, todo.id)}>
+                <IconButton aria-label="delete" size="small" onClick={() => handleTodoDelete(category.id, todo.id)}>
                     <DeleteIcon />
                 </IconButton>
                 <IconButton aria-label="drag" size="small" onClick={handlePopoverClick}>

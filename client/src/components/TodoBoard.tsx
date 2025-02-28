@@ -16,7 +16,8 @@ interface TodoBoardProps {
             color: string,
             todos: {
                 id: string,
-                todo: string
+                todo: string,
+                color?: string
             }[]
         }[]
     }
@@ -33,7 +34,8 @@ interface TodoBoardDataInterface {
             color: string,
             todos: {
                 id: string,
-                todo: string
+                todo: string,
+                color?: string
             }[]
         }[]
 }
@@ -44,7 +46,8 @@ interface Category {
     color: string,
     todos: {
         id: string,
-        todo: string
+        todo: string,
+        color?: string
     }[]
 }
 

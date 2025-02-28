@@ -11,8 +11,8 @@ const testdata1 = {
             color: "#FFB3BA", // pastel red
             id: "category-0",
             todos: [
-                { id: "item-0", todo: "Finish report" },
-                { id: "item-1", todo: "Email client" }
+                { id: "item-0", todo: "Finish report", color: "#FFB3BA" },
+                { id: "item-1", todo: "Email client", color: "#B3CDE0"}
             ]
         },
         {
@@ -20,9 +20,9 @@ const testdata1 = {
             color: "#B3CDE0", // pastel blue 
             id: "category-1",
             todos: [
-                { id: "item-2", todo: "Schedule meeting" },
-                { id: "item-3", todo: "Review code" },
-                { id: "item-4", todo: "Review code" }
+                { id: "item-2", todo: "Schedule meeting", color: "#FFFFBA"},
+                { id: "item-3", todo: "Review code", color: "#B2E2B2"},
+                { id: "item-4", todo: "Review code"}
             ]
         }
     ]
@@ -38,7 +38,7 @@ const testdata2 = {
             color: "#B2E2B2", // pastel green
             id: "category-0",
             todos: [
-                { id: "item-0", todo: "Buy groceries" },
+                { id: "item-0", todo: "Buy groceries", color: "#FFDFD3" },
                 { id: "item-1", todo: "Order new shoes" }
             ]
         },

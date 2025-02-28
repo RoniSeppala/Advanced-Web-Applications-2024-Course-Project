@@ -10,7 +10,8 @@ interface TodoContentProps {
         color: string,
         todos: {
             id: string,
-            todo: string
+            todo: string,
+            color?: string
         }[]
     },
     handleTodoDelete: (categoryId: string, todoId: string) => void,
@@ -51,19 +52,25 @@ const TodoContent: React.FC<TodoContentProps> = ({ category, handleTodoDelete, o
     return (
         <Box sx={{ backgroundColor: category.color, margin: "10px" }}>
             <List>
-                <SortableContext 
+                <SortableContext
                     items={
-                        isEmpty 
+                        isEmpty
                           ? [placeholderId]
                           : validTodos.map(todo => todo.id)
-                    } 
+                    }
                     strategy={verticalListSortingStrategy}
                 >
                     {isEmpty ? (
                         placeholderElement
                     ) : (
                         validTodos.map((todo) => (
-                            <TodoItem key={todo.id} todo={todo} color={category.color} categoryId={category.id} handleTodoDelete={handleTodoDelete} onTodoSave={(content:string, id:string) => {onTodoSave(content, id)}} colorContainerRef={colorContainerRef}/>
+                            <TodoItem 
+                                key={todo.id}
+                                todo={todo}
+                                category={category}
+                                handleTodoDelete={handleTodoDelete}
+                                onTodoSave={(content:string, id:string) => {onTodoSave(content, id)}}
+                                colorContainerRef={colorContainerRef}/>
                         ))
                     )}
                 </SortableContext>

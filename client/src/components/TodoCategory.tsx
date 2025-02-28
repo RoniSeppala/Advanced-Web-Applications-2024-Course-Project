@@ -13,7 +13,8 @@ interface TodoCategoryProps {
         color: string,
         todos: {
             id: string,
-            todo: string
+            todo: string,
+            color?: string
         }[]
     },
     boardTodoCounter: number,
