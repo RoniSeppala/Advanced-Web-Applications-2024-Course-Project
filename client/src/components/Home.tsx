@@ -11,8 +11,8 @@ const testdata1 = {
             color: "#FFB3BA", // pastel red
             id: "category-0",
             todos: [
-                { id: "item-1", todo: "Finish report" },
-                { id: "item-2", todo: "Email client" }
+                { id: "item-0", todo: "Finish report", color: "#FFB3BA" },
+                { id: "item-1", todo: "Email client", color: "#B3CDE0"}
             ]
         },
         {
@@ -20,8 +20,9 @@ const testdata1 = {
             color: "#B3CDE0", // pastel blue 
             id: "category-1",
             todos: [
-                { id: "item-3", todo: "Schedule meeting" },
-                { id: "item-4", todo: "Review code" }
+                { id: "item-2", todo: "Schedule meeting", color: "#FFFFBA"},
+                { id: "item-3", todo: "Review code", color: "#B2E2B2"},
+                { id: "item-4", todo: "Review code"}
             ]
         }
     ]
@@ -35,24 +36,23 @@ const testdata2 = {
         {
             title: "Shopping",
             color: "#B2E2B2", // pastel green
-            id: "category-3",
+            id: "category-0",
             todos: [
-                { id: "item-5", todo: "Buy groceries" },
-                { id: "item-6", todo: "Order new shoes" }
+                { id: "item-0", todo: "Buy groceries", color: "#FFDFD3" },
+                { id: "item-1", todo: "Order new shoes" }
             ]
         },
         {
             title: "Chores",
             color: "#FFFFBA", // pastel yellow
-            id: "category-4",
+            id: "category-1",
             todos: [
-                { id: "item-7", todo: "Clean kitchen" },
-                { id: "item-8", todo: "Mow lawn" }
+                { id: "item-2", todo: "Clean kitchen" },
+                { id: "item-3", todo: "Mow lawn" }
             ]
         }
     ]
 };
-
 
 const Home:React.FC = () => {
     return (
