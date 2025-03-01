@@ -54,10 +54,14 @@ Session managing and thus login and registering is done with Express-session and
 | Cards can be organised with drag and drop | 2                 |
 | Columns can be reordered                  | 1                 |
 | User can set the color of a card          | 1                 |
-|-------------------------------------------|-------------------|
-| Sum                                       |                   |
+| Login with google and X                   | 3                 |
+| Double-click to edit any content          | 4                 |
+| **Sum**                                   | **39**            |
 
 ### Personal reguests
-| Feature                                   | Point request     |
-|-------------------------------------------|-------------------|
-| Basic Features                            | 25                |
+| Feature                                                                       | Point request     |
+|-------------------------------------------------------------------------------|-------------------|
+| Columns can be colored                                                        | 1                 |
+| Registering and login have validation middlevare and provide user with errors | 1                 |
+| Forms can be submitted with enter                                             | 1                 |
+| **Sum**                                                                       | **su**            |
