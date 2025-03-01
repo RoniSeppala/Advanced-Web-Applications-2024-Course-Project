@@ -83,7 +83,7 @@ const TodoCategory:React.FC<TodoCategoryProps> = ({ category, boardTodoCounter ,
     }
 
     return (
-        <div ref={setNodeRef} style={style} {...attributes} {...listeners}>
+        <div ref={setNodeRef} style={{ ...style, touchAction: 'none' }} {...attributes} {...listeners}>
             <Box sx={{
                 backgroundColor: bgColor,
                 width: "100%",

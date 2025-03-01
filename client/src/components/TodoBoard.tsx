@@ -2,7 +2,7 @@ import React from "react";
 import TodoCategory from "./TodoCategory";
 import { Box, Button } from "@mui/material";
 import BoardTitle from "./BoardTitle";
-import { DndContext, DragOverlay, PointerSensor, rectIntersection, useSensor, useSensors } from "@dnd-kit/core";
+import { DndContext, DragOverlay, PointerSensor, TouchSensor, rectIntersection, useSensor, useSensors } from "@dnd-kit/core";
 import { arrayMove, rectSortingStrategy, SortableContext } from "@dnd-kit/sortable";
 
 interface TodoBoardProps {
@@ -131,7 +131,8 @@ const TodoBoard:React.FC<TodoBoardProps> = ({
     }, [todoBoardDataState, needsSync]);
 
     const sensors = useSensors(
-        useSensor(PointerSensor,{ activationConstraint: { distance: 8} })
+        useSensor(PointerSensor, { activationConstraint: { distance: 8 } }),
+        useSensor(TouchSensor, { activationConstraint: { delay: 250, tolerance: 5 } })
     )
 
     const handleDragStart = (event: any) => {
