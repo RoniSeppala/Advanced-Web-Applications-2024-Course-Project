@@ -8,7 +8,7 @@ import passport from 'passport';
 dotenv.config();
 import "./src/configs/passportConfig";
 import auth from "./src/routes/auth";
-
+import todos from "./src/routes/todos";
 
 const app: Express = express();
 const port: number = parseInt(process.env.PORT as string) || 1234;
@@ -29,14 +29,15 @@ app.use(session({
     secret: process.env.SESSION_SECRET as string || "secret-string",
     resave: false,
     saveUninitialized: false,
-    cookie: { secure: false }
+    rolling: true,
+    cookie: { secure: false, maxAge: 1000 * 60 * 60 }
 }));
 
 app.use(passport.initialize());
 app.use(passport.session());
 
 app.use("/api/auth", auth);
-
+app.use("/api/todos", todos)
 
 if (process.env.NODE_ENV === 'development') {
     const corsOptions: CorsOptions = {
@@ -44,6 +45,8 @@ if (process.env.NODE_ENV === 'development') {
         optionsSuccessStatus: 200
     }
 }
+
+app.use(cors());
 
 app.listen(port, () => {
     console.log(`Server is running on port ${port}`);

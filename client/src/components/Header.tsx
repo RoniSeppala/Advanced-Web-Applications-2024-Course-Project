@@ -26,6 +26,7 @@ const Header:React.FC = () => {
     }, [])
 
     const logout = async() => {
+        console.log("Logging out")
         await fetch("/api/auth/logout", {
             method: "GET",
             credentials: "include"

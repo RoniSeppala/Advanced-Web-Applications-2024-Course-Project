@@ -1,11 +1,10 @@
 import mongoose, {Document, Schema} from "mongoose";
-import { IUser } from "./User";
 
 interface ITodoBoard extends Document {
     title: string,
     titleBgColor: string,
     boardBgColor: string,
-    users: IUser[],
+    usersIDs: string[],
     categories: {
         id: string,
         title: string,
@@ -22,7 +21,7 @@ const todoBoardSchema: Schema = new Schema({
     title: {type: String, required: true},
     titleBgColor: {type: String, required: true},
     boardBgColor: {type: String, required: true},
-    users: [{type: Schema.Types.ObjectId, ref: "User"}],
+    usersIDs: [{type: String, required: true}],
     categories: [{
         id: {type: String, required: true},
         title: {type: String, required: true},
@@ -36,6 +35,6 @@ const todoBoardSchema: Schema = new Schema({
 
 });
 
-const TodoBoard: mongoose.Model<ITodoBoard> = mongoose.model<ITodoBoard>("User", todoBoardSchema);
+const TodoBoard: mongoose.Model<ITodoBoard> = mongoose.model<ITodoBoard>("TodoBoard", todoBoardSchema);
 
 export {TodoBoard, ITodoBoard}

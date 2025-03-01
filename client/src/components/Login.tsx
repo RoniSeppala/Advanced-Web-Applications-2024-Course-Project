@@ -2,8 +2,6 @@ import React from "react"
 import {Box, Button, TextField} from "@mui/material"
 import OauthButtons from "./OauthButtons"
 
-
-
 const Login:React.FC = () => {
     const [email, setEmail] = React.useState<string>("")
     const [password, setPassword] = React.useState<string>("")
@@ -12,7 +10,6 @@ const Login:React.FC = () => {
     const loginUser = async () => {
         setErrors([])
         
-
         try {
             console.log("Logging in")
             const response = await fetch("/api/auth/local", {
@@ -50,14 +47,12 @@ const Login:React.FC = () => {
 
             window.location.href = "/"
 
-
         } catch (error) {
             if (error instanceof Error) {
             console.log("Error when logging in ", error.message)
             }
         }
     }
-
 
     return (
         <>
@@ -78,7 +73,7 @@ const Login:React.FC = () => {
                 borderRadius: "10px"
             }}
             noValidate
-            autoComplete="off">
+            autoComplete="on">
                 <h1>Login</h1>
                 <TextField
                     required

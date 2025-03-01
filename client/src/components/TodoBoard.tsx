@@ -74,6 +74,7 @@ const TodoBoard:React.FC<TodoBoardProps> = ({
     const [boardTodoCounter, setBoardTodoCounter] = React.useState<number>(0)
     const [boardCategoryCounter, setBoardCategoryCounter] = React.useState<number>(0)
     const colorContainerRef = React.useRef<HTMLDivElement>(null)
+    const [needsSync, setNeedsSync] = React.useState<boolean>(false)
 
     //count initial todos
     React.useEffect(() => {
@@ -91,7 +92,7 @@ const TodoBoard:React.FC<TodoBoardProps> = ({
         }
     }, [])
 
-    const addCategory = () => {
+    const addCategory = async () => {
         setBoardCategoryCounter(boardCategoryCounter + 1)
         console.log("Add category clicked")
         const newCategory: Category = {
@@ -100,7 +101,6 @@ const TodoBoard:React.FC<TodoBoardProps> = ({
             color: "#D3D3D3",
             todos: []
         }
-        console.log(newCategory)
         setTodoBoardDataState((prevData) => {
             const newCategories = [...prevData.categories, newCategory]
             return { ...prevData, categories: newCategories }
@@ -110,7 +110,29 @@ const TodoBoard:React.FC<TodoBoardProps> = ({
             categories: [...prevData.categories, newCategory]
         }))
         setCategoryOrder((prevOrder) => [...prevOrder, newCategory.id])
+        setNeedsSync(true)
     }
+
+    React.useEffect(() => {
+        if (!needsSync) return;
+        console.log("Updating board")
+        async function updateBoard() {
+            const response = await fetch("/api/todos/updateboard", {
+                method: "POST",
+                credentials: "include",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({ todoBoard: todoBoardDataState })
+            });
+            if (!response.ok) {
+                console.error("Error updating board");
+                return;
+            }
+            const data = await response.json();
+            setTodoBoardDataState(data.todoBoard);
+            setNeedsSync(false);
+        }
+        updateBoard();
+    }, [todoBoardDataState]);
 
     const sensors = useSensors(
         useSensor(PointerSensor,{ activationConstraint: { distance: 8} })
