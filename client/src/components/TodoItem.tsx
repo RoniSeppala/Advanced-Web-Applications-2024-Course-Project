@@ -1,5 +1,5 @@
 import { useSortable } from "@dnd-kit/sortable";
-import { darken, IconButton, ListItem, ListItemText, Popover } from "@mui/material";
+import { Button, darken, IconButton, ListItem, ListItemText, Popover } from "@mui/material";
 import DeleteIcon from '@mui/icons-material/Delete';
 import React from "react";
 import EdiatableTextDisplay from "./EditableTextDisplay";
@@ -103,6 +103,16 @@ const TodoItem:React.FC<TodoItemProps> = ({category, todo, handleTodoDelete, onT
                             zIndex: 1000
                             }}>
                         <ChromePicker disableAlpha color={chromePickerColor} onChange={(newColor) => {handleColorChange(newColor.hex)}}/>
+                        <Button onClick={handlePopoverClose}
+                        sx={{
+                            backgroundColor: "lightblue",
+                            color: "black",
+                            borderRadius: "5px",
+                            border: "1px solid black",
+                            marginLeft: "auto",
+                            width: "100%"
+
+                        }}>Close</Button>
                     </div>
                 </Popover>
             </ListItem>
