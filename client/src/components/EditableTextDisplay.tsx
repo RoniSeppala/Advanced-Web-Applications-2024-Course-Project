@@ -9,6 +9,7 @@ interface EditableTextDisplayProps {
 const EdiatableTextDisplay:React.FC<EditableTextDisplayProps> = ({initialContent, id, onSave}) => {
     const [content, setContent] = React.useState<string>(initialContent);
     const [isEditing, setIsEditing] = React.useState<Boolean>(false);
+    const [touchStart, setTouchStart] = React.useState<number | null>(null);
 
     const doubleClickHandler = () => {
         setIsEditing(true);
@@ -29,8 +30,21 @@ const EdiatableTextDisplay:React.FC<EditableTextDisplayProps> = ({initialContent
         }
     }
 
+    const handleTouchStart = () => {
+        setTouchStart(Date.now());
+    };
+
+    const handleTouchEnd = () => {
+        if (touchStart && Date.now() - touchStart > 500) {
+            setIsEditing(true);
+        }
+        setTouchStart(null);
+    };
+
     return (
-        <div onDoubleClick={doubleClickHandler}>
+        <div onDoubleClick={doubleClickHandler}
+        onTouchStart={handleTouchStart}
+        onTouchEnd={handleTouchEnd}>
             {isEditing ? (
                 <input
                     type="text"

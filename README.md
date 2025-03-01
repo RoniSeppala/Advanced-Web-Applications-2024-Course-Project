@@ -17,7 +17,7 @@ Once logged in, the user can add boards, categories and todos by clicking respec
 The user can reorganise todos within a category as well as drag them to other categories within the same board.
 The user can also reorganise categories by dragging and dropping them.
 Categories and Todos can be deleted or have their color changed with their respective buttons.
-Board, category and todo names can be edited by double clicking on them.
+Board, category and todo names can be edited by double clicking on them on pc and by long pressing on mobile.
 
 ## Technology choises
 In this section I will go through my technolgy choises, used npm packets and other relevant choises
