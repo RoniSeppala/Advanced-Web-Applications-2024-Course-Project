@@ -2,6 +2,7 @@ import { SortableContext, useSortable, verticalListSortingStrategy } from "@dnd-
 import { Box, List, darken } from "@mui/material";
 import React from "react";
 import TodoItem from "./TodoItem";
+import { JSX } from "@emotion/react/jsx-runtime";
 
 interface Todo {
     id: string,
@@ -34,7 +35,7 @@ const TodoContent: React.FC<TodoContentProps> = ({ category, handleTodoDelete, o
         : [];
     const placeholderId: string = `placeholder-${category.id}`;
 
-    let placeholderElement= null;
+    let placeholderElement: JSX.Element | null = null;
     if(isEmpty) { // Create a placeholder element if there are no todos in the category, so that the category can be dragged into.
         const { attributes, listeners, setNodeRef, transform, isDragging } = useSortable({
             id: placeholderId,

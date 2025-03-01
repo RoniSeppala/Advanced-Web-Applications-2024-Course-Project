@@ -45,8 +45,8 @@ const TodoItem:React.FC<TodoItemProps> = ({category, todo, handleTodoDelete, onT
     const handlePopoverClose = () => {
         setAnchorEl(null);
     };
-    const open = Boolean(anchorEl);
-    const id = open ? 'simple-popover' : undefined;
+    const open: boolean = Boolean(anchorEl);
+    const id: string | undefined = open ? 'simple-popover' : undefined;
 
     const handleColorChange = (newColor: string) => { //change color of the todo
         setChromePickerColor(newColor)

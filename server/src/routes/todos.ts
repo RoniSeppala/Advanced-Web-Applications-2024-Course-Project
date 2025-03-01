@@ -28,7 +28,7 @@ router.post("/createboard", async (req: Request, res: Response) => { //create a 
     const newBoard: ITodoBoard = req.body;
 
     try {
-        const todoBoard = new TodoBoard(newBoard);
+        const todoBoard: ITodoBoard = new TodoBoard(newBoard);
 
         await todoBoard.save() //save new board to database
         todoBoards = await TodoBoard.find({ usersIDs: { $in: [(req.user as any)._id] } }); //get all boards for user
@@ -55,7 +55,7 @@ router.post("/updateboard", async (req: Request, res: Response) => {
         return
     }
 
-    const newBoard = req.body.todoBoard;
+    const newBoard: ITodoBoard = req.body.todoBoard;
     
     try {
         await TodoBoard.updateOne({ _id: newBoard._id }, newBoard); //update board in database
