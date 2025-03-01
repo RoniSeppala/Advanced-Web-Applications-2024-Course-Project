@@ -168,7 +168,6 @@ const TodoCategory:React.FC<TodoCategoryProps> = ({ category, boardTodoCounter ,
                                     border: "1px solid black",
                                     marginLeft: "auto",
                                     width: "100%"
-        
                                 }}>Close</Button>
                             </div>
                         </Popover>
