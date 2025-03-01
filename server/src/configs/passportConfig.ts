@@ -18,7 +18,6 @@ passport.deserializeUser(async (id, done) => {
     }
 });
 
-
 passport.use(new LocalStrategy({usernameField: 'email'}, async (email, password, done) => {
     try {
         const user: IUser | null = await User.findOne({email: email});
@@ -55,7 +54,6 @@ passport.use(new GoogleStrategy({
         return done(error, undefined);
     }
 }));
-
 
 passport.use(new TwitterStrategy({
     consumerKey: process.env.TWITTER_CONSUMER_KEY as string,
