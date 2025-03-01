@@ -11,7 +11,6 @@ router.post("/local", loginValidation, (req: Request, res: Response, next: NextF
     const errors: Result<ValidationError> = validationResult(req);
 
     if (!errors.isEmpty()) { //return info to client if there were input errors
-        console.log(errors.array());
         res.status(400).json({errors: errors.array()});
         return
     }

@@ -29,7 +29,6 @@ router.post("/createboard", async (req: Request, res: Response) => { //create a 
 
     try {
         const todoBoard = new TodoBoard(newBoard);
-        console.log(todoBoard)
 
         await todoBoard.save() //save new board to database
         todoBoards = await TodoBoard.find({ usersIDs: { $in: [(req.user as any)._id] } }); //get all boards for user

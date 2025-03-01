@@ -83,7 +83,6 @@ const TodoBoard:React.FC<TodoBoardProps> = ({ todoBoardData }) => {
 
     const addCategory = async () => { // add new category to board
         setBoardCategoryCounter(boardCategoryCounter + 1)
-        console.log("Add category clicked")
         const newCategory: Category = { //create a empty category
             id: `category-${boardCategoryCounter}`,
             title: "New Category " + boardCategoryCounter,
@@ -136,7 +135,6 @@ const TodoBoard:React.FC<TodoBoardProps> = ({ todoBoardData }) => {
             event.activatorEvent.target instanceof Node &&
             colorContainerRef.current.contains(event.activatorEvent.target)
         ) {
-            console.log("drag originated from color container, canceling")
             return;
         }
         
@@ -267,8 +265,6 @@ const TodoBoard:React.FC<TodoBoardProps> = ({ todoBoardData }) => {
     }
 
     const onCategoryTitleSave = (newContent: string, id: string) => { //handle ctegory titla change
-        console.log("This is category title sav function new content: " + newContent)
-        console.log("this is category title save id: " + id)
         setTodoBoardDataState((prevData) => ({
             ...prevData,
             categories: prevData.categories.map((cat) => (cat.id === id ? { ...cat, title: newContent } : cat))

@@ -40,7 +40,6 @@ const TodoItem:React.FC<TodoItemProps> = ({category, todo, handleTodoDelete, onT
     //popover setup
     const [anchorEl, setAnchorEl] = React.useState<HTMLButtonElement | null>(null);
     const handlePopoverClick = (event: React.MouseEvent<HTMLButtonElement>) => {
-        console.log("Change color clicked")
         setAnchorEl(event.currentTarget);
     };
     const handlePopoverClose = () => {

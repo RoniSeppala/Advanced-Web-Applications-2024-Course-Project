@@ -43,7 +43,6 @@ const Register:React.FC = () => {
                 });
 
                 setErrors(errorsTemp)
-                console.log(errors)
 
                 throw new Error("invalid input")
             }

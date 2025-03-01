@@ -52,11 +52,9 @@ const Home:React.FC = () => {
             fetch("/api/todos/getboards", {
                 credentials: "include"
             }).then(response => response.json()).then(data => {
-                console.log(data.todoBoards)  //TODO: add board getting
                 if (data.todoBoards) {
                     setTodoBoards(data.todoBoards)
                 } else {
-                    console.log("No boards found")
                     setTodoBoards([])
                 }
             })

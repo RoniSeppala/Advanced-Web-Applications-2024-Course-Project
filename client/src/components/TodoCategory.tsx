@@ -38,7 +38,6 @@ const TodoCategory:React.FC<TodoCategoryProps> = ({ category, boardTodoCounter ,
     //popover setup
     const [anchorEl, setAnchorEl] = React.useState<HTMLButtonElement | null>(null);
     const handlePopoverClick = (event: React.MouseEvent<HTMLButtonElement>) => {
-        console.log("Change color clicked")
         setAnchorEl(event.currentTarget);
     };
     const handlePopoverClose = () => {
@@ -63,7 +62,6 @@ const TodoCategory:React.FC<TodoCategoryProps> = ({ category, boardTodoCounter ,
     };
 
     const addTodo = () => { //add todo to the category
-        console.log("Add todo clicked")
         setBoardTodoCounter(boardTodoCounter + 1) //increment the counter to get a new todo id
 
         const newTodo: Todo = {
