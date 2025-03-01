@@ -105,10 +105,6 @@ const TodoBoard:React.FC<TodoBoardProps> = ({
             const newCategories = [...prevData.categories, newCategory]
             return { ...prevData, categories: newCategories }
         })
-        setTodoBoardDataState((prevData) => ({
-            ...prevData,
-            categories: [...prevData.categories, newCategory]
-        }))
         setCategoryOrder((prevOrder) => [...prevOrder, newCategory.id])
         setNeedsSync(true)
     }
@@ -132,7 +128,7 @@ const TodoBoard:React.FC<TodoBoardProps> = ({
             setNeedsSync(false);
         }
         updateBoard();
-    }, [todoBoardDataState]);
+    }, [todoBoardDataState, needsSync]);
 
     const sensors = useSensors(
         useSensor(PointerSensor,{ activationConstraint: { distance: 8} })
@@ -168,6 +164,7 @@ const TodoBoard:React.FC<TodoBoardProps> = ({
     const handleDragEnd = (event: any) => {
         const { active, over } = event;
         if (!over) {
+            setNeedsSync(true)
             return;
         }
         const activeType = active.data.current?.type;
@@ -183,6 +180,7 @@ const TodoBoard:React.FC<TodoBoardProps> = ({
                     const newCategories = arrayMove(prevData.categories, oldIndex, newIndex);
                     return { ...prevData, categories: newCategories };
                 });
+                setNeedsSync(true)
             }
         }
 
@@ -203,7 +201,7 @@ const TodoBoard:React.FC<TodoBoardProps> = ({
                         cat.id === activeCategoryId ? { ...cat, todos: arrayMove(categoryItems, oldIndex, newIndex) } : cat)
                     return { ...prevData, categories: newCategories };
                 })
-                
+                setNeedsSync(true)
             } else { //drop between categories
                 const sourceCategory = todoBoardDataState.categories.find((category) => category.id === activeCategoryId);
                 if (!sourceCategory) return;
@@ -235,9 +233,11 @@ const TodoBoard:React.FC<TodoBoardProps> = ({
                     });
                     return { ...prevData, categories: newCategories };
                 })
+                setNeedsSync(true)
 
             }
         }
+        setNeedsSync(true)
         setActiveItem(null);
     }
 
@@ -247,6 +247,7 @@ const TodoBoard:React.FC<TodoBoardProps> = ({
             cat.id === categoryId ? {...cat, todos: cat.todos.filter((item) => item.id !== todoId) } : cat)
             return { ...prevData, categories: newCategories}
         })
+        setNeedsSync(true)
     }
 
     const handleCategoryDelete = (categoryId: string) => {
@@ -255,6 +256,7 @@ const TodoBoard:React.FC<TodoBoardProps> = ({
             return { ...prevData, categories: newCategories };
         });
         setCategoryOrder(prev => prev.filter(id => id !== categoryId));
+        setNeedsSync(true)
     }
 
     const onTodoSave = (content: string, id: string) => {
@@ -265,6 +267,7 @@ const TodoBoard:React.FC<TodoBoardProps> = ({
             todos: cat.todos.map((item) => (item.id === id ? { ...item, todo: content } : item))
             }))
         }));
+        setNeedsSync(true)
 
     }
 
@@ -275,11 +278,13 @@ const TodoBoard:React.FC<TodoBoardProps> = ({
             ...prevData,
             categories: prevData.categories.map((cat) => (cat.id === id ? { ...cat, title: newContent } : cat))
         }));
+        setNeedsSync(true)
     }
 
     const onBoardTitleSave = (newContent: string, id: string) => {
         console.log("log redundat id: ", id)
         setTodoBoardDataState((prevData) => ({ ...prevData, title: newContent }));
+        setNeedsSync(true)
     }
 
     const debugOnKeyPress = (e: React.KeyboardEvent) => { //TODO: remove this debug function
