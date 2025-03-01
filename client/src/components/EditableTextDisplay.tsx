@@ -1,3 +1,4 @@
+import { Button } from "@mui/material";
 import React from "react";
 
 interface EditableTextDisplayProps {
@@ -46,13 +47,23 @@ const EdiatableTextDisplay:React.FC<EditableTextDisplayProps> = ({initialContent
         onTouchStart={handleTouchStart}
         onTouchEnd={handleTouchEnd}>
             {isEditing ? (
-                <input
-                    type="text"
-                    value={content}
-                    onChange={changeHandler}
-                    onBlur={exitHandler}
-                    onKeyDown={exitWithEnterHandler}
-                />
+                <>
+                    <input
+                        type="text"
+                        value={content}
+                        onChange={changeHandler}
+                        onBlur={exitHandler}
+                        onKeyDown={exitWithEnterHandler}
+                    />
+                    <Button onClick={exitHandler}
+                    sx={{
+                        backgroundColor: "lightblue",
+                        color: "black",
+                        borderRadius: "5px",
+                        border: "1px solid black",
+                        marginLeft: "5px"
+                    }}>Save</Button>
+                </>
             ) : (
                 <div>{content}</div>
             )}

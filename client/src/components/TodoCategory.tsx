@@ -160,6 +160,16 @@ const TodoCategory:React.FC<TodoCategoryProps> = ({ category, boardTodoCounter ,
                                     zIndex: 1000 
                                     }}>
                                 <ChromePicker disableAlpha color={chromePickerColor} onChange={(newColor) => {handleColorChange(newColor.hex)}}/>
+                                <Button onClick={handlePopoverClose}
+                                sx={{
+                                    backgroundColor: "lightblue",
+                                    color: "black",
+                                    borderRadius: "5px",
+                                    border: "1px solid black",
+                                    marginLeft: "auto",
+                                    width: "100%"
+        
+                                }}>Close</Button>
                             </div>
                         </Popover>
                     </Box>
