@@ -51,6 +51,12 @@ interface Category { //interface for category
     }[]
 }
 
+interface Todo { //interface for todo
+    id: string,
+    todo: string,
+    color?: string
+}
+
 const TodoBoard:React.FC<TodoBoardProps> = ({ todoBoardData }) => {
     const [todoBoardDataState, setTodoBoardDataState] = React.useState<TodoBoardDataInterface>(todoBoardData) //state for all todo board data
 
@@ -67,7 +73,7 @@ const TodoBoard:React.FC<TodoBoardProps> = ({ todoBoardData }) => {
 
     //count initial todos
     React.useEffect(() => {
-        const count = todoBoardDataState.categories.reduce((acc, category) => acc + category.todos.length, 0)
+        const count: number = todoBoardDataState.categories.reduce((acc, category) => acc + category.todos.length, 0)
         if (count > boardTodoCounter) {
             setBoardTodoCounter(count + 1)
         }
@@ -75,7 +81,7 @@ const TodoBoard:React.FC<TodoBoardProps> = ({ todoBoardData }) => {
 
     //count initial categories
     React.useEffect(() => {
-        const count = todoBoardDataState.categories.length
+        const count: number = todoBoardDataState.categories.length
         if (count > boardCategoryCounter) {
             setBoardCategoryCounter(count + 1)
         }
@@ -142,12 +148,12 @@ const TodoBoard:React.FC<TodoBoardProps> = ({ todoBoardData }) => {
         const currentData = active.data.current;
         if (!currentData || !('type' in currentData) || !('categoryId' in currentData)) return;
         const { type, categoryId } = currentData;
-        const activeItemCategory = todoBoardDataState.categories.find((category) => category.id === categoryId);
+        const activeItemCategory: Category | undefined = todoBoardDataState.categories.find((category) => category.id === categoryId);
 
         if (!activeItemCategory) return;
 
         if (type === "todo") {
-            const item = activeItemCategory.todos.find((todo) => todo.id === active.id);
+            const item: Todo | undefined = activeItemCategory.todos.find((todo) => todo.id === active.id);
             if (item) {
                 setActiveItem({ id: item.id, content: item.todo , color: activeItemCategory.color, type: type });
             }
@@ -162,17 +168,17 @@ const TodoBoard:React.FC<TodoBoardProps> = ({ todoBoardData }) => {
             setNeedsSync(true)
             return;
         }
-        const activeType = active.data.current?.type;
-        const overType = over.data.current?.type;
+        const activeType: any = active.data.current?.type;
+        const overType: any = over.data.current?.type;
 
         if (activeType === "category" && overType === "category") {  //category drag
             if (active.id !== over.id) {
-                const oldIndex = categoryOrder.indexOf(active.id as string);
-                const newIndex = categoryOrder.indexOf(over.id as string);
+                const oldIndex: number = categoryOrder.indexOf(active.id as string);
+                const newIndex: number = categoryOrder.indexOf(over.id as string);
                 setCategoryOrder((prevOrder) => arrayMove(prevOrder, oldIndex, newIndex));
 
                 setTodoBoardDataState((prevData) => {
-                    const newCategories = arrayMove(prevData.categories, oldIndex, newIndex);
+                    const newCategories: Category[] = arrayMove(prevData.categories, oldIndex, newIndex);
                     return { ...prevData, categories: newCategories };
                 });
                 setNeedsSync(true) //request to save to database
@@ -180,36 +186,36 @@ const TodoBoard:React.FC<TodoBoardProps> = ({ todoBoardData }) => {
         }
 
         if (activeType === "todo" && overType === "todo") {  //todo drag
-            const activeCategoryId = active.data.current?.categoryId;
+            const activeCategoryId: string | undefined = active.data.current?.categoryId;
             if (!activeCategoryId) return;
-            const overCategoryId = over.data.current?.categoryId;
+            const overCategoryId: string = over.data.current?.categoryId;
 
             //drop within category
             if (activeCategoryId === overCategoryId) {
-                const category = todoBoardDataState.categories.find((category) => category.id === activeCategoryId);
+                const category: Category | undefined = todoBoardDataState.categories.find((category) => category.id === activeCategoryId);
                 if (!category) return;
-                const categoryItems = category.todos;
-                const oldIndex = categoryItems?.findIndex((item) => item.id === active.id as string);
-                const newIndex = categoryItems?.findIndex((item) => item.id === over.id as string);
+                const categoryItems: Todo[] = category.todos;
+                const oldIndex: number = categoryItems?.findIndex((item) => item.id === active.id as string);
+                const newIndex: number = categoryItems?.findIndex((item) => item.id === over.id as string);
                 
                 setTodoBoardDataState((prevData) => {
-                    const newCategories = prevData.categories.map((cat) => 
+                    const newCategories: Category[] = prevData.categories.map((cat) => 
                         cat.id === activeCategoryId ? { ...cat, todos: arrayMove(categoryItems, oldIndex, newIndex) } : cat)
                     return { ...prevData, categories: newCategories };
                 })
                 setNeedsSync(true) //request to save to database
             } else { //drop between categories
-                const sourceCategory = todoBoardDataState.categories.find((category) => category.id === activeCategoryId);
+                const sourceCategory: Category | undefined = todoBoardDataState.categories.find((category) => category.id === activeCategoryId);
                 if (!sourceCategory) return;
-                const sourceItems = Array.from(sourceCategory.todos);
+                const sourceItems: Todo[] = Array.from(sourceCategory.todos);
 
-                const destinationCategory = todoBoardDataState.categories.find((category) => category.id === overCategoryId);
+                const destinationCategory: Category | undefined = todoBoardDataState.categories.find((category) => category.id === overCategoryId);
                 if (!destinationCategory) return;
-                const destItems = Array.from(destinationCategory.todos);
+                const destItems: Todo[] = Array.from(destinationCategory.todos);
 
-                const sourceIndex = sourceItems.findIndex((item) => item.id === active.id);
+                const sourceIndex: number = sourceItems.findIndex((item) => item.id === active.id);
                 const [movedItem] = sourceItems.splice(sourceIndex, 1);
-                const destIndex = destItems.findIndex((item) => item.id === over.id);
+                const destIndex: number = destItems.findIndex((item) => item.id === over.id);
 
                 if (destIndex === -1) {
                     destItems.push(movedItem);
@@ -218,7 +224,7 @@ const TodoBoard:React.FC<TodoBoardProps> = ({ todoBoardData }) => {
                 }
 
                 setTodoBoardDataState((prevData) => { //update state
-                    const newCategories = prevData.categories.map((cat) => {
+                    const newCategories: Category[] = prevData.categories.map((cat) => {
                         if (cat.id === activeCategoryId) {
                             return { ...cat, todos: sourceItems };
                         }
@@ -239,7 +245,7 @@ const TodoBoard:React.FC<TodoBoardProps> = ({ todoBoardData }) => {
 
     const handleTodoDelete = (categoryId: string, todoId: string) => { //delete todo
         setTodoBoardDataState((prevData) => {
-            const newCategories = prevData.categories.map((cat) =>
+            const newCategories: Category[] = prevData.categories.map((cat) =>
             cat.id === categoryId ? {...cat, todos: cat.todos.filter((item) => item.id !== todoId) } : cat)
             return { ...prevData, categories: newCategories}
         })
@@ -248,7 +254,7 @@ const TodoBoard:React.FC<TodoBoardProps> = ({ todoBoardData }) => {
 
     const handleCategoryDelete = (categoryId: string) => { //delete category
         setTodoBoardDataState((prevData) => {
-            const newCategories = prevData.categories.filter((cat) => cat.id !== categoryId);
+            const newCategories: Category[] = prevData.categories.filter((cat) => cat.id !== categoryId);
             return { ...prevData, categories: newCategories };
         });
         setCategoryOrder(prev => prev.filter(id => id !== categoryId));

@@ -32,7 +32,7 @@ interface Todo {
 }
 
 const TodoCategory:React.FC<TodoCategoryProps> = ({ category, boardTodoCounter , setBoardTodoCounter, handleTodoDelete, handleCategoryDelete, onTodoSave, onCategoryTitleSave, colorContainerRef, setNeedsSync}) => {
-    const bgColor = category.color || "#D3D3D3" //default color
+    const bgColor: string = category.color || "#D3D3D3" //default color
     const [chromePickerColor, setChromePickerColor] = React.useState<string>("#D3D3D3")
 
     //popover setup
@@ -43,8 +43,8 @@ const TodoCategory:React.FC<TodoCategoryProps> = ({ category, boardTodoCounter ,
     const handlePopoverClose = () => {
         setAnchorEl(null);
     };
-    const open = Boolean(anchorEl);
-    const id = open ? 'simple-popover' : undefined;
+    const open: boolean = Boolean(anchorEl);
+    const id: string | undefined = open ? 'simple-popover' : undefined;
 
     //setup for category sorting
     const { attributes, listeners, setNodeRef, transform, isDragging } = useSortable({

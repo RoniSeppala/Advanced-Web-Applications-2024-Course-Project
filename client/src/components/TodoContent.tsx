@@ -3,6 +3,12 @@ import { Box, List, darken } from "@mui/material";
 import React from "react";
 import TodoItem from "./TodoItem";
 
+interface Todo {
+    id: string,
+    todo: string,
+    color?: string
+}
+
 interface TodoContentProps {
     category: {
         id: string,
@@ -20,15 +26,15 @@ interface TodoContentProps {
 }
 
 const TodoContent: React.FC<TodoContentProps> = ({ category, handleTodoDelete, onTodoSave, colorContainerRef }) => {
-    const isEmpty = category.todos.length === 0; // Check if there are no todos in the category for the placeholder.
+    const isEmpty: boolean = category.todos.length === 0; // Check if there are no todos in the category for the placeholder.
 
     // Ensure todos is an array with valid items only.
-    const validTodos = Array.isArray(category.todos)
+    const validTodos: Todo[] = Array.isArray(category.todos)
         ? category.todos.filter(todo => todo && todo.id)
         : [];
-    const placeholderId = `placeholder-${category.id}`;
+    const placeholderId: string = `placeholder-${category.id}`;
 
-    let placeholderElement = null;
+    let placeholderElement= null;
     if(isEmpty) { // Create a placeholder element if there are no todos in the category, so that the category can be dragged into.
         const { attributes, listeners, setNodeRef, transform, isDragging } = useSortable({
             id: placeholderId,

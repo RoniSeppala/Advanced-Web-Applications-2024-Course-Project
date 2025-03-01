@@ -3,7 +3,7 @@ import {AppBar, Toolbar, Typography, List, ListItemButton, useMediaQuery, Button
 import MenuIcon from "@mui/icons-material/Menu"
 
 const Header:React.FC = () => {
-    const isMobile = useMediaQuery('(max-width:600px)') //variables for mobile view, drawer state and autehntication
+    const isMobile: boolean = useMediaQuery('(max-width:600px)') //variables for mobile view, drawer state and autehntication
     const [drawerOpen, setDrawerOpen] = React.useState<boolean>(false)
     const [isAuthenticated, setIsAuthenticated] = React.useState<boolean>(false)
 
