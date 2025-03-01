@@ -32,7 +32,7 @@ interface Todo {
 }
 
 const TodoCategory:React.FC<TodoCategoryProps> = ({ category, boardTodoCounter , setBoardTodoCounter, handleTodoDelete, handleCategoryDelete, onTodoSave, onCategoryTitleSave, colorContainerRef, setNeedsSync}) => {
-    const bgColor = category.color || "#D3D3D3"
+    const bgColor = category.color || "#D3D3D3" //default color
     const [chromePickerColor, setChromePickerColor] = React.useState<string>("#D3D3D3")
 
     //popover setup
@@ -47,12 +47,13 @@ const TodoCategory:React.FC<TodoCategoryProps> = ({ category, boardTodoCounter ,
     const open = Boolean(anchorEl);
     const id = open ? 'simple-popover' : undefined;
 
+    //setup for category sorting
     const { attributes, listeners, setNodeRef, transform, isDragging } = useSortable({
         id: category.id,
         data: { type: 'category' }
     });
 
-    const style = {
+    const style = { //dragging style
         transform: transform ? `translate3d(${transform.x}px, ${transform.y}px, 0)` : undefined,
         transition: "transform 0.4s ease",
         padding: '8px',
@@ -61,7 +62,7 @@ const TodoCategory:React.FC<TodoCategoryProps> = ({ category, boardTodoCounter ,
         flexGrow: 1,
     };
 
-    const addTodo = () => {
+    const addTodo = () => { //add todo to the category
         console.log("Add todo clicked")
         setBoardTodoCounter(boardTodoCounter + 1) //increment the counter to get a new todo id
 
@@ -70,16 +71,18 @@ const TodoCategory:React.FC<TodoCategoryProps> = ({ category, boardTodoCounter ,
             todo: 'new Todo text ' + boardTodoCounter
         }
 
-        category.todos.push(newTodo)
+        category.todos.push(newTodo) //add the new todo to the category
 
-        setNeedsSync(true)
+        setNeedsSync(true) //save the changes to the database
 
     }
 
-    const handleColorChange = (newColor: string) => {
+    const handleColorChange = (newColor: string) => { //ChromePicker color change handler
         setChromePickerColor(newColor)
         console.log("Color changed to: " + newColor)
         category.color = newColor
+
+        setNeedsSync(true) //save the changes to the database
     }
 
     return (
@@ -90,7 +93,7 @@ const TodoCategory:React.FC<TodoCategoryProps> = ({ category, boardTodoCounter ,
                 minWidth: "300px",
                 borderRadius: "13px",
                 border: "1px solid black",
-                boxSizing: "border-box" // Ensure padding and border are included in the element's total width and height
+                boxSizing: "border-box"
                 }}>
                 <Box sx={{
                     display: "flex",
@@ -104,9 +107,9 @@ const TodoCategory:React.FC<TodoCategoryProps> = ({ category, boardTodoCounter ,
                     <Box sx={{
                         display: "flex",
                         flexDirection: "row",
-                        width: "100%", // Ensure the container takes the full width
-                        justifyContent: "space-between", // Distribute space between categories
-                        gap: "10px" // Add gap between categories
+                        width: "100%",
+                        justifyContent: "space-between",
+                        gap: "10px"
                     }}>
                         <Button sx={{
                             margin: "10px",
@@ -151,7 +154,7 @@ const TodoCategory:React.FC<TodoCategoryProps> = ({ category, boardTodoCounter ,
                                 vertical: 'top',
                                 horizontal: 'left',
                             }}>
-                            <div ref={colorContainerRef}
+                            <div ref={colorContainerRef} //color picker container
                                 onMouseDown={(e) => e.stopPropagation()}
                                 onDrag={(e) => e.stopPropagation()}
                                 onTouchStart={(e) => e.stopPropagation()}

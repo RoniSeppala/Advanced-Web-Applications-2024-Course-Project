@@ -28,6 +28,8 @@ interface TodoItemProps {
 }
 
 const TodoItem:React.FC<TodoItemProps> = ({category, todo, handleTodoDelete, onTodoSave, colorContainerRef}) => {
+
+    // Setup for todo sorting drag and drop
     const { attributes, listeners, setNodeRef, transform, isDragging } = useSortable({
         id: todo.id,
         data: { type: 'todo', categoryId: category.id }
@@ -47,7 +49,7 @@ const TodoItem:React.FC<TodoItemProps> = ({category, todo, handleTodoDelete, onT
     const open = Boolean(anchorEl);
     const id = open ? 'simple-popover' : undefined;
 
-    const handleColorChange = (newColor: string) => {
+    const handleColorChange = (newColor: string) => { //change color of the todo
         setChromePickerColor(newColor)
         console.log("Color changed to: " + newColor)
         category.todos.forEach((todo) => {
@@ -57,7 +59,7 @@ const TodoItem:React.FC<TodoItemProps> = ({category, todo, handleTodoDelete, onT
         })
     }
 
-    const style = {
+    const style = { //dragging style for todos
         transform: transform ? `translate3d(${transform.x}px, ${transform.y}px, 0)` : undefined,
         transition: "transform 0.4s ease",
         padding: '8px',

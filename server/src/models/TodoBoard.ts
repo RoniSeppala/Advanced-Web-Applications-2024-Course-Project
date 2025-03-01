@@ -1,6 +1,6 @@
 import mongoose, {Document, Schema} from "mongoose";
 
-interface ITodoBoard extends Document {
+interface ITodoBoard extends Document { //interface for todo board
     title: string,
     titleBgColor: string,
     boardBgColor: string,
@@ -17,7 +17,7 @@ interface ITodoBoard extends Document {
     }[]
 }
 
-const todoBoardSchema: Schema = new Schema({
+const todoBoardSchema: Schema = new Schema({ //schema for todo board
     title: {type: String, required: true},
     titleBgColor: {type: String, required: true},
     boardBgColor: {type: String, required: true},

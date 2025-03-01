@@ -20,7 +20,7 @@ interface TodoContentProps {
 }
 
 const TodoContent: React.FC<TodoContentProps> = ({ category, handleTodoDelete, onTodoSave, colorContainerRef }) => {
-    const isEmpty = category.todos.length === 0;
+    const isEmpty = category.todos.length === 0; // Check if there are no todos in the category for the placeholder.
 
     // Ensure todos is an array with valid items only.
     const validTodos = Array.isArray(category.todos)
@@ -29,7 +29,7 @@ const TodoContent: React.FC<TodoContentProps> = ({ category, handleTodoDelete, o
     const placeholderId = `placeholder-${category.id}`;
 
     let placeholderElement = null;
-    if(isEmpty) {
+    if(isEmpty) { // Create a placeholder element if there are no todos in the category, so that the category can be dragged into.
         const { attributes, listeners, setNodeRef, transform, isDragging } = useSortable({
             id: placeholderId,
             data: { type: 'todo', categoryId: category.id }
@@ -60,7 +60,7 @@ const TodoContent: React.FC<TodoContentProps> = ({ category, handleTodoDelete, o
                     }
                     strategy={verticalListSortingStrategy}
                 >
-                    {isEmpty ? (
+                    {isEmpty ? ( // Render the placeholder element if there are no todos in the category.
                         placeholderElement
                     ) : (
                         validTodos.map((todo) => (

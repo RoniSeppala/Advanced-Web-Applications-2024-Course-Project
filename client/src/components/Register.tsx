@@ -3,7 +3,7 @@ import {Box, Button, Checkbox, FormControlLabel, TextField} from "@mui/material"
 import OauthButtons from "./OauthButtons"
 
 const Register:React.FC = () => {
-    const [email, setEmail] = React.useState<string>("")
+    const [email, setEmail] = React.useState<string>("")  //variables for all editable fields and errors
     const [password, setPassword] = React.useState<string>("")
     const [repeatPassword, setRepeatPassword] = React.useState<string>("")
     const [isAdmin, setIsAdmin] = React.useState<boolean>(false)
@@ -11,23 +11,22 @@ const Register:React.FC = () => {
     const [displayName, setDisplayName] = React.useState<string>("")
 
     const registerUser = async () => {
-        console.log(email, password, repeatPassword, isAdmin)
-        setErrors([])
+        setErrors([]) //clear errors
 
-        if (password !== repeatPassword) {
+        if (password !== repeatPassword) { //check if passwords match
             console.error("Passwords do not match") 
             setErrors(["Passwords do not match"])
             return
         }
 
         try {
-            const response = await fetch("/api/auth/register", {
+            const response = await fetch("/api/auth/register", { //try registering
                 method: "POST",
                 headers: {
                     'Content-Type': 'application/json'
                 },
                 body: JSON.stringify({
-                    email: email, 
+                    email: email,
                     password: password,
                     isAdmin: isAdmin,
                     displayName: displayName
@@ -54,8 +53,7 @@ const Register:React.FC = () => {
                 throw new Error("Error registering")
             }
 
-            window.location.href = "/login"
-            console.log(data)
+            window.location.href = "/login" //redirect to login page if registration successful
 
         } catch (error) {
             if (error instanceof Error) {
@@ -127,7 +125,7 @@ const Register:React.FC = () => {
                     }
                     label="Is Admin"
                 />
-                { errors.map((error, index) => {
+                { errors.map((error, index) => { //display errors
                     return <p key={index} style={{color: "red", fontWeight: "bold"}}>{error}</p>
                 })
                 }
