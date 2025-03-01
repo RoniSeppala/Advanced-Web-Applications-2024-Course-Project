@@ -13,11 +13,12 @@ This program can be accessed through a few ways.
 When entering the website, the user can register or login either with twitter, google or with email and password
 
 ### Website usage
-Once logged in, the user can add boards, categories and todos by clicking respective add buttons.
-The user can reorganise todos within a category as well as drag them to other categories within the same board.
-The user can also reorganise categories by dragging and dropping them.
-Categories and Todos can be deleted or have their color changed with their respective buttons.
-Board, category and todo names can be edited by double clicking on them on pc and by long pressing on mobile.
+- Once logged in, the user can add boards, categories and todos by clicking respective add buttons.
+- The user can reorganise todos within a category as well as drag them to other categories within the same board.
+- The user can also reorganise categories by dragging and dropping them.
+- Categories and Todos can be deleted or have their color changed with their respective buttons.
+- Board, category and todo names can be edited by double clicking on them on pc and by long pressing on mobile.
+- Boards can be deleted
 
 ## Technology choises
 In this section I will go through my technolgy choises, used npm packets and other relevant choises
