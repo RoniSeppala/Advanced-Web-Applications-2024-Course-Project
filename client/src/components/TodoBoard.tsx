@@ -2,7 +2,7 @@ import React from "react";
 import TodoCategory from "./TodoCategory";
 import { Box, Button } from "@mui/material";
 import BoardTitle from "./BoardTitle";
-import { DndContext, DragOverlay, PointerSensor, TouchSensor, rectIntersection, useSensor, useSensors } from "@dnd-kit/core";
+import { DndContext, DragOverlay, PointerSensor, TouchSensor, rectIntersection, useSensor, useSensors, DragStartEvent, DragEndEvent } from "@dnd-kit/core";
 import { arrayMove, rectSortingStrategy, SortableContext } from "@dnd-kit/sortable";
 
 interface TodoBoardProps {
@@ -129,7 +129,7 @@ const TodoBoard:React.FC<TodoBoardProps> = ({ todoBoardData }) => {
         useSensor(TouchSensor, { activationConstraint: { delay: 250, tolerance: 5 } })
     )
 
-    const handleDragStart = (event: any) => { //dnd kit drag start
+    const handleDragStart = (event: DragStartEvent) => { //dnd kit drag start
         if ( //cancel drag if originated from color container
             colorContainerRef.current &&
             event.activatorEvent.target instanceof Node &&
@@ -139,7 +139,9 @@ const TodoBoard:React.FC<TodoBoardProps> = ({ todoBoardData }) => {
         }
         
         const { active } = event;
-        const { type, categoryId } = active.data.current;
+        const currentData = active.data.current;
+        if (!currentData || !('type' in currentData) || !('categoryId' in currentData)) return;
+        const { type, categoryId } = currentData;
         const activeItemCategory = todoBoardDataState.categories.find((category) => category.id === categoryId);
 
         if (!activeItemCategory) return;
@@ -154,7 +156,7 @@ const TodoBoard:React.FC<TodoBoardProps> = ({ todoBoardData }) => {
         }
     }
 
-    const handleDragEnd = (event: any) => { //dnd kit drag end
+    const handleDragEnd = (event: DragEndEvent) => { //dnd kit drag end
         const { active, over } = event;
         if (!over) {
             setNeedsSync(true)
@@ -165,8 +167,8 @@ const TodoBoard:React.FC<TodoBoardProps> = ({ todoBoardData }) => {
 
         if (activeType === "category" && overType === "category") {  //category drag
             if (active.id !== over.id) {
-                const oldIndex = categoryOrder.indexOf(active.id);
-                const newIndex = categoryOrder.indexOf(over.id);
+                const oldIndex = categoryOrder.indexOf(active.id as string);
+                const newIndex = categoryOrder.indexOf(over.id as string);
                 setCategoryOrder((prevOrder) => arrayMove(prevOrder, oldIndex, newIndex));
 
                 setTodoBoardDataState((prevData) => {
@@ -178,16 +180,17 @@ const TodoBoard:React.FC<TodoBoardProps> = ({ todoBoardData }) => {
         }
 
         if (activeType === "todo" && overType === "todo") {  //todo drag
-            const activeCategoryId = active.data.current.categoryId;
-            const overCategoryId = over.data.current.categoryId;
+            const activeCategoryId = active.data.current?.categoryId;
+            if (!activeCategoryId) return;
+            const overCategoryId = over.data.current?.categoryId;
 
             //drop within category
             if (activeCategoryId === overCategoryId) {
                 const category = todoBoardDataState.categories.find((category) => category.id === activeCategoryId);
                 if (!category) return;
                 const categoryItems = category.todos;
-                const oldIndex = categoryItems?.findIndex((item) => item.id === active.id);
-                const newIndex = categoryItems?.findIndex((item) => item.id === over.id);
+                const oldIndex = categoryItems?.findIndex((item) => item.id === active.id as string);
+                const newIndex = categoryItems?.findIndex((item) => item.id === over.id as string);
                 
                 setTodoBoardDataState((prevData) => {
                     const newCategories = prevData.categories.map((cat) => 
