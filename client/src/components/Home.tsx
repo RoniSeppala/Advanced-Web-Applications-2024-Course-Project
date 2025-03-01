@@ -2,59 +2,6 @@ import React, { useEffect } from "react"
 import TodoBoard from "./TodoBoard"
 import { Button, Box } from "@mui/material";
 
-const testdata1 = {
-    title: "Work",
-    titleBgColor: "#FFDFD3",
-    boardBgColor: "#E2F0CB",
-    categories: [
-        {
-            title: "Urgent",
-            color: "#FFB3BA", // pastel red
-            id: "category-0",
-            todos: [
-                { id: "item-0", todo: "Finish report", color: "#FFB3BA" },
-                { id: "item-1", todo: "Email client", color: "#B3CDE0"}
-            ]
-        },
-        {
-            title: "Later",
-            color: "#B3CDE0", // pastel blue 
-            id: "category-1",
-            todos: [
-                { id: "item-2", todo: "Schedule meeting", color: "#FFFFBA"},
-                { id: "item-3", todo: "Review code", color: "#B2E2B2"},
-                { id: "item-4", todo: "Review code"}
-            ]
-        }
-    ]
-};
-
-const testdata2 = {
-    title: "Personal",
-    titleBgColor: "#C9C9FF",
-    boardBgColor: "#00ff00",
-    categories: [
-        {
-            title: "Shopping",
-            color: "#B2E2B2", // pastel green
-            id: "category-0",
-            todos: [
-                { id: "item-0", todo: "Buy groceries", color: "#FFDFD3" },
-                { id: "item-1", todo: "Order new shoes" }
-            ]
-        },
-        {
-            title: "Chores",
-            color: "#FFFFBA", // pastel yellow
-            id: "category-1",
-            todos: [
-                { id: "item-2", todo: "Clean kitchen" },
-                { id: "item-3", todo: "Mow lawn" }
-            ]
-        }
-    ]
-};
-
 interface IUser {
     email?: string;
     password?: string;
@@ -175,7 +122,7 @@ const Home:React.FC = () => {
         <div>
             <Box sx={{display: "flex", justifyContent: "center", alignItems: "center", flexDirection: "row"}}>
                 <h1>Welcome  {user?.displayName || ""}</h1>
-                <Button onClick={createBoard}
+                {!user || <Button onClick={createBoard}
                 sx={{
                     backgroundColor: "lightblue",
                     color: "#000000",
@@ -184,14 +131,11 @@ const Home:React.FC = () => {
                     padding: "20px",
                     marginLeft: "20px"
                     
-                }}>Create Board</Button>
+                }}>Create Board</Button>}
             </Box>
             {todoBoards.map((board, index) => {
                 return <TodoBoard key={index} todoBoardData={board} />
             })}
-
-            <TodoBoard todoBoardData={testdata1} />
-            <TodoBoard todoBoardData={testdata2} />
         </div>
     )
 }

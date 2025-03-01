@@ -351,7 +351,8 @@ const TodoBoard:React.FC<TodoBoardProps> = ({
                                 handleCategoryDelete={handleCategoryDelete}
                                 onTodoSave={onTodoSave}
                                 onCategoryTitleSave={onCategoryTitleSave}
-                                colorContainerRef={colorContainerRef}/>;
+                                colorContainerRef={colorContainerRef}
+                                setNeedsSync={setNeedsSync}/>;
                         })}
                     </Box>
                 </SortableContext>

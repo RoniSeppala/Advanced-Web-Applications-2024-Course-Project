@@ -22,7 +22,8 @@ interface TodoCategoryProps {
     handleCategoryDelete: (categoryId: string) => void,
     onTodoSave: (content: string, id: string) => void,
     onCategoryTitleSave: (content: string, id: string) => void,
-    colorContainerRef: React.RefObject<HTMLDivElement | null>
+    colorContainerRef: React.RefObject<HTMLDivElement | null>,
+    setNeedsSync: React.Dispatch<React.SetStateAction<boolean>>
 }
 
 interface Todo {
@@ -30,7 +31,7 @@ interface Todo {
     todo: string
 }
 
-const TodoCategory:React.FC<TodoCategoryProps> = ({ category, boardTodoCounter , setBoardTodoCounter, handleTodoDelete, handleCategoryDelete, onTodoSave, onCategoryTitleSave, colorContainerRef}) => {
+const TodoCategory:React.FC<TodoCategoryProps> = ({ category, boardTodoCounter , setBoardTodoCounter, handleTodoDelete, handleCategoryDelete, onTodoSave, onCategoryTitleSave, colorContainerRef, setNeedsSync}) => {
     const bgColor = category.color || "#D3D3D3"
     const [chromePickerColor, setChromePickerColor] = React.useState<string>("#D3D3D3")
 
@@ -70,6 +71,8 @@ const TodoCategory:React.FC<TodoCategoryProps> = ({ category, boardTodoCounter ,
         }
 
         category.todos.push(newTodo)
+
+        setNeedsSync(true)
 
     }
 
