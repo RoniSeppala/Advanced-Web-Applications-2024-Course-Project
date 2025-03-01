@@ -1,6 +1,6 @@
 import mongoose, {Document, Schema} from "mongoose";
 
-interface IUser extends Document {
+interface IUser extends Document { //interface for user
     email?: string;
     password?: string;
     isAdmin: boolean;
@@ -10,7 +10,7 @@ interface IUser extends Document {
     displayName?: string;
 }
 
-const userSchema: Schema = new Schema({
+const userSchema: Schema = new Schema({ //schema for user
     email: {type: String, required: false},
     password: {type: String, required: false},
     isAdmin: {type: Boolean, required: true, default: false},

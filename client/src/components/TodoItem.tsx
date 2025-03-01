@@ -28,6 +28,8 @@ interface TodoItemProps {
 }
 
 const TodoItem:React.FC<TodoItemProps> = ({category, todo, handleTodoDelete, onTodoSave, colorContainerRef}) => {
+
+    // Setup for todo sorting drag and drop
     const { attributes, listeners, setNodeRef, transform, isDragging } = useSortable({
         id: todo.id,
         data: { type: 'todo', categoryId: category.id }
@@ -38,16 +40,15 @@ const TodoItem:React.FC<TodoItemProps> = ({category, todo, handleTodoDelete, onT
     //popover setup
     const [anchorEl, setAnchorEl] = React.useState<HTMLButtonElement | null>(null);
     const handlePopoverClick = (event: React.MouseEvent<HTMLButtonElement>) => {
-        console.log("Change color clicked")
         setAnchorEl(event.currentTarget);
     };
     const handlePopoverClose = () => {
         setAnchorEl(null);
     };
-    const open = Boolean(anchorEl);
-    const id = open ? 'simple-popover' : undefined;
+    const open: boolean = Boolean(anchorEl);
+    const id: string | undefined = open ? 'simple-popover' : undefined;
 
-    const handleColorChange = (newColor: string) => {
+    const handleColorChange = (newColor: string) => { //change color of the todo
         setChromePickerColor(newColor)
         console.log("Color changed to: " + newColor)
         category.todos.forEach((todo) => {
@@ -57,7 +58,7 @@ const TodoItem:React.FC<TodoItemProps> = ({category, todo, handleTodoDelete, onT
         })
     }
 
-    const style = {
+    const style = { //dragging style for todos
         transform: transform ? `translate3d(${transform.x}px, ${transform.y}px, 0)` : undefined,
         transition: "transform 0.4s ease",
         padding: '8px',
@@ -77,7 +78,7 @@ const TodoItem:React.FC<TodoItemProps> = ({category, todo, handleTodoDelete, onT
                 border: "1px solid black",
                 backgroundColor: darken(chromePickerColor, 0.05),
             }}>
-                <ListItemText primary={<EdiatableTextDisplay initialContent={todo.todo} id={todo.id} onSave={(content:string, id:string) => {onTodoSave(content, id)}}/>}/>  {/*TODO: add proper onSave function */}
+                <ListItemText primary={<EdiatableTextDisplay initialContent={todo.todo} id={todo.id} onSave={(content:string, id:string) => {onTodoSave(content, id)}}/>}/>
                 <IconButton aria-label="delete" size="small" onClick={() => handleTodoDelete(category.id, todo.id)}>
                     <DeleteIcon />
                 </IconButton>

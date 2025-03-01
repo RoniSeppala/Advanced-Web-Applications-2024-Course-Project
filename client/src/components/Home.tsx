@@ -2,7 +2,7 @@ import React, { useEffect } from "react"
 import TodoBoard from "./TodoBoard"
 import { Button, Box } from "@mui/material";
 
-interface IUser {
+interface IUser { //interface for user
     email?: string;
     password?: string;
     isAdmin: boolean;
@@ -13,7 +13,7 @@ interface IUser {
     _id: string;
     __v: number;
 }
-interface ITodoBoard {
+interface ITodoBoard {  //interface for todo board
     title: string,
     titleBgColor: string,
     boardBgColor: string,
@@ -34,11 +34,10 @@ interface ITodoBoard {
 }
 
 const Home:React.FC = () => {
+    const [user, setUser] = React.useState<IUser | null>(null) //current user
+    const [todoBoards, setTodoBoards] = React.useState<ITodoBoard[]>([]) //todo boards
 
-    const [user, setUser] = React.useState<IUser | null>(null)
-    const [todoBoards, setTodoBoards] = React.useState<ITodoBoard[]>([])
-
-    useEffect(() => {
+    useEffect(() => {  //authenticate use and get his boards
         fetch("/api/auth/current_user", {
             credentials: "include"
         })
@@ -53,13 +52,16 @@ const Home:React.FC = () => {
             fetch("/api/todos/getboards", {
                 credentials: "include"
             }).then(response => response.json()).then(data => {
-                console.log(data.todoBoards)  //TODO: add board getting
-                setTodoBoards(data.todoBoards)
+                if (data.todoBoards) {
+                    setTodoBoards(data.todoBoards)
+                } else {
+                    setTodoBoards([])
+                }
             })
         })
     }, [])
 
-    const createBoard = async () => {
+    const createBoard = async () => { //create new board and save it to database
         if (!user) {
             await fetch("/api/auth/current_user", {
                 credentials: "include"
@@ -76,8 +78,6 @@ const Home:React.FC = () => {
             return
         }
 
-        console.log(user._id)
-
         const newBoard:ITodoBoard = {
             title: "New Board",
             titleBgColor: "#FFDFD3",
@@ -86,7 +86,7 @@ const Home:React.FC = () => {
             categories: []
         }
 
-        const response = await fetch("/api/todos/createboard", {
+        const response = await fetch("/api/todos/createboard", { //create new board
             method: "POST",
             credentials: "include",
             headers: {
@@ -96,24 +96,23 @@ const Home:React.FC = () => {
         });
 
         const data = await response.json();
-        console.log(data);
 
-        if (response.status === 401) {
+        if (response.status === 401) { //if not authenticated return
             console.error("Not authenticated")
             return
         }
 
-        if (data.error) {
+        if (data.error) { //if error return
             console.error(data.error)
             return
         }
 
-        if (!response.ok) {
+        if (!response.ok) { //if not ok return
             console.error("Failed to create board");
             return
         }
 
-        if (data.todoBoards) {
+        if (data.todoBoards) {  //if board created successfully, update boards
             setTodoBoards(data.todoBoards)
         }
     }
@@ -132,7 +131,8 @@ const Home:React.FC = () => {
                     marginLeft: "20px"
                     
                 }}>Create Board</Button>}
-            </Box>
+            </Box> 
+            {/*load all todo boards*/}
             {todoBoards.map((board, index) => {
                 return <TodoBoard key={index} todoBoardData={board} />
             })}

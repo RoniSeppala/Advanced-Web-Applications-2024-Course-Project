@@ -3,16 +3,16 @@ import {Box, Button, TextField} from "@mui/material"
 import OauthButtons from "./OauthButtons"
 
 const Login:React.FC = () => {
-    const [email, setEmail] = React.useState<string>("")
+    const [email, setEmail] = React.useState<string>("") //variables for email, password and errors
     const [password, setPassword] = React.useState<string>("")
     const [errors, setErrors] = React.useState<string[]>([])
 
     const loginUser = async () => {
-        setErrors([])
-        
+        setErrors([]) //clear errors
+
         try {
             console.log("Logging in")
-            const response = await fetch("/api/auth/local", {
+            const response = await fetch("/api/auth/local", { //try login
                 method: "POST",
                 headers: {
                     'Content-Type': 'application/json'
@@ -35,17 +35,16 @@ const Login:React.FC = () => {
                 });
 
                 setErrors(errorsTemp)
-                console.log(errors)
 
                 throw new Error("invalid input")
             }
 
-            if (!response.ok) {
+            if (!response.ok) { //if response is not ok, exit function
                 console.error("Error logging in")
                 throw new Error("Error logging in")
             }
 
-            window.location.href = "/"
+            window.location.href = "/" //redirect to home page if login successful
 
         } catch (error) {
             if (error instanceof Error) {
@@ -56,7 +55,7 @@ const Login:React.FC = () => {
 
     return (
         <>
-        <Box
+        <Box //Box for the login form
             component="form"
             onSubmit={(e) => {
                 e.preventDefault()
@@ -91,7 +90,7 @@ const Login:React.FC = () => {
                     type="password"
                     sx = {{marginBottom: "10px"}}
                     onChange={(e) => setPassword(e.target.value)} />
-                {errors.map((error, index) => (
+                {errors.map((error, index) => ( //display errors
                     <p key={index} style={{color: "red", fontWeight: "bold"}}>{error}</p>
                 ))}
                 <Button
@@ -100,7 +99,7 @@ const Login:React.FC = () => {
                     id="submit">
                         Login
                 </Button>
-                <OauthButtons page="Login"/>
+                <OauthButtons page="Login"/> {/*Oauth buttons for login*/}
             </Box>
         </>
     )

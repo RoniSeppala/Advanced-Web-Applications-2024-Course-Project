@@ -5,11 +5,11 @@ import { Strategy as TwitterStrategy } from 'passport-twitter';
 import { User, IUser } from '../models/User';
 import bcrypt from 'bcrypt';
 
-passport.serializeUser((user: any, done) => {
+passport.serializeUser((user: any, done) => { //serialize user
     done(null, user.id);
 });
 
-passport.deserializeUser(async (id, done) => {
+passport.deserializeUser(async (id, done) => { //deserialize user
     try {
         const user: IUser | null = await User.findById(id);
         done(null, user);
@@ -18,14 +18,14 @@ passport.deserializeUser(async (id, done) => {
     }
 });
 
-passport.use(new LocalStrategy({usernameField: 'email'}, async (email, password, done) => {
+passport.use(new LocalStrategy({usernameField: 'email'}, async (email, password, done) => { //local strategy for passport login
     try {
         const user: IUser | null = await User.findOne({email: email});
         if (!user) {
             return done(null, false, {message: 'Incorrect email'});
         }
 
-        if (!bcrypt.compareSync(password, user.password as string)) {
+        if (!bcrypt.compareSync(password, user.password as string)) { //compare passwords
             return done(null, false, { message: 'Incorrect password.' });
         }
         return done(null, user);
@@ -34,7 +34,7 @@ passport.use(new LocalStrategy({usernameField: 'email'}, async (email, password,
     }
 }));
 
-passport.use(new GoogleStrategy({
+passport.use(new GoogleStrategy({ //google strategy for passport login
     clientID: process.env.GOOGLE_CLIENT_ID as string,
     clientSecret: process.env.GOOGLE_CLIENT_SECRET as string,
     callbackURL: "http://localhost:1234/api/auth/google/callback"
@@ -55,7 +55,7 @@ passport.use(new GoogleStrategy({
     }
 }));
 
-passport.use(new TwitterStrategy({
+passport.use(new TwitterStrategy({ //x strategy for passport login
     consumerKey: process.env.TWITTER_CONSUMER_KEY as string,
     consumerSecret: process.env.TWITTER_CONSUMER_SECRET as string,
     callbackURL: "http://localhost:1234/api/auth/twitter/callback"

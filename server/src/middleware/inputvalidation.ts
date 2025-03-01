@@ -1,7 +1,6 @@
 import { body } from 'express-validator';
 
-
-export const registerValidation = [
+export const registerValidation = [ //validation for registering
     body('email').isEmail().normalizeEmail().trim().escape().withMessage('Email incorrect form'),
     body('password').isLength({min: 6}).withMessage('Password must be at least 6 characters long')
                     .matches(/[A-Z]/).withMessage('Password must contain at least one uppercase letter')
@@ -14,7 +13,7 @@ export const registerValidation = [
     body("isAdmin").isBoolean().withMessage("isAdmin must be a boolean").escape()
 ]
 
-export const loginValidation = [
+export const loginValidation = [ //validation for logging in
     body('email').isEmail().normalizeEmail().trim().escape().withMessage('Email incorrect form'),
     body('password').trim().escape()
 ]

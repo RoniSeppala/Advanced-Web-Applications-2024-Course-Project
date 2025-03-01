@@ -1,13 +1,13 @@
 import React from "react"
 import { Button } from "@mui/material"
 
-
 interface OauthButtonsProps {
     page: string
 }
 
 const OauthButtons:React.FC<OauthButtonsProps> = ({ page }) => {
-    const handleOauthLogin = (provider: string) => {
+
+    const handleOauthLogin = (provider: string) => { //handle oauth login button press
         window.location.href = `/api/auth/${provider}`
     }
 

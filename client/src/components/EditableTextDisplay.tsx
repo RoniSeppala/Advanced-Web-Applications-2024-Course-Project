@@ -8,15 +8,15 @@ interface EditableTextDisplayProps {
 }
 
 const EdiatableTextDisplay:React.FC<EditableTextDisplayProps> = ({initialContent, id, onSave}) => {
-    const [content, setContent] = React.useState<string>(initialContent);
-    const [isEditing, setIsEditing] = React.useState<Boolean>(false);
+    const [content, setContent] = React.useState<string>(initialContent); //initialise variables for content, content editin and mobile editing
+    const [isEditing, setIsEditing] = React.useState<boolean>(false);
     const [touchStart, setTouchStart] = React.useState<number | null>(null);
 
     const doubleClickHandler = () => {
         setIsEditing(true);
     }
 
-    const exitHandler = () => {
+    const exitHandler = () => { //exit editing mode
         setIsEditing(false);
         onSave(content, id);
     }
@@ -31,11 +31,11 @@ const EdiatableTextDisplay:React.FC<EditableTextDisplayProps> = ({initialContent
         }
     }
 
-    const handleTouchStart = () => {
+    const handleTouchStart = () => { //save tocuh start time for long press
         setTouchStart(Date.now());
     };
 
-    const handleTouchEnd = () => {
+    const handleTouchEnd = () => { //if long press, enter editing mode
         if (touchStart && Date.now() - touchStart > 500) {
             setIsEditing(true);
         }

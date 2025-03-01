@@ -3,15 +3,15 @@ import {AppBar, Toolbar, Typography, List, ListItemButton, useMediaQuery, Button
 import MenuIcon from "@mui/icons-material/Menu"
 
 const Header:React.FC = () => {
-    const isMobile = useMediaQuery('(max-width:600px)')
+    const isMobile: boolean = useMediaQuery('(max-width:600px)') //variables for mobile view, drawer state and autehntication
     const [drawerOpen, setDrawerOpen] = React.useState<boolean>(false)
     const [isAuthenticated, setIsAuthenticated] = React.useState<boolean>(false)
 
-    const toggleDrawer = () => {
+    const toggleDrawer = () => { //handle drawer toggle
         setDrawerOpen(!drawerOpen)
     }
 
-    useEffect(() => {
+    useEffect(() => { //check if user is authenticated on page load
         fetch("/api/auth/current_user", {
             credentials: "include"
         })
@@ -25,8 +25,7 @@ const Header:React.FC = () => {
         })
     }, [])
 
-    const logout = async() => {
-        console.log("Logging out")
+    const logout = async() => { //logout function
         await fetch("/api/auth/logout", {
             method: "GET",
             credentials: "include"
@@ -38,7 +37,7 @@ const Header:React.FC = () => {
         })
       }
 
-    const drawerContent = (
+    const drawerContent = ( //drawer content for mobile view
         <List>
           <ListItemButton onClick={() => window.location.href = '/'}>Home</ListItemButton>
           {!isAuthenticated && (<ListItemButton onClick={() => window.location.href = '/Login'}>Login</ListItemButton>)} {/*conditional rendering for login and register in mobile view */}
@@ -80,7 +79,7 @@ const Header:React.FC = () => {
             anchor="left"
             PaperProps={{
             style: {
-            minWidth: 250, // Set the minimum width for the Drawer
+            minWidth: 250,
             },}}>
             {drawerContent}
         </SwipeableDrawer>
