@@ -9,7 +9,7 @@ interface EditableTextDisplayProps {
 
 const EdiatableTextDisplay:React.FC<EditableTextDisplayProps> = ({initialContent, id, onSave}) => {
     const [content, setContent] = React.useState<string>(initialContent); //initialise variables for content, content editin and mobile editing
-    const [isEditing, setIsEditing] = React.useState<Boolean>(false);
+    const [isEditing, setIsEditing] = React.useState<boolean>(false);
     const [touchStart, setTouchStart] = React.useState<number | null>(null);
 
     const doubleClickHandler = () => {
