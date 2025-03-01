@@ -6,7 +6,7 @@ In this project ChatGPT-4o, ChatGPT-o3-mini and ChatGPT-o3-mini-high as well as 
 ## Installation guidelines
 
 This program can be accessed through a few ways.
-1. Mirror the GitHub onto your local machine and run "npm run dev:client" and "npm run dev:server" from the root folder and from different terminals
+1. Mirror the GitHub onto your local machine and run "npm run dev:client" and "npm run dev:server" from the root folder and from different terminals, though with this method google login and x login will not work as the keys will be missing
 
 ## How to use
 ### Login and Register
