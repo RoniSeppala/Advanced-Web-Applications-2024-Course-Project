@@ -64,4 +64,4 @@ Session managing and thus login and registering is done with Express-session and
 | Columns can be colored                                                        | 1                 |
 | Registering and login have validation middlevare and provide user with errors | 1                 |
 | Forms can be submitted with enter                                             | 1                 |
-| **Sum**                                                                       | **su**            |
+| **Sum**                                                                       | **3**             |

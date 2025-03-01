@@ -82,8 +82,6 @@ router.post("/register", registerValidation, async (req: Request, res: Response)
 
         res.status(200).json(newUser);
 
-
-
     } catch (error: any) {
         console.error('Error in registration,', error)
         res.status(500).json({error: 'Internal server error'})
@@ -98,6 +96,5 @@ router.get("/current_user", (req: Request, res: Response) => {
         res.status(401).json({ user: null });
     }
 })
-
 
 export default router;
