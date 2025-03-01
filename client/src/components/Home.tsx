@@ -53,7 +53,12 @@ const Home:React.FC = () => {
                 credentials: "include"
             }).then(response => response.json()).then(data => {
                 console.log(data.todoBoards)  //TODO: add board getting
-                setTodoBoards(data.todoBoards)
+                if (data.todoBoards) {
+                    setTodoBoards(data.todoBoards)
+                } else {
+                    console.log("No boards found")
+                    setTodoBoards([])
+                }
             })
         })
     }, [])
