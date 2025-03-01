@@ -78,7 +78,7 @@ const TodoItem:React.FC<TodoItemProps> = ({category, todo, handleTodoDelete, onT
                 border: "1px solid black",
                 backgroundColor: darken(chromePickerColor, 0.05),
             }}>
-                <ListItemText primary={<EdiatableTextDisplay initialContent={todo.todo} id={todo.id} onSave={(content:string, id:string) => {onTodoSave(content, id)}}/>}/>  {/*TODO: add proper onSave function */}
+                <ListItemText primary={<EdiatableTextDisplay initialContent={todo.todo} id={todo.id} onSave={(content:string, id:string) => {onTodoSave(content, id)}}/>}/>
                 <IconButton aria-label="delete" size="small" onClick={() => handleTodoDelete(category.id, todo.id)}>
                     <DeleteIcon />
                 </IconButton>
