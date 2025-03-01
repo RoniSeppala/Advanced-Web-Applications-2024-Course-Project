@@ -19,9 +19,11 @@ interface TodoBoardProps {
                 todo: string,
                 color?: string
             }[]
-        }[]
+        }[],
+        _id?: string,
+        __v?: number
     }
-
+    deleteBoard: (id: string) => void
 }
 
 interface TodoBoardDataInterface { //interface for todo board data 
@@ -37,7 +39,9 @@ interface TodoBoardDataInterface { //interface for todo board data
                 todo: string,
                 color?: string
             }[]
-        }[]
+        }[],
+        _id?: string,
+        __v?: number
 }
 
 interface Category { //interface for category
@@ -57,7 +61,7 @@ interface Todo { //interface for todo
     color?: string
 }
 
-const TodoBoard:React.FC<TodoBoardProps> = ({ todoBoardData }) => {
+const TodoBoard:React.FC<TodoBoardProps> = ({ todoBoardData , deleteBoard}) => {
     const [todoBoardDataState, setTodoBoardDataState] = React.useState<TodoBoardDataInterface>(todoBoardData) //state for all todo board data
 
     //dnd kit variables
@@ -308,6 +312,13 @@ const TodoBoard:React.FC<TodoBoardProps> = ({ todoBoardData }) => {
                     gap: "10px",
                     }}>
                 <BoardTitle title={todoBoardDataState.title} color={todoBoardDataState.titleBgColor || "#C9C9FF"} bigTitle={true} onBoardTitleSave={onBoardTitleSave} onCategoryTitleSave={() => {"This is borad title and category title should not be editable here"}} categoryId="this-is-a-board-title-and-shouldnt-have-category-id"/>
+                <Button sx={{
+                    margin: "10px",
+                    background: "lightblue",
+                    borderRadius: "10px",
+                    color: "black",
+                    border: "1px solid black",
+                    }} onClick={() => deleteBoard(todoBoardDataState._id || "not know")}>Delete Board</Button>
                 <Button sx={{
                     margin: "10px",
                     background: "lightblue",

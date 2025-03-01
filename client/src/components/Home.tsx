@@ -37,6 +37,8 @@ const Home:React.FC = () => {
     const [user, setUser] = React.useState<IUser | null>(null) //current user
     const [todoBoards, setTodoBoards] = React.useState<ITodoBoard[]>([]) //todo boards
 
+    const [boardsNeedSync, setBoardsNeedSync] = React.useState<boolean>(false) //if boards need to be updated
+
     useEffect(() => {  //authenticate use and get his boards
         fetch("/api/auth/current_user", {
             credentials: "include"
@@ -60,6 +62,31 @@ const Home:React.FC = () => {
             })
         })
     }, [])
+
+    useEffect(() => { //if boards need to be updated, get them
+        if (!boardsNeedSync) return;
+        async function getBoards() {
+            const response = await fetch("/api/todos/getboards", {
+                credentials: "include",
+            })
+
+            const data = await response.json();
+
+            if (!response.ok) {
+                console.error("Failed to get boards")
+                return
+            }
+
+            if (data.todoBoards) {
+                setTodoBoards(data.todoBoards)
+            } else {
+                setTodoBoards([])
+            }
+
+            setBoardsNeedSync(false)
+        }
+        getBoards()
+    }, [boardsNeedSync, todoBoards])
 
     const createBoard = async () => { //create new board and save it to database
         if (!user) {
@@ -111,10 +138,30 @@ const Home:React.FC = () => {
             console.error("Failed to create board");
             return
         }
-
+        
         if (data.todoBoards) {  //if board created successfully, update boards
             setTodoBoards(data.todoBoards)
         }
+    }
+
+    const deleteBoard = async (boardID: string) => { //delete board
+        console.log("Deleting board with id: " + boardID)
+
+        const response = await fetch("/api/todos/deleteboard", {
+            method: "POST",
+            credentials: "include",
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({boardID})
+        });
+
+        if (!response.ok) {
+            console.error("Failed to delete board")
+            return
+        }
+
+        setBoardsNeedSync(true)
     }
 
     return (
@@ -133,8 +180,8 @@ const Home:React.FC = () => {
                 }}>Create Board</Button>}
             </Box> 
             {/*load all todo boards*/}
-            {todoBoards.map((board, index) => {
-                return <TodoBoard key={index} todoBoardData={board} />
+            {todoBoards.map((board) => {
+                return <TodoBoard key={board._id} todoBoardData={board} deleteBoard={deleteBoard}/>
             })}
         </div>
     )
