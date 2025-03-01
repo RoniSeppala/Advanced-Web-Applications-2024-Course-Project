@@ -47,7 +47,17 @@ Session managing and thus login and registering is done with Express-session and
 
 ## Point requests
 ### Assignment given
-| Feature       | Point request     |
-|---------------|-------------------|
-| Basic Features| 25                |
+| Feature                                   | Point request     |
+|-------------------------------------------|-------------------|
+| Basic Features                            | 25                |
+| Utilization of React                      | 3                 |
+| Cards can be organised with drag and drop | 2                 |
+| Columns can be reordered                  | 1                 |
+| User can set the color of a card          | 1                 |
+|-------------------------------------------|-------------------|
+| Sum                                       |                   |
+
 ### Personal reguests
+| Feature                                   | Point request     |
+|-------------------------------------------|-------------------|
+| Basic Features                            | 25                |
