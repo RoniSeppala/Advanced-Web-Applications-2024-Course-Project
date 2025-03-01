@@ -43,6 +43,7 @@ const Header:React.FC = () => {
           <ListItemButton onClick={() => window.location.href = '/'}>Home</ListItemButton>
           {!isAuthenticated && (<ListItemButton onClick={() => window.location.href = '/Login'}>Login</ListItemButton>)} {/*conditional rendering for login and register in mobile view */}
           {!isAuthenticated && (<ListItemButton onClick={() => window.location.href = '/Register'}>Register</ListItemButton>)}
+          {isAuthenticated && (<ListItemButton color="inherit" onClick={logout}>Logout</ListItemButton>)}
         </List>
       );
 
