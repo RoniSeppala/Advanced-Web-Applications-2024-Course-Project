@@ -40,7 +40,7 @@ const Home:React.FC = () => {
     const [boardsNeedSync, setBoardsNeedSync] = React.useState<boolean>(false) //if boards need to be updated
 
     useEffect(() => {  //authenticate use and get his boards
-        fetch("http://roniseppala.com:1234/api/auth/current_user", {
+        fetch("/api/auth/current_user", {
             credentials: "include"
         })
         .then(response => response.json())
@@ -51,7 +51,7 @@ const Home:React.FC = () => {
                 console.log("No user logged in")
             }
         }).then(() => {
-            fetch("http://roniseppala.com:1234/api/todos/getboards", {
+            fetch("/api/todos/getboards", {
                 credentials: "include"
             }).then(response => response.json()).then(data => {
                 if (data.todoBoards) {
@@ -66,7 +66,7 @@ const Home:React.FC = () => {
     useEffect(() => { //if boards need to be updated, get them
         if (!boardsNeedSync) return;
         async function getBoards() {
-            const response = await fetch("http://roniseppala.com:1234/api/todos/getboards", {
+            const response = await fetch("/api/todos/getboards", {
                 credentials: "include",
             })
 
@@ -90,7 +90,7 @@ const Home:React.FC = () => {
 
     const createBoard = async () => { //create new board and save it to database
         if (!user) {
-            await fetch("http://roniseppala.com:1234/api/auth/current_user", {
+            await fetch("/api/auth/current_user", {
                 credentials: "include"
             })
             .then(response => response.json())
@@ -113,7 +113,7 @@ const Home:React.FC = () => {
             categories: []
         }
 
-        const response = await fetch("http://roniseppala.com:1234/api/todos/createboard", { //create new board
+        const response = await fetch("/api/todos/createboard", { //create new board
             method: "POST",
             credentials: "include",
             headers: {
@@ -147,7 +147,7 @@ const Home:React.FC = () => {
     const deleteBoard = async (boardID: string) => { //delete board
         console.log("Deleting board with id: " + boardID)
 
-        const response = await fetch("http://roniseppala.com:1234/api/todos/deleteboard", {
+        const response = await fetch("/api/todos/deleteboard", {
             method: "POST",
             credentials: "include",
             headers: {

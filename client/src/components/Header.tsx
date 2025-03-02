@@ -12,7 +12,7 @@ const Header:React.FC = () => {
     }
 
     useEffect(() => { //check if user is authenticated on page load
-        fetch("http://roniseppala.com:1234/api/auth/current_user", {
+        fetch("/api/auth/current_user", {
             credentials: "include"
         })
         .then(response => response.json())
@@ -26,7 +26,7 @@ const Header:React.FC = () => {
     }, [])
 
     const logout = async() => { //logout function
-        await fetch("http://roniseppala.com:1234/api/auth/logout", {
+        await fetch("/api/auth/logout", {
             method: "GET",
             credentials: "include"
         })

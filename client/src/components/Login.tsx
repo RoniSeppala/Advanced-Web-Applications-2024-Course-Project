@@ -12,7 +12,7 @@ const Login:React.FC = () => {
 
         try {
             console.log("Logging in")
-            const response = await fetch("http://roniseppala.com:1234/api/auth/local", { //try login
+            const response = await fetch("/api/auth/local", { //try login
                 method: "POST",
                 headers: {
                     'Content-Type': 'application/json'

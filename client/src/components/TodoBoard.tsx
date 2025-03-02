@@ -115,7 +115,7 @@ const TodoBoard:React.FC<TodoBoardProps> = ({ todoBoardData , deleteBoard}) => {
         if (!needsSync) return; //check if sync is needed
         console.log("Updating board")
         async function updateBoard() { //save to database
-            const response = await fetch("http://roniseppala.com:1234/api/todos/updateboard", {
+            const response = await fetch("/api/todos/updateboard", {
                 method: "POST",
                 credentials: "include",
                 headers: { "Content-Type": "application/json" },

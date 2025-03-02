@@ -1,12 +1,12 @@
 import React from "react"
-import {Box, Button, TextField} from "@mui/material"
+import {Box, Button, Checkbox, FormControlLabel, TextField} from "@mui/material"
 import OauthButtons from "./OauthButtons"
 
 const Register:React.FC = () => {
     const [email, setEmail] = React.useState<string>("")  //variables for all editable fields and errors
     const [password, setPassword] = React.useState<string>("")
     const [repeatPassword, setRepeatPassword] = React.useState<string>("")
-    const [isAdmin] = React.useState<boolean>(false)
+    const [isAdmin, setIsAdmin] = React.useState<boolean>(false)
     const [errors, setErrors] = React.useState<string[]>([])
     const [displayName, setDisplayName] = React.useState<string>("")
 
@@ -20,7 +20,7 @@ const Register:React.FC = () => {
         }
 
         try {
-            const response = await fetch("http://roniseppala.com:1234/api/auth/register", { //try registering
+            const response = await fetch("/api/auth/register", { //try registering
                 method: "POST",
                 headers: {
                     'Content-Type': 'application/json'
