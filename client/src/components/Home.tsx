@@ -176,7 +176,6 @@ const Home:React.FC = () => {
                     border: "1px solid black",
                     padding: "20px",
                     marginLeft: "20px"
-                    
                 }}>Create Board</Button>}
             </Box> 
             {/*load all todo boards*/}

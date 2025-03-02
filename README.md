@@ -6,7 +6,8 @@ In this project ChatGPT-4o, ChatGPT-o3-mini and ChatGPT-o3-mini-high as well as 
 ## Installation guidelines
 
 This program can be accessed through a few ways.
-1. Mirror the GitHub onto your local machine and run "npm run dev:client" and "npm run dev:server" from the root folder and from different terminals, though with this method google login and x login will not work as the keys will be missing
+1. Mirror the GitHub onto your local machine and run "npm run dev:client" and "npm run dev:server" from the root folder
+2. The website is hosted at roniseppala.com:9000
 
 ## How to use
 ### Login and Register
@@ -66,6 +67,7 @@ Session managing and thus login and registering is done with Express-session and
 | Registering and login have validation middlevare and provide user with errors | 1                 |
 | Forms can be submitted with enter                                             | 1                 |
 | User can have unlimited ammount of boards, and can also delete boards         | 1                 |
-| **Sum**                                                                       | **4**             |
+| Website is deployed at roniseppala.com:9000                                   | 5                 |
+| **Sum**                                                                       | **9**             |
 ### Full points reguest
-Based on these reguests I am reguesting 43 points
+Based on these reguests I am reguesting 48 points
