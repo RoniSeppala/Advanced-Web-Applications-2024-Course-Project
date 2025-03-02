@@ -51,9 +51,9 @@ const TodoItem:React.FC<TodoItemProps> = ({category, todo, handleTodoDelete, onT
     const handleColorChange = (newColor: string) => { //change color of the todo
         setChromePickerColor(newColor)
         console.log("Color changed to: " + newColor)
-        category.todos.forEach((todo) => {
-            if(todo.id === todo.id) {
-                todo.color = newColor
+        category.todos.forEach((item) => {
+            if(item.id === todo.id) {
+                item.color = newColor
             }
         })
     }
