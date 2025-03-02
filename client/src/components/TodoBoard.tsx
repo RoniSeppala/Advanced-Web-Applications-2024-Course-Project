@@ -136,7 +136,7 @@ const TodoBoard:React.FC<TodoBoardProps> = ({ todoBoardData , deleteBoard}) => {
 
     const sensors = useSensors( //dnd kit sensors
         useSensor(PointerSensor, { activationConstraint: { distance: 8 } }),
-        useSensor(TouchSensor, { activationConstraint: { delay: 250, tolerance: 5 } })
+        useSensor(TouchSensor, { activationConstraint: { delay: 300, tolerance: 5 } })
     )
 
     const handleDragStart = (event: DragStartEvent) => { //dnd kit drag start
