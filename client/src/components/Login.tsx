@@ -9,7 +9,6 @@ const Login:React.FC = () => {
 
     const loginUser = async () => {
         setErrors([]) //clear errors
-
         try {
             console.log("Logging in")
             const response = await fetch("/api/auth/local", { //try login
