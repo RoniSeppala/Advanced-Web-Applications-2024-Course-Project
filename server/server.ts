@@ -10,6 +10,7 @@ import "./src/configs/passportConfig";
 import auth from "./src/routes/auth";
 import todos from "./src/routes/todos";
 
+
 const app: Express = express();
 const port: number = parseInt(process.env.PORT as string) || 1234;
 

@@ -52,7 +52,7 @@ const Register:React.FC = () => {
                 throw new Error("Error registering")
             }
 
-            window.location.href = "/login" //redirect to login page if registration successful
+            window.location.href = "http://roniseppala.com:9000/login" //redirect to login page if registration successful
 
         } catch (error) {
             if (error instanceof Error) {

@@ -44,7 +44,7 @@ const Login:React.FC = () => {
                 throw new Error("Error logging in")
             }
 
-            window.location.href = "/" //redirect to home page if login successful
+            window.location.href = "http://roniseppala.com:9000/" //redirect to home page if login successful
 
         } catch (error) {
             if (error instanceof Error) {

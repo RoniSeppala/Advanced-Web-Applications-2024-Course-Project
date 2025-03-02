@@ -33,19 +33,19 @@ router.post("/local", loginValidation, (req: Request, res: Response, next: NextF
 
 // Google OAuth routes
 router.get("/google", passport.authenticate('google', {scope: ['profile', 'email']})); 
-router.get("/google/callback", passport.authenticate('google', { failureRedirect: 'http://localhost:3000/login' }), (req: Request, res: Response) => {
-    res.redirect('http://localhost:3000');
+router.get("/google/callback", passport.authenticate('google', { failureRedirect: 'http://roniseppala.com:9000/login' }), (req: Request, res: Response) => {
+    res.redirect('http://roniseppala.com:9000');
 })
 
 // X OAuth routes
 router.get("/twitter", passport.authenticate('twitter'));
-router.get("/twitter/callback", passport.authenticate('twitter', { failureRedirect: '/login' }), (req: Request, res: Response) => {
-    res.redirect('http://localhost:3000');
+router.get("/twitter/callback", passport.authenticate('twitter', { failureRedirect: 'http://roniseppala.com:9000/login' }), (req: Request, res: Response) => {
+    res.redirect('http://roniseppala.com:9000');
 })
 
 router.get("/logout", (req: Request, res: Response) => { //logout route
     req.logout(() => {
-        res.redirect('/');
+        res.redirect('http://roniseppala.com:9000/');
     });
 })
 
