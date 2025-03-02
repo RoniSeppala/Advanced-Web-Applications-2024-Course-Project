@@ -69,5 +69,6 @@ Session managing and thus login and registering is done with Express-session and
 | User can have unlimited ammount of boards, and can also delete boards         | 1                 |
 | Website is deployed at roniseppala.com:9000                                   | 5                 |
 | **Sum**                                                                       | **9**             |
+
 ### Full points reguest
 Based on these reguests I am reguesting 48 points
