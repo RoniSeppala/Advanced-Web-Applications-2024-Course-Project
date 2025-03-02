@@ -113,17 +113,6 @@ const Register:React.FC = () => {
                     type="password"
                     sx = {{marginBottom: "10px"}}
                     onChange={(e) => setRepeatPassword(e.target.value)} />
-                <FormControlLabel
-                    control={
-                        <Checkbox
-                            checked={isAdmin}
-                            onChange={(e) => setIsAdmin(e.target.checked)}
-                            name="isAdmin"
-                            color="primary"
-                        />
-                    }
-                    label="Is Admin"
-                />
                 { errors.map((error, index) => { //display errors
                     return <p key={index} style={{color: "red", fontWeight: "bold"}}>{error}</p>
                 })
