@@ -47,8 +47,10 @@ if (process.env.NODE_ENV === 'development') {
         origin: 'http://localhost:3000',
         optionsSuccessStatus: 200
     }
+    app.use(cors(corsOptions));
+} else {
+    app.use(cors());
 }
-app.use(cors());
 
 // start server
 app.listen(port, () => {
