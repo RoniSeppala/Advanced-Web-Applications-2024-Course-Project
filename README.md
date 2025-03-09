@@ -18,6 +18,7 @@ This program can be accessed through a few ways.
      - twitter consumer secret
    - run "npm run dev:client" and "npm run dev:server" from the root folder
 2. The website is hosted at roniseppala.com:9000
+   - The website is also available from awa.roniseppala.com with https, however this still redirects to roniseppala.com:9000 after login so backwards compatibility is maintaided. This will however be depracated later and the system will be moved completely to awa.roniseppala.com
 
 ## How to use
 ### Login and Register
