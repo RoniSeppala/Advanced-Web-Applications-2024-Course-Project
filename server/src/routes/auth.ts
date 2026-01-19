@@ -32,15 +32,25 @@ router.post("/local", loginValidation, (req: Request, res: Response, next: NextF
 });
 
 // Google OAuth routes
-router.get("/google", passport.authenticate('google', {scope: ['profile', 'email']})); 
+router.get("/google", passport.authenticate('google', {scope: ['profile', 'email']}));
 router.get("/google/callback", passport.authenticate('google', { failureRedirect: 'https://awa.roniseppala.com/login' }), (req: Request, res: Response) => {
-    res.redirect('https://awa.roniseppala.com');
+    req.session.save((err) => {
+        if (err) {
+            console.error('Session save error:', err);
+        }
+        res.redirect('https://awa.roniseppala.com');
+    });
 })
 
 // X OAuth routes
 router.get("/twitter", passport.authenticate('twitter'));
 router.get("/twitter/callback", passport.authenticate('twitter', { failureRedirect: 'https://awa.roniseppala.com/login' }), (req: Request, res: Response) => {
-    res.redirect('https://awa.roniseppala.com');
+    req.session.save((err) => {
+        if (err) {
+            console.error('Session save error:', err);
+        }
+        res.redirect('https://awa.roniseppala.com');
+    });
 })
 
 router.get("/logout", (req: Request, res: Response) => { //logout route
