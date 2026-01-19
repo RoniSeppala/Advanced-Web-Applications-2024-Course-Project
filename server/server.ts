@@ -48,10 +48,10 @@ app.use(session({ //initialize session for passport
     saveUninitialized: false,
     rolling: true,
     cookie: { 
-        secure: false, 
+        secure: process.env.NODE_ENV === 'production', 
         maxAge: 1000 * 60 * 60,
-        sameSite: 'lax',
-        domain: '.roniseppala.com'
+        sameSite: process.env.NODE_ENV === 'production' ? 'none' : 'lax',
+        httpOnly: true
     }
 }));
 
