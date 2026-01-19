@@ -13,7 +13,7 @@ export default defineConfig({
     },
     port: 3000,
     host: "0.0.0.0",
-    allowedHosts: ["roniseppala.com"]
+    allowedHosts: ["roniseppala.com","awa.roniseppala.com"]
   },
   build: {
     outDir: "/var/www/awp-project-frontend"
