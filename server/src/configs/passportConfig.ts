@@ -37,7 +37,7 @@ passport.use(new LocalStrategy({usernameField: 'email'}, async (email, password,
 passport.use(new GoogleStrategy({ //google strategy for passport login
     clientID: process.env.GOOGLE_CLIENT_ID as string,
     clientSecret: process.env.GOOGLE_CLIENT_SECRET as string,
-    callbackURL: "http://awa.roniseppala.com/api/auth/google/callback"
+    callbackURL: "https://awa.roniseppala.com/api/auth/google/callback"
 }, async (accessToken, refreshToken, profile, done) => {
     try {
         let user: IUser | null = await User.findOne({googleId: profile.id});
@@ -58,7 +58,7 @@ passport.use(new GoogleStrategy({ //google strategy for passport login
 passport.use(new TwitterStrategy({ //x strategy for passport login
     consumerKey: process.env.TWITTER_CONSUMER_KEY as string,
     consumerSecret: process.env.TWITTER_CONSUMER_SECRET as string,
-    callbackURL: "http://awa.roniseppala.com/api/auth/twitter/callback"
+    callbackURL: "https://awa.roniseppala.com/api/auth/twitter/callback"
 }, async (token, tokenSecret, profile, done) => {
     try {
         let user: IUser | null = await User.findOne({twitterId: profile.id});
