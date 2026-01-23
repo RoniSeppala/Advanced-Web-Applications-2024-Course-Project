@@ -8,7 +8,7 @@ interface OauthButtonsProps {
 const OauthButtons:React.FC<OauthButtonsProps> = ({ page }) => {
 
     const handleOauthLogin = (provider: string) => { //handle oauth login button press
-        window.location.href = `https//awa.roniseppala.com/api/auth/${provider}`
+        window.location.href = `/api/auth/${provider}`
     }
 
     return (
