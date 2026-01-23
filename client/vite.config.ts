@@ -7,7 +7,7 @@ export default defineConfig({
   server: {
     proxy: {
       '/api': {
-        target: 'http://roniseppala.com/api/',
+        target: 'https://awa.roniseppala.com/api/',
         changeOrigin: true
       }
     },
