@@ -16,6 +16,6 @@ export default defineConfig({
     allowedHosts: ["roniseppala.com","awa.roniseppala.com"]
   },
   build: {
-    outDir: "/var/www/awp-project-frontend"
+    outDir: "./dist/awp-project-frontend"
   },
 })
