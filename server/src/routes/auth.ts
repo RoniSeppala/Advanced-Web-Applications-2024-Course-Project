@@ -71,10 +71,19 @@ router.get("/twitter/callback", passport.authenticate('twitter', { failureRedire
     });
 })
 
-router.get("/logout", (req: Request, res: Response) => { //logout route
-    req.logout(() => {
-        res.redirect('https://awa.roniseppala.com/');
-    });
+router.get("/logout", (req: Request, res: Response, next: NextFunction) => { //logout route
+    if (req.session) {
+        req.session.destroy((err) => {
+            if (err) {
+                return next(err);
+            }
+            res.clearCookie('connect.sid');
+            res.redirect('https://awa.roniseppala.com/');
+        });
+        return;
+    }
+    res.clearCookie('connect.sid');
+    res.redirect('https://awa.roniseppala.com/');
 })
 
 router.post("/register", registerValidation, async (req: Request, res: Response) => { //register route for local strategy
