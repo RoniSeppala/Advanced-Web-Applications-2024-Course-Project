@@ -9,6 +9,7 @@ dotenv.config();
 import "./src/configs/passportConfig";
 import auth from "./src/routes/auth";
 import todos from "./src/routes/todos";
+import MongoStore from 'connect-mongo';
 
 const app: Express = express();
 const port: number = parseInt(process.env.PORT as string) || 1234;
@@ -49,6 +50,11 @@ app.use(session({ //initialize session for passport
     resave: false,
     saveUninitialized: false,
     rolling: true,
+    store: MongoStore.create({
+        mongoUrl: process.env.MONGODB_SESSION_URI as string || "mongodb://localhost:27017/sessions",
+        collectionName: 'sessions',
+        ttl: 60 * 60
+    }),
     cookie: { 
         secure: useSecureCookies, 
         maxAge: 1000 * 60 * 60,
