@@ -23,7 +23,7 @@ db.on("error", console.error.bind(console, "MongoDB connection error:"));
 app.use(morgan('dev'));
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
-app.set('trust proxy', true)
+app.set('trust proxy', 1)
 
 // set up cors
 if (process.env.NODE_ENV === 'development') {
@@ -42,15 +42,17 @@ if (process.env.NODE_ENV === 'development') {
     app.use(cors(corsOptions));
 }
 
+const useSecureCookies = process.env.NODE_ENV === 'production' || process.env.FORCE_HTTPS === 'true';
+
 app.use(session({ //initialize session for passport
     secret: process.env.SESSION_SECRET as string || "secret-string",
     resave: false,
     saveUninitialized: false,
     rolling: true,
     cookie: { 
-        secure: process.env.NODE_ENV === 'production', 
+        secure: useSecureCookies, 
         maxAge: 1000 * 60 * 60,
-        sameSite: process.env.NODE_ENV === 'production' ? 'none' : 'lax',
+        sameSite: useSecureCookies ? 'none' : 'lax',
         httpOnly: true
     }
 }));
