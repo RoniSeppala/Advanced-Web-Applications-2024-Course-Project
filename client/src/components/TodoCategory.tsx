@@ -35,7 +35,11 @@ interface Todo {
 
 const TodoCategory:React.FC<TodoCategoryProps> = ({ category, boardTodoCounter , setBoardTodoCounter, handleTodoDelete, handleCategoryDelete, onTodoSave, onCategoryTitleSave, onCategoryColorChange, onTodoColorChange, colorContainerRef, setNeedsSync}) => {
     const bgColor: string = category.color || "#D3D3D3" //default color
-    const [chromePickerColor, setChromePickerColor] = React.useState<string>("#D3D3D3")
+    const [chromePickerColor, setChromePickerColor] = React.useState<string>(bgColor)
+
+    React.useEffect(() => {
+        setChromePickerColor(bgColor);
+    }, [bgColor]);
 
     //popover setup
     const [anchorEl, setAnchorEl] = React.useState<HTMLButtonElement | null>(null);
@@ -160,7 +164,7 @@ const TodoCategory:React.FC<TodoCategoryProps> = ({ category, boardTodoCounter ,
                                     pointerEvents: 'auto', 
                                     zIndex: 1000 
                                     }}>
-                                <ChromePicker disableAlpha color={chromePickerColor} onChange={(newColor) => {handleColorChange(newColor.hex)}}/>
+                                <ChromePicker disableAlpha color={chromePickerColor || "#D3D3D3"} onChange={(newColor) => {handleColorChange(newColor.hex)}}/>
                                 <Button onClick={handlePopoverClose}
                                 sx={{
                                     backgroundColor: "lightblue",

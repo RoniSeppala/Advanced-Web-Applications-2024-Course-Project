@@ -36,7 +36,12 @@ const TodoItem:React.FC<TodoItemProps> = ({category, todo, handleTodoDelete, onT
         data: { type: 'todo', categoryId: category.id }
     });
 
-    const [chromePickerColor, setChromePickerColor] = React.useState<string>(todo.color || category.color)
+    const initialColor = todo.color || category.color || "#D3D3D3";
+    const [chromePickerColor, setChromePickerColor] = React.useState<string>(initialColor)
+
+    React.useEffect(() => {
+        setChromePickerColor(todo.color || category.color || "#D3D3D3");
+    }, [todo.color, category.color]);
 
     //popover setup
     const [anchorEl, setAnchorEl] = React.useState<HTMLButtonElement | null>(null);
@@ -73,7 +78,7 @@ const TodoItem:React.FC<TodoItemProps> = ({category, todo, handleTodoDelete, onT
                 paddingRight: "10px",
                 color: "black",
                 border: "1px solid black",
-                backgroundColor: darken(chromePickerColor, 0.05),
+                backgroundColor: darken(chromePickerColor || "#D3D3D3", 0.05),
             }}>
                 <ListItemText primary={<EdiatableTextDisplay initialContent={todo.todo} id={todo.id} onSave={(content:string, id:string) => {onTodoSave(content, id)}}/>}/>
                 <IconButton aria-label="delete" size="small" onClick={() => handleTodoDelete(category.id, todo.id)}>
@@ -100,7 +105,7 @@ const TodoItem:React.FC<TodoItemProps> = ({category, todo, handleTodoDelete, onT
                             pointerEvents: 'auto',
                             zIndex: 1000
                             }}>
-                        <ChromePicker disableAlpha color={chromePickerColor} onChange={(newColor) => {handleColorChange(newColor.hex)}}/>
+                        <ChromePicker disableAlpha color={chromePickerColor || "#D3D3D3"} onChange={(newColor) => {handleColorChange(newColor.hex)}}/>
                         <Button onClick={handlePopoverClose}
                         sx={{
                             backgroundColor: "lightblue",
