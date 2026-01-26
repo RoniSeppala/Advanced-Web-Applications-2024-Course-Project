@@ -31,10 +31,14 @@ router.post("/local", loginValidation, (req: Request, res: Response, next: NextF
             console.warn('[auth/local] invalid credentials', info);
             return res.status(401).json({ errors: [{ msg: 'Invalid credentials' }] }); //return info to client if login failed
         }
-        req.logIn(user, (err) => {
-            if (err) {
-                console.error('[auth/local] login error', err);
-                return next(err);
+        if (!req.session) {
+            return next(new Error('Session is not initialized.'));
+        }
+        (req.session as any).passport = { user: user.id };
+        req.session.save((sessionErr) => {
+            if (sessionErr) {
+                console.error('[auth/local] session save error', sessionErr);
+                return next(sessionErr);
             }
             console.log('[auth/local] login ok', {
                 sessionID: req.sessionID,
