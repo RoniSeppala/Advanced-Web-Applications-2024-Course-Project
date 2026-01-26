@@ -63,6 +63,14 @@ app.use(session({ //initialize session for passport
     }
 }));
 
+// Ensure passport session object exists (workaround for older nested passport versions)
+app.use((req, res, next) => {
+    if (req.session && !(req.session as any).passport) {
+        (req.session as any).passport = {};
+    }
+    next();
+});
+
 // Initialize Passport
 app.use(passport.initialize());
 app.use(passport.session());
