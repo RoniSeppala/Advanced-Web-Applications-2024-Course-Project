@@ -24,10 +24,11 @@ interface TodoItemProps {
     },
     handleTodoDelete: (categoryId: string, todoId: string) => void,
     onTodoSave: (content: string, id: string) => void,
+    onTodoColorChange: (categoryId: string, todoId: string, color: string) => void,
     colorContainerRef: React.RefObject<HTMLDivElement | null>
 }
 
-const TodoItem:React.FC<TodoItemProps> = ({category, todo, handleTodoDelete, onTodoSave, colorContainerRef}) => {
+const TodoItem:React.FC<TodoItemProps> = ({category, todo, handleTodoDelete, onTodoSave, onTodoColorChange, colorContainerRef}) => {
 
     // Setup for todo sorting drag and drop
     const { attributes, listeners, setNodeRef, transform, isDragging } = useSortable({
@@ -51,11 +52,7 @@ const TodoItem:React.FC<TodoItemProps> = ({category, todo, handleTodoDelete, onT
     const handleColorChange = (newColor: string) => { //change color of the todo
         setChromePickerColor(newColor)
         console.log("Color changed to: " + newColor)
-        category.todos.forEach((item) => {
-            if(item.id === todo.id) {
-                item.color = newColor
-            }
-        })
+        onTodoColorChange(category.id, todo.id, newColor)
     }
 
     const style = { //dragging style for todos

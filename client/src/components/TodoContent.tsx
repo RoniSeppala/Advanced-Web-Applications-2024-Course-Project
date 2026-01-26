@@ -23,10 +23,11 @@ interface TodoContentProps {
     },
     handleTodoDelete: (categoryId: string, todoId: string) => void,
     onTodoSave: (content: string, id: string) => void,
+    onTodoColorChange: (categoryId: string, todoId: string, color: string) => void,
     colorContainerRef: React.RefObject<HTMLDivElement | null>
 }
 
-const TodoContent: React.FC<TodoContentProps> = ({ category, handleTodoDelete, onTodoSave, colorContainerRef }) => {
+const TodoContent: React.FC<TodoContentProps> = ({ category, handleTodoDelete, onTodoSave, onTodoColorChange, colorContainerRef }) => {
     const isEmpty: boolean = category.todos.length === 0; // Check if there are no todos in the category for the placeholder.
 
     // Ensure todos is an array with valid items only.
@@ -77,6 +78,7 @@ const TodoContent: React.FC<TodoContentProps> = ({ category, handleTodoDelete, o
                                 category={category}
                                 handleTodoDelete={handleTodoDelete}
                                 onTodoSave={(content:string, id:string) => {onTodoSave(content, id)}}
+                                onTodoColorChange={onTodoColorChange}
                                 colorContainerRef={colorContainerRef}/>
                         ))
                     )}

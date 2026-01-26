@@ -291,6 +291,33 @@ const TodoBoard:React.FC<TodoBoardProps> = ({ todoBoardData , deleteBoard}) => {
         setNeedsSync(true) //request to save to database
     }
 
+    const onCategoryColorChange = (categoryId: string, color: string) => {
+        setTodoBoardDataState((prevData) => ({
+            ...prevData,
+            categories: prevData.categories.map((cat) =>
+                cat.id === categoryId ? { ...cat, color } : cat
+            )
+        }));
+        setNeedsSync(true);
+    }
+
+    const onTodoColorChange = (categoryId: string, todoId: string, color: string) => {
+        setTodoBoardDataState((prevData) => ({
+            ...prevData,
+            categories: prevData.categories.map((cat) =>
+                cat.id === categoryId
+                    ? {
+                        ...cat,
+                        todos: cat.todos.map((item) =>
+                            item.id === todoId ? { ...item, color } : item
+                        )
+                    }
+                    : cat
+            )
+        }));
+        setNeedsSync(true);
+    }
+
     return (
         <Box sx={{ // main container
             paddingTop: "10px",
@@ -353,6 +380,8 @@ const TodoBoard:React.FC<TodoBoardProps> = ({ todoBoardData , deleteBoard}) => {
                                 handleCategoryDelete={handleCategoryDelete}
                                 onTodoSave={onTodoSave}
                                 onCategoryTitleSave={onCategoryTitleSave}
+                                onCategoryColorChange={onCategoryColorChange}
+                                onTodoColorChange={onTodoColorChange}
                                 colorContainerRef={colorContainerRef}
                                 setNeedsSync={setNeedsSync}/>;
                         })}

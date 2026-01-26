@@ -22,6 +22,8 @@ interface TodoCategoryProps {
     handleCategoryDelete: (categoryId: string) => void,
     onTodoSave: (content: string, id: string) => void,
     onCategoryTitleSave: (content: string, id: string) => void,
+    onCategoryColorChange: (categoryId: string, color: string) => void,
+    onTodoColorChange: (categoryId: string, todoId: string, color: string) => void,
     colorContainerRef: React.RefObject<HTMLDivElement | null>,
     setNeedsSync: React.Dispatch<React.SetStateAction<boolean>>
 }
@@ -31,7 +33,7 @@ interface Todo {
     todo: string
 }
 
-const TodoCategory:React.FC<TodoCategoryProps> = ({ category, boardTodoCounter , setBoardTodoCounter, handleTodoDelete, handleCategoryDelete, onTodoSave, onCategoryTitleSave, colorContainerRef, setNeedsSync}) => {
+const TodoCategory:React.FC<TodoCategoryProps> = ({ category, boardTodoCounter , setBoardTodoCounter, handleTodoDelete, handleCategoryDelete, onTodoSave, onCategoryTitleSave, onCategoryColorChange, onTodoColorChange, colorContainerRef, setNeedsSync}) => {
     const bgColor: string = category.color || "#D3D3D3" //default color
     const [chromePickerColor, setChromePickerColor] = React.useState<string>("#D3D3D3")
 
@@ -78,9 +80,7 @@ const TodoCategory:React.FC<TodoCategoryProps> = ({ category, boardTodoCounter ,
     const handleColorChange = (newColor: string) => { //ChromePicker color change handler
         setChromePickerColor(newColor)
         console.log("Color changed to: " + newColor)
-        category.color = newColor
-
-        setNeedsSync(true) //save the changes to the database
+        onCategoryColorChange(category.id, newColor)
     }
 
     return (
@@ -174,7 +174,13 @@ const TodoCategory:React.FC<TodoCategoryProps> = ({ category, boardTodoCounter ,
                         </Popover>
                     </Box>
                 </Box>
-                <TodoContent category={category} handleTodoDelete={handleTodoDelete} onTodoSave={(content:string, id:string) => {onTodoSave(content, id)}} colorContainerRef={colorContainerRef}/>
+                <TodoContent
+                    category={category}
+                    handleTodoDelete={handleTodoDelete}
+                    onTodoSave={(content: string, id: string) => { onTodoSave(content, id); }}
+                    onTodoColorChange={onTodoColorChange}
+                    colorContainerRef={colorContainerRef}
+                />
             </Box>
         </div>
     )
