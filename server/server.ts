@@ -71,6 +71,19 @@ app.use(passport.session());
 app.use("/api/auth", auth);
 app.use("/api/todos", todos)
 
+// error handler for debugging
+app.use((err: any, req: express.Request, res: express.Response, next: express.NextFunction) => {
+    console.error('[error]', {
+        message: err?.message,
+        stack: err?.stack,
+        url: req.originalUrl
+    });
+    if (res.headersSent) {
+        return next(err);
+    }
+    res.status(500).json({ error: 'Internal server error' });
+});
+
 // start server
 app.listen(port, () => {
     console.log(`Server is running on port ${port}`);
