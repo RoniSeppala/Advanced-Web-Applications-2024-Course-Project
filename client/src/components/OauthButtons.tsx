@@ -20,13 +20,6 @@ const OauthButtons:React.FC<OauthButtonsProps> = ({ page }) => {
             onClick={(e) => {e.preventDefault(); handleOauthLogin("google")}}>
             Google { page }
         </Button>
-        <Button
-            variant="contained"
-            id="twitterLogin"
-            sx={{marginTop: "10px", backgroundColor: "black"}}
-            onClick={(e) => {e.preventDefault(); handleOauthLogin("twitter")}}>
-            X { page }
-        </Button>
     </>
     )
 }
