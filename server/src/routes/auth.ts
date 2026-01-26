@@ -51,25 +51,43 @@ router.post("/local", loginValidation, (req: Request, res: Response, next: NextF
 
 // Google OAuth routes
 router.get("/google", passport.authenticate('google', {scope: ['profile', 'email']}));
-router.get("/google/callback", passport.authenticate('google', { failureRedirect: 'https://awa.roniseppala.com/login' }), (req: Request, res: Response) => {
-    req.session.save((err) => {
-        if (err) {
-            console.error('Session save error:', err);
+router.get(
+    "/google/callback",
+    passport.authenticate('google', { failureRedirect: 'https://awa.roniseppala.com/login', session: false }),
+    (req: Request, res: Response, next: NextFunction) => {
+        if (!req.session || !req.user) {
+            return next(new Error('Session or user missing after Google callback.'));
         }
-        res.redirect('https://awa.roniseppala.com');
-    });
-})
+        (req.session as any).passport = { user: (req.user as IUser).id };
+        req.session.save((err) => {
+            if (err) {
+                console.error('Session save error:', err);
+                return next(err);
+            }
+            res.redirect('https://awa.roniseppala.com');
+        });
+    }
+);
 
 // X OAuth routes
 router.get("/twitter", passport.authenticate('twitter'));
-router.get("/twitter/callback", passport.authenticate('twitter', { failureRedirect: 'https://awa.roniseppala.com/login' }), (req: Request, res: Response) => {
-    req.session.save((err) => {
-        if (err) {
-            console.error('Session save error:', err);
+router.get(
+    "/twitter/callback",
+    passport.authenticate('twitter', { failureRedirect: 'https://awa.roniseppala.com/login', session: false }),
+    (req: Request, res: Response, next: NextFunction) => {
+        if (!req.session || !req.user) {
+            return next(new Error('Session or user missing after Twitter callback.'));
         }
-        res.redirect('https://awa.roniseppala.com');
-    });
-})
+        (req.session as any).passport = { user: (req.user as IUser).id };
+        req.session.save((err) => {
+            if (err) {
+                console.error('Session save error:', err);
+                return next(err);
+            }
+            res.redirect('https://awa.roniseppala.com');
+        });
+    }
+);
 
 router.get("/logout", (req: Request, res: Response, next: NextFunction) => { //logout route
     if (req.session) {
