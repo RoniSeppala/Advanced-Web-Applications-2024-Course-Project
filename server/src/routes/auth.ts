@@ -8,6 +8,13 @@ import { Result, ValidationError, validationResult } from 'express-validator';
 const router: Router = Router();
 
 router.post("/local", loginValidation, (req: Request, res: Response, next: NextFunction) => { //login route for local strategy
+    console.log('[auth/local] incoming', {
+        hasSession: !!req.session,
+        hasPassport: !!(req.session && (req.session as any).passport),
+        cookieHeaderPresent: !!req.headers.cookie,
+        secure: req.secure,
+        forwardedProto: req.headers['x-forwarded-proto']
+    });
     const errors: Result<ValidationError> = validationResult(req);
 
     if (!errors.isEmpty()) { //return info to client if there were input errors
@@ -17,15 +24,22 @@ router.post("/local", loginValidation, (req: Request, res: Response, next: NextF
 
     passport.authenticate('local', (err: Error, user: IUser, info: any) => {
         if (err) {
+            console.error('[auth/local] authenticate error', err);
             return next(err);
         }
         if (!user) {
+            console.warn('[auth/local] invalid credentials', info);
             return res.status(401).json({ errors: [{ msg: 'Invalid credentials' }] }); //return info to client if login failed
         }
         req.logIn(user, (err) => {
             if (err) {
+                console.error('[auth/local] login error', err);
                 return next(err);
             }
+            console.log('[auth/local] login ok', {
+                sessionID: req.sessionID,
+                hasPassport: !!(req.session && (req.session as any).passport)
+            });
             return res.status(200).json({ user });
         });
     })(req, res, next);
